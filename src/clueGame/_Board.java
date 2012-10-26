@@ -335,7 +335,16 @@ public class _Board {
 //	CluePlayers
 //	
 	
-//	derp derp derp
+	ArrayList<_Player> allPlayers = new ArrayList<_Player>();
+	
+	public _Player getPlayer(int index) { return allPlayers.get(index); }
+	
+//	variables to hold list of cards, list of computer 
+//	players, one human player, and an indicator of whose turn it is
+	
+//	i say we have one ArrayList of Players, instantiate in order of file
+	
+//	function to load people file and card file
 	
 //	
 ////////////////////////////////
