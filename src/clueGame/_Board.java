@@ -346,6 +346,26 @@ public class _Board {
 	
 //	function to load people file and card file
 	
+	//returns a card from a player or null card if no players have any of suggested cards
+	public _Card disproveSuggestion(String person, String room, String weapon){
+		return new _Card("null", _Card.CardType.NULL);
+	}
+	
+	//give a card to player at [index] in the player array
+	public void giveCard(int index, _Card card){
+		
+	}
+	
+	//add items to the array of cards that have been seen. Mostly for testing
+	public void updateSeen(String person, String room, String weapon){
+		
+	}
+	
+	//returns 3 cards, person, room, and weapon
+	public HashSet<_Card> makeSuggestion(){
+		return new HashSet<_Card>();
+	}
+	
 //	
 ////////////////////////////////
 	

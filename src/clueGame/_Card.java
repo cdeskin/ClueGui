@@ -2,8 +2,8 @@ package clueGame;
 
 public class _Card {
 	
-	// enum type for Card
-	public enum CardType { PERSON, WEAPON, ROOM };
+	// enum type for Card, null is used for disproveSuggestion
+	public enum CardType { PERSON, WEAPON, ROOM, NULL };
 	
 	// instance variables
 	public String cardName;
