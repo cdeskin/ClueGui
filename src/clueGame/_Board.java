@@ -339,7 +339,7 @@ public class _Board {
 	
 	public _Player getPlayer(int index) { return allPlayers.get(index); }
 	
-	
+	HashSet<_Card> cardsSeen = new HashSet<_Card>();
 	
 	ArrayList<_Card> solution = new ArrayList<_Card>();
 	
@@ -375,7 +375,9 @@ public class _Board {
 	
 	//add items to the array of cards that have been seen. Mostly for testing
 	public void updateSeen(String person, String room, String weapon){
-		
+		cardsSeen.add(new _Card(person, _Card.CardType.PERSON));
+		cardsSeen.add(new _Card(room, _Card.CardType.ROOM));
+		cardsSeen.add(new _Card(weapon, _Card.CardType.WEAPON));
 	}
 	
 	//returns 3 cards, person, room, and weapon
