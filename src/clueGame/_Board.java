@@ -339,12 +339,29 @@ public class _Board {
 	
 	public _Player getPlayer(int index) { return allPlayers.get(index); }
 	
+	
+	
+	ArrayList<_Card> solution = new ArrayList<_Card>();
+	
 //	variables to hold list of cards, list of computer 
 //	players, one human player, and an indicator of whose turn it is
 	
 //	i say we have one ArrayList of Players, instantiate in order of file
 	
 //	function to load people file and card file
+	
+	//Return true if accusation is true, false otherwise
+	public boolean checkAccusation(String person, String room, String weapon){
+		ArrayList<_Card> accusation = new ArrayList<_Card>();
+		accusation.add(new _Card(person, _Card.CardType.PERSON));
+		accusation.add(new _Card(room, _Card.CardType.ROOM));
+		accusation.add(new _Card(weapon, _Card.CardType.WEAPON));
+		
+		if(solution.containsAll(accusation))
+			return true;
+		else
+			return false;
+	}
 	
 	//returns a card from a player or null card if no players have any of suggested cards
 	public _Card disproveSuggestion(String person, String room, String weapon){
@@ -353,7 +370,7 @@ public class _Board {
 	
 	//give a card to player at [index] in the player array
 	public void giveCard(int index, _Card card){
-		
+		allPlayers.get(index).giveCard(card);
 	}
 	
 	//add items to the array of cards that have been seen. Mostly for testing

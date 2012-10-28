@@ -24,7 +24,6 @@ public class _PHKC_GameActionTests {
 //	test for checking an accusation
 	@Test
 	public void testCheckAccusation() {
-		_Solution solution = new _Solution(/*3 cards*/);
 		Boolean check = board.checkAccusation("person", "room", "weapon");
 		assertTrue(check);
 	}
