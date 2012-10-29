@@ -55,7 +55,7 @@ public class _PHKC_GameActionTests {
 		//Reset any changes made by other tests
 		board = new _Board();
 		//Make a suggestion on a new board, no players should have any of the cards so should return a null card
-		assertEquals(board.disproveSuggestion("person", "room", "weapon"), _Card.CardType.NULL);
+		assertEquals(board.disproveSuggestion(0, "person", "room", "weapon"), _Card.CardType.NULL);
 		
 		//deal some cards, multiple can be dealt and tested
 		board.giveCard(0, new _Card("person", _Card.CardType.PERSON)); 
@@ -63,7 +63,7 @@ public class _PHKC_GameActionTests {
 		//make a sugguestion that includes 1 card that has been dealt, 
 		//make sure the card we want is returned
 		//repeat for room, and weapon
-		assertEquals(board.disproveSuggestion("person", "room", "weapon"), new _Card("person", _Card.CardType.PERSON));
+		assertEquals(board.disproveSuggestion(0, "person", "room", "weapon"), new _Card("person", _Card.CardType.PERSON));
 		
 		//idea: call disproveSuggestion 25 times with all args being cards held by a player 
 		//      then make sure we were returned, at least once, a room, a person, and a weapon
@@ -71,7 +71,7 @@ public class _PHKC_GameActionTests {
 		HashSet<_Card> returnedCards = new HashSet<_Card>();
 		board.giveCard(1, new _Card("room", _Card.CardType.ROOM));
 		for(int i = 0; i<25; i++){
-			returnedCards.add(board.disproveSuggestion("person", "room", "weapon"));
+			returnedCards.add(board.disproveSuggestion(0, "person", "room", "weapon"));
 		}
 		//we should get a person, a room, and a weapon
 		assertTrue(returnedCards.size() == 3);
@@ -87,7 +87,7 @@ public class _PHKC_GameActionTests {
 		//deal a card to a second player
 		board.giveCard(0, new _Card("person", _Card.CardType.PERSON));
 		for(int i = 0; i<25; i++){
-			returnedCards.add(board.disproveSuggestion("person", "room", "weapon"));
+			returnedCards.add(board.disproveSuggestion(0, "person", "room", "weapon"));
 		}
 		assertTrue(returnedCards.size() == 2);
 		assertTrue(returnedCards.contains(new _Card("person", _Card.CardType.PERSON)));

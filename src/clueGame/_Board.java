@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class _Board {
@@ -364,7 +365,74 @@ public class _Board {
 	}
 	
 	//returns a card from a player or null card if no players have any of suggested cards
-	public _Card disproveSuggestion(String person, String room, String weapon){
+	public _Card disproveSuggestion(int currentPlayer, String person, String room, String weapon){
+		int numPlayers = allPlayers.size();
+		Random numGenerator = new Random();
+		_Card personCard = new _Card(person, _Card.CardType.PERSON);
+		_Card roomCard = new _Card(room, _Card.CardType.ROOM);
+		_Card weaponCard = new _Card(weapon, _Card.CardType.WEAPON);
+		
+		//generate a random starting index that is not the index of the current player
+		int startIndex = numGenerator.nextInt(numPlayers);
+		while (startIndex == currentPlayer){
+			startIndex = numGenerator.nextInt(numPlayers);
+		}
+		int currentIndex = startIndex;
+		
+		
+		if(startIndex < currentPlayer)
+		{
+			while(currentIndex < currentPlayer){
+				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
+				int numMatches = 0;
+				
+				for(boolean check: matches){
+					if(check)
+						numMatches++;
+				}
+				
+				if(numMatches > 1){
+					
+				} else if (numMatches > 0){
+					
+				}
+				
+				currentIndex++;
+			}
+			currentIndex++;
+			while(currentIndex < numPlayers){
+				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				currentIndex++;
+			}
+			currentIndex=0;
+			while(currentIndex < startIndex){
+				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				currentIndex++;
+			}
+		} 
+		
+		else if(startIndex > currentPlayer){
+			while(currentIndex < numPlayers){
+				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				currentIndex++;
+			}
+			currentIndex=0;
+			while(currentIndex < currentPlayer){
+				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				currentIndex++;
+			}
+			currentIndex++;
+			while(currentIndex < startIndex){
+				checkCards(currentIndex, personCard, roomCard, weaponCard);
+					
+				currentIndex++;
+			}
+		}
+		
 		return new _Card("null", _Card.CardType.NULL);
 	}
 	
@@ -383,6 +451,18 @@ public class _Board {
 	//returns 3 cards, person, room, and weapon
 	public HashSet<_Card> makeSuggestion(){
 		return new HashSet<_Card>();
+	}
+	
+	public boolean[] checkCards(int index, _Card personCard, _Card roomCard, _Card weaponCard){
+		boolean[] returnArray = {false, false, false};
+		if(allPlayers.get(index).hasCard(personCard))
+			returnArray[0]=true;
+		if(allPlayers.get(index).hasCard(roomCard))
+			returnArray[1]=true;
+		if(allPlayers.get(index).hasCard(weaponCard))
+			returnArray[2]=true;
+		
+		return returnArray;
 	}
 	
 //	
