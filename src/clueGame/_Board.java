@@ -379,35 +379,39 @@ public class _Board {
 		}
 		int currentIndex = startIndex;
 		
-		
+		//there ought to be a better way to do this.
+		//way overcomplicated loop structure to wrap at end and skip current player
 		if(startIndex < currentPlayer)
 		{
 			while(currentIndex < currentPlayer){
 				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				int numMatches = 0;
 				
-				for(boolean check: matches){
-					if(check)
-						numMatches++;
-				}
+				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(numMatches > 1){
-					
-				} else if (numMatches > 0){
-					
-				}
+				if(returnCard.cardType != _Card.CardType.NULL)
+					return returnCard;
 				
 				currentIndex++;
 			}
 			currentIndex++;
 			while(currentIndex < numPlayers){
-				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
+				
+				if(returnCard.cardType != _Card.CardType.NULL)
+					return returnCard;
 				
 				currentIndex++;
 			}
 			currentIndex=0;
 			while(currentIndex < startIndex){
-				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
+				
+				if(returnCard.cardType != _Card.CardType.NULL)
+					return returnCard;
 				
 				currentIndex++;
 			}
@@ -415,20 +419,35 @@ public class _Board {
 		
 		else if(startIndex > currentPlayer){
 			while(currentIndex < numPlayers){
-				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
+				
+				if(returnCard.cardType != _Card.CardType.NULL)
+					return returnCard;
 				
 				currentIndex++;
 			}
 			currentIndex=0;
 			while(currentIndex < currentPlayer){
-				checkCards(currentIndex, personCard, roomCard, weaponCard);
+				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
+				
+				if(returnCard.cardType != _Card.CardType.NULL)
+					return returnCard;
 				
 				currentIndex++;
 			}
 			currentIndex++;
 			while(currentIndex < startIndex){
-				checkCards(currentIndex, personCard, roomCard, weaponCard);
-					
+				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
+				
+				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
+				
+				if(returnCard.cardType != _Card.CardType.NULL)
+					return returnCard;
+				
 				currentIndex++;
 			}
 		}
@@ -463,6 +482,36 @@ public class _Board {
 			returnArray[2]=true;
 		
 		return returnArray;
+	}
+	
+	public _Card getReturnCard(boolean[] matches, _Card personCard, _Card roomCard, _Card weaponCard){
+		Random numGenerator = new Random();
+		int numMatches = 0;
+		
+		for(boolean check: matches){
+			if(check)
+				numMatches++;
+		}
+		
+		if(numMatches > 1){
+			int returnChoice = numGenerator.nextInt(numMatches);
+			
+			if(returnChoice == 0)
+				return personCard;
+			else if(returnChoice == 1)
+				return roomCard;
+			else if(returnChoice == 2)
+				return weaponCard;
+		} else if (numMatches > 0){
+			if(matches[0])
+				return personCard;
+			else if(matches[1])
+				return roomCard;
+			else if(matches[2])
+				return weaponCard;
+		}
+		
+		return new _Card("null", _Card.CardType.NULL);
 	}
 	
 //	
