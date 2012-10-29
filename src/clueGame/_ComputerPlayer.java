@@ -4,6 +4,14 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class _ComputerPlayer extends _Player {
+	
+	public _ComputerPlayer(String name, String color, int startingIndexedLocation) {
+		super(name, color, startingIndexedLocation);
+	}
+	
+	@Override
+	public boolean isComputer() { return true; }
+
 	BoardCell lastRoom = new BoardCell();
 
 	public BoardCell pickLocation(HashSet<BoardCell> targets) {

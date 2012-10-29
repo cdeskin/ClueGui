@@ -14,7 +14,7 @@ import clueGame._Card;
 import clueGame._Card.CardType;
 import clueGame._Player;
 
-public class _PHKC_GameSetupTests {
+public class PHKC_GameSetupTests {
 
 	private static _Board board;
 	

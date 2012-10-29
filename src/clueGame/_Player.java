@@ -1,29 +1,37 @@
 package clueGame;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public abstract class _Player {
 	
-	// instance variables
+//	instance variables
 	public String name;
 	public Color color;
-	// then a variable to hold a list of cards.
-	ArrayList<_Card> cards;
+	public ArrayList<_Card> cards;
+	public int indexedLocation;
 	
-	public _Player(){
-		super();
-		this.color = Color.black;
-		this.name = "Captain Cadaver";
-		this.cards = new ArrayList<_Card>();
-	}
-	
-	public _Player(String name, Color color, ArrayList<_Card> cards) {
-		super();
+	public _Player(String name, String color, int startingIndexedLocation) {
 		this.name = name;
-		this.color = color;
-		this.cards = cards;
+		this.color = convertColor(color);
+		indexedLocation = startingIndexedLocation;
+		cards = new ArrayList<_Card>();
 	}
+	public Color convertColor(String strColor) {
+		Color color;
+		try {
+			Field field = Class.forName("java.awt.Color").getField(strColor.trim());
+			color = (Color) field.get(null);
+		}
+		catch (Exception e) {
+			color = null;
+		}
+		return color;
+	}
+	
+	public boolean isHuman() { return false; }
+	public boolean isComputer() { return false; }
 	
 	// Helpers for test purposes
 	public void giveCard(_Card card){
@@ -37,4 +45,5 @@ public abstract class _Player {
 		else
 			return false;	
 	}
+
 }

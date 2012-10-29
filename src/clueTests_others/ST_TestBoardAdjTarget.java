@@ -1,12 +1,15 @@
 package clueTests_others;
 
 import org.junit.Test;
+
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 
+import clueGame.BadConfigFormatException;
 import clueGame._Board;
 import clueGame.BoardCell;
 
@@ -14,7 +17,7 @@ public class ST_TestBoardAdjTarget {
 	private static _Board board;
 	
 	@BeforeClass
-	public static void setUp() {
+	public static void setUp() throws FileNotFoundException, BadConfigFormatException {
 		board = new _Board();
 	}
 

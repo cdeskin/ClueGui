@@ -6,17 +6,13 @@ public class _Card {
 	public enum CardType { PERSON, WEAPON, ROOM, NULL };
 	
 	// instance variables
-	public String cardName;
-	public CardType cardType;
+	public String name;
+	public CardType type;
 	
-	// constructors
-	public _Card() {
-		
-	}
-	
+	// constructor
 	public _Card(String name, CardType someCardType) {
-		cardName = name;
-		cardType = someCardType;
+		this.name = name;
+		this.type = someCardType;
 	}
 
 }

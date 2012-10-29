@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+import clueGame._Card.CardType;
+
 public class _Board {
 	
 ////////////////////////////////
@@ -23,6 +25,9 @@ public class _Board {
 //	private static final String boardLegendFile = "config/others/CR_ClueLegend.txt";
 	private static final String boardConfigFile = "config/PHKC_ClueLayout.csv";
 	private static final String boardLegendFile = "config/PHKC_ClueLegend.txt";
+//	CluePlayers
+	private static final String boardPlayersFile = "config/PHKC_CluePlayers.txt";
+	private static final String boardCardsFile = "config/PHKC_ClueCards.txt";
 	
 //
 ////////////////////////////////
@@ -51,14 +56,15 @@ public class _Board {
 //  constructor with initial setup shenanigans
 //
 	
-	public _Board(){
+	public _Board() throws FileNotFoundException, BadConfigFormatException{
 		loadConfigFiles();
 		calcAdjacencies();
 	}
 
-	public void loadConfigFiles() {
+	public void loadConfigFiles() throws FileNotFoundException, BadConfigFormatException {
 		loadConfigLegend();
 		loadConfigBoard();
+		loadCluePlayerConfigFiles();
 	}
 	
 	public void loadConfigLegend() {
@@ -336,12 +342,13 @@ public class _Board {
 //	CluePlayers
 //	
 	
-	ArrayList<_Player> allPlayers = new ArrayList<_Player>();
-	
+	public ArrayList<_Player> allPlayers = new ArrayList<_Player>();
 	public _Player getPlayer(int index) { return allPlayers.get(index); }
 	
-	HashSet<_Card> cardsSeen = new HashSet<_Card>();
+	public ArrayList<_Card> deck = new ArrayList<_Card>();
+	public ArrayList<_Card> dealDeck = new ArrayList<_Card>();
 	
+	HashSet<_Card> cardsSeen = new HashSet<_Card>();
 	ArrayList<_Card> solution = new ArrayList<_Card>();
 	
 //	variables to hold list of cards, list of computer 
@@ -349,8 +356,70 @@ public class _Board {
 	
 //	i say we have one ArrayList of Players, instantiate in order of file
 	
-//	function to load people file and card file
+////////////////////////////////
+//	HERE WE GO
+////////////////////////////////
+
+	public void loadCluePlayerConfigFiles() throws FileNotFoundException, BadConfigFormatException {
+		// create players
+		loadCluePlayers();
+		// generate cards
+		loadClueCards();
+		// deal cards
+		dealClueCards();
+	}
 	
+	public void loadCluePlayers() throws FileNotFoundException, BadConfigFormatException {
+		FileReader reader = new FileReader(boardPlayersFile);
+		Scanner in = new Scanner(reader);
+		while (in.hasNext()) {
+			String input = in.nextLine();
+			String[] tokens = input.split(",");
+			if (tokens.length != 4) { throw new BadConfigFormatException("Unexpected notation in players file."); }
+			
+			if (tokens[0].equalsIgnoreCase("human")) { allPlayers.add(new _HumanPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
+			else if (tokens[0].equalsIgnoreCase("computer")) { allPlayers.add(new _ComputerPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
+			else { throw new BadConfigFormatException("Unexpected notation in players file."); }
+		}
+	}
+	
+	public void loadClueCards() throws FileNotFoundException, BadConfigFormatException {
+		FileReader reader = new FileReader(boardCardsFile);
+		Scanner in = new Scanner(reader);
+		while (in.hasNext()) {
+			String input = in.nextLine();
+			String[] tokens = input.split(",");
+			if (tokens.length != 2) { throw new BadConfigFormatException("Unexpected notation in cards file."); }
+			
+			if (tokens[0].equalsIgnoreCase("person")) { deck.add(new _Card(tokens[1], CardType.PERSON)); }
+			else if (tokens[0].equalsIgnoreCase("room")) { deck.add(new _Card(tokens[1], CardType.ROOM)); }
+			else if (tokens[0].equalsIgnoreCase("weapon")) { deck.add(new _Card(tokens[1], CardType.WEAPON)); }
+			else { throw new BadConfigFormatException("Unexpected notation in cards file."); }
+		}
+	}
+	
+	public void dealClueCards() {
+		
+		Random hazard = new Random();
+		int playerIndex = 0;
+		_Card someCard;
+
+		dealDeck.addAll(deck);
+		
+		while (!dealDeck.isEmpty()) {
+			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
+			dealDeck.remove(someCard);
+			allPlayers.get(playerIndex).cards.add(someCard);
+			
+			++playerIndex;
+			if (playerIndex == allPlayers.size()) playerIndex = 0;
+		}
+	}
+	
+////////////////////////////////
+//	END
+////////////////////////////////
+
 	//Return true if accusation is true, false otherwise
 	public boolean checkAccusation(String person, String room, String weapon){
 		ArrayList<_Card> accusation = new ArrayList<_Card>();
@@ -388,7 +457,7 @@ public class _Board {
 				
 				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(returnCard.cardType != _Card.CardType.NULL)
+				if(returnCard.type != _Card.CardType.NULL)
 					return returnCard;
 				
 				currentIndex++;
@@ -399,7 +468,7 @@ public class _Board {
 				
 				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(returnCard.cardType != _Card.CardType.NULL)
+				if(returnCard.type != _Card.CardType.NULL)
 					return returnCard;
 				
 				currentIndex++;
@@ -410,7 +479,7 @@ public class _Board {
 				
 				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(returnCard.cardType != _Card.CardType.NULL)
+				if(returnCard.type != _Card.CardType.NULL)
 					return returnCard;
 				
 				currentIndex++;
@@ -423,7 +492,7 @@ public class _Board {
 				
 				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(returnCard.cardType != _Card.CardType.NULL)
+				if(returnCard.type != _Card.CardType.NULL)
 					return returnCard;
 				
 				currentIndex++;
@@ -434,7 +503,7 @@ public class _Board {
 				
 				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(returnCard.cardType != _Card.CardType.NULL)
+				if(returnCard.type != _Card.CardType.NULL)
 					return returnCard;
 				
 				currentIndex++;
@@ -445,7 +514,7 @@ public class _Board {
 				
 				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
 				
-				if(returnCard.cardType != _Card.CardType.NULL)
+				if(returnCard.type != _Card.CardType.NULL)
 					return returnCard;
 				
 				currentIndex++;
@@ -521,11 +590,20 @@ public class _Board {
 //	main method, for debugging purposes
 //	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
 		System.out.println("Hello world!!\n");
 		
+		@SuppressWarnings("unused")
+		_Board board = new _Board();
 		
-		
+//		System.out.println("Starting positions for players (given by index): ");
+//		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
+//		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
+//		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
+//		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
+//		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
+//		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
+	
 		System.out.println("\nGoodbye world..");
 	}
 	

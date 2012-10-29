@@ -3,9 +3,13 @@ package clueTests_others;
 import static org.junit.Assert.*;
 import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
+
+import java.io.FileNotFoundException;
 import java.util.Map;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+
+import clueGame.BadConfigFormatException;
 import clueGame._Board;
 import clueGame.BoardCell;
 import clueGame.RoomCell;
@@ -20,7 +24,7 @@ public class ST_TestBoard {
 		public static final int NUM_COLUMNS = 21;
 		
 		@BeforeClass
-		public static void setUp() {
+		public static void setUp() throws FileNotFoundException, BadConfigFormatException {
 			board = new _Board();
 		}
 		
