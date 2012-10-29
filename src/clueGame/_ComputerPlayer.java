@@ -1,22 +1,30 @@
 package clueGame;
 
 import java.util.HashSet;
+import java.util.Random;
 
 public class _ComputerPlayer extends _Player {
-	
+	BoardCell lastRoom = new BoardCell();
+
 	public BoardCell pickLocation(HashSet<BoardCell> targets) {
+		Random numGenerator = new Random();
+		int targetChoice;
+		BoardCell[] targetArray;
 		// if in range of room, go to room
 		// unless been in that room recently
 		// otherwise, pick a totally random location out of the list
 		
 		for (BoardCell target : targets) {
 			if (target.isDoorway()) {
-//				return target
-				
+				if(!target.equals(lastRoom))
+					return target;				
 			}
 		}
 		
-		return null;
+		targetChoice = numGenerator.nextInt(targets.size());
+		targetArray = (BoardCell[]) targets.toArray();
+		
+		return targetArray[targetChoice];
 	}
 	
 }
