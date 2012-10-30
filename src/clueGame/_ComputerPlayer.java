@@ -5,6 +5,10 @@ import java.util.Random;
 
 public class _ComputerPlayer extends _Player {
 	
+	public _ComputerPlayer() {
+		super("Captain Cadaver", "black", 0);
+	}
+	
 	public _ComputerPlayer(String name, String color, int startingIndexedLocation) {
 		super(name, color, startingIndexedLocation);
 	}

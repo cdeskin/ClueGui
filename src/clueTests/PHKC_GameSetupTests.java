@@ -127,19 +127,36 @@ public class PHKC_GameSetupTests {
 		assertTrue(board.dealDeck.isEmpty());
 		
 		// ensures all players have roughly the same amount of cards
-		// with 23 cards, each player will have 4 cards, except one person will have 3
+		// with 23 cards, each player will have 3 cards, except two people will have 4
 		for (_Player somePlayer : board.allPlayers) {
 			assertTrue(somePlayer.cards.size() >= 3);
 		}
 		
+		// ensure solution has exactly 3 cards,
+		// one of each type
+		assertTrue(board.solution.size() == 3);
+		boolean solutionHasPerson = false;
+		boolean solutionHasRoom = false;
+		boolean solutionHasWeapon = false;
+		for (_Card someCard : board.solution) {
+			if (someCard.type == CardType.PERSON) solutionHasPerson = true;
+			else if (someCard.type == CardType.ROOM) solutionHasRoom = true;
+			else if (someCard.type == CardType.WEAPON) solutionHasWeapon = true; 
+		}
+		assertTrue(solutionHasPerson);
+		assertTrue(solutionHasRoom);
+		assertTrue(solutionHasWeapon);
+
 		// one card is not given to two different players
 		// for each player, add all cards to a hashset
+		// also add all solutions set
 		// duplicates cannot be added to a hashset
 		// so the hashset size should be 23
 		Set<_Card> cardSetTest = new HashSet<_Card>(); 
 		for (_Player somePlayer : board.allPlayers) {
 			cardSetTest.addAll(somePlayer.cards);
 		}
+		cardSetTest.addAll(board.solution);
 		assertTrue(cardSetTest.size() == 23);
 		
 	}

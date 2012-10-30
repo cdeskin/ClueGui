@@ -342,6 +342,7 @@ public class _Board {
 //	CluePlayers
 //	
 	
+//	variables
 	public ArrayList<_Player> allPlayers = new ArrayList<_Player>();
 	public _Player getPlayer(int index) { return allPlayers.get(index); }
 	
@@ -349,7 +350,7 @@ public class _Board {
 	public ArrayList<_Card> dealDeck = new ArrayList<_Card>();
 	
 	HashSet<_Card> cardsSeen = new HashSet<_Card>();
-	ArrayList<_Card> solution = new ArrayList<_Card>();
+	public ArrayList<_Card> solution = new ArrayList<_Card>();
 	
 //	variables to hold list of cards, list of computer 
 //	players, one human player, and an indicator of whose turn it is
@@ -357,8 +358,8 @@ public class _Board {
 //	i say we have one ArrayList of Players, instantiate in order of file
 	
 ////////////////////////////////
-//	HERE WE GO
-////////////////////////////////
+//	GameSetup section
+//	
 
 	public void loadCluePlayerConfigFiles() throws FileNotFoundException, BadConfigFormatException {
 		// create players
@@ -406,6 +407,33 @@ public class _Board {
 
 		dealDeck.addAll(deck);
 		
+		// create solution set
+		while (true) {
+			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
+			if (someCard.type == CardType.PERSON){
+				dealDeck.remove(someCard);
+				solution.add(someCard);
+				break;
+			}
+		}
+		while (true) {
+			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
+			if (someCard.type == CardType.ROOM){
+				dealDeck.remove(someCard);
+				solution.add(someCard);
+				break;
+			}
+		}
+		while (true) {
+			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
+			if (someCard.type == CardType.WEAPON){
+				dealDeck.remove(someCard);
+				solution.add(someCard);
+				break;
+			}
+		}
+		
+		// deal out rest of cards
 		while (!dealDeck.isEmpty()) {
 			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
 			dealDeck.remove(someCard);
@@ -415,11 +443,14 @@ public class _Board {
 			if (playerIndex == allPlayers.size()) playerIndex = 0;
 		}
 	}
-	
-////////////////////////////////
-//	END
+
+//	
 ////////////////////////////////
 
+////////////////////////////////
+//	 GameAction section
+//	
+	
 	//Return true if accusation is true, false otherwise
 	public boolean checkAccusation(String person, String room, String weapon){
 		ArrayList<_Card> accusation = new ArrayList<_Card>();
