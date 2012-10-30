@@ -12,9 +12,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-import clueGame._Card.CardType;
+import clueGame.Card.CardType;
 
-public class _Board {
+public class Board {
 	
 ////////////////////////////////
 //  configuration files
@@ -24,11 +24,11 @@ public class _Board {
 //	private static final String boardLegendFile = "config/others/ST_ClueLegend.txt";
 //	private static final String boardConfigFile = "config/others/CR_ClueLayout.csv";
 //	private static final String boardLegendFile = "config/others/CR_ClueLegend.txt";
-	private static final String boardConfigFile = "config/PHKC_ClueLayout.csv";
-	private static final String boardLegendFile = "config/PHKC_ClueLegend.txt";
+	private static final String boardConfigFile = "config/ClueLayout.csv";
+	private static final String boardLegendFile = "config/ClueLegend.txt";
 //	CluePlayers
-	private static final String boardPlayersFile = "config/PHKC_CluePlayers.txt";
-	private static final String boardCardsFile = "config/PHKC_ClueCards.txt";
+	private static final String boardPlayersFile = "config/CluePlayers.txt";
+	private static final String boardCardsFile = "config/ClueCards.txt";
 	
 //
 ////////////////////////////////
@@ -57,7 +57,7 @@ public class _Board {
 //  constructor with initial setup shenanigans
 //
 	
-	public _Board() throws FileNotFoundException, BadConfigFormatException{
+	public Board() throws FileNotFoundException, BadConfigFormatException{
 		loadConfigFiles();
 		calcAdjacencies();
 	}
@@ -344,14 +344,14 @@ public class _Board {
 //	
 	
 //	variables
-	public ArrayList<_Player> allPlayers = new ArrayList<_Player>();
-	public _Player getPlayer(int index) { return allPlayers.get(index); }
+	public ArrayList<Player> allPlayers = new ArrayList<Player>();
+	public Player getPlayer(int index) { return allPlayers.get(index); }
 	
-	public ArrayList<_Card> deck = new ArrayList<_Card>();
-	public ArrayList<_Card> dealDeck = new ArrayList<_Card>();
+	public ArrayList<Card> deck = new ArrayList<Card>();
+	public ArrayList<Card> dealDeck = new ArrayList<Card>();
 	
-	HashSet<_Card> cardsSeen = new HashSet<_Card>();
-	public ArrayList<_Card> solution = new ArrayList<_Card>();
+	public ArrayList<Card> cardsSeen = new ArrayList<Card>();
+	public ArrayList<Card> solution = new ArrayList<Card>();
 	
 //	variables to hold list of cards, list of computer 
 //	players, one human player, and an indicator of whose turn it is
@@ -379,8 +379,8 @@ public class _Board {
 			String[] tokens = input.split(",");
 			if (tokens.length != 4) { throw new BadConfigFormatException("Unexpected notation in players file."); }
 			
-			if (tokens[0].equalsIgnoreCase("human")) { allPlayers.add(new _HumanPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
-			else if (tokens[0].equalsIgnoreCase("computer")) { allPlayers.add(new _ComputerPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
+			if (tokens[0].equalsIgnoreCase("human")) { allPlayers.add(new HumanPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
+			else if (tokens[0].equalsIgnoreCase("computer")) { allPlayers.add(new ComputerPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
 			else { throw new BadConfigFormatException("Unexpected notation in players file."); }
 		}
 	}
@@ -393,9 +393,9 @@ public class _Board {
 			String[] tokens = input.split(",");
 			if (tokens.length != 2) { throw new BadConfigFormatException("Unexpected notation in cards file."); }
 			
-			if (tokens[0].equalsIgnoreCase("person")) { deck.add(new _Card(tokens[1], CardType.PERSON)); }
-			else if (tokens[0].equalsIgnoreCase("room")) { deck.add(new _Card(tokens[1], CardType.ROOM)); }
-			else if (tokens[0].equalsIgnoreCase("weapon")) { deck.add(new _Card(tokens[1], CardType.WEAPON)); }
+			if (tokens[0].equalsIgnoreCase("person")) { deck.add(new Card(tokens[1], CardType.PERSON)); }
+			else if (tokens[0].equalsIgnoreCase("room")) { deck.add(new Card(tokens[1], CardType.ROOM)); }
+			else if (tokens[0].equalsIgnoreCase("weapon")) { deck.add(new Card(tokens[1], CardType.WEAPON)); }
 			else { throw new BadConfigFormatException("Unexpected notation in cards file."); }
 		}
 	}
@@ -404,7 +404,7 @@ public class _Board {
 		
 		Random hazard = new Random();
 		int playerIndex = 0;
-		_Card someCard;
+		Card someCard;
 
 		dealDeck.addAll(deck);
 		
@@ -453,8 +453,8 @@ public class _Board {
 //	
 	
 	// return true if accusation is true, false otherwise
-	public boolean checkAccusation(_Card person, _Card room, _Card weapon){
-		ArrayList<_Card> accusation = new ArrayList<_Card>();
+	public boolean checkAccusation(Card person, Card room, Card weapon){
+		ArrayList<Card> accusation = new ArrayList<Card>();
 		accusation.add(person);
 		accusation.add(room);
 		accusation.add(weapon);
@@ -464,14 +464,14 @@ public class _Board {
 	}
 	
 	//returns a card from a player or null card if no players have any of suggested cards
-	public _Card disproveSuggestion(int currentPlayer, String person, String room, String weapon) {
-		_Card someCard;
-		ArrayList<_Player> playersToCheck = new ArrayList<_Player>();
+	public Card disproveSuggestion(int currentPlayer, String person, String room, String weapon) {
+		Card someCard;
+		ArrayList<Player> playersToCheck = new ArrayList<Player>();
 		playersToCheck.addAll(allPlayers);
 		playersToCheck.remove(currentPlayer);
 		Collections.shuffle(playersToCheck);
 		
-		for (_Player somePlayer : playersToCheck) {
+		for (Player somePlayer : playersToCheck) {
 			someCard = somePlayer.disproveSuggestion(person);
 			if (someCard.type != CardType.NULL) return someCard;
 			someCard = somePlayer.disproveSuggestion(room);
@@ -480,68 +480,51 @@ public class _Board {
 			if (someCard.type != CardType.NULL) return someCard;
 		}
 		
-		return new _Card();
+		return new Card();
 	}
 	
-	/*
-	//give a card to player at [index] in the player array
-	public void giveCard(int index, _Card card){
-		allPlayers.get(index).giveCard(card);
-	}
-	
-	//add items to the array of cards that have been seen. Mostly for testing
-	public void updateSeen(String person, String room, String weapon){
-		cardsSeen.add(new _Card(person, _Card.CardType.PERSON));
-		cardsSeen.add(new _Card(room, _Card.CardType.ROOM));
-		cardsSeen.add(new _Card(weapon, _Card.CardType.WEAPON));
-	}
-	
-	//returns 3 cards, person, room, and weapon
-	public HashSet<_Card> makeSuggestion(){
-		return new HashSet<_Card>();
-	}
-	
-	public boolean[] checkCards(int index, _Card personCard, _Card roomCard, _Card weaponCard){
-		boolean[] returnArray = {false, false, false};
-		if(allPlayers.get(index).hasCard(personCard))
-			returnArray[0]=true;
-		if(allPlayers.get(index).hasCard(roomCard))
-			returnArray[1]=true;
-		if(allPlayers.get(index).hasCard(weaponCard))
-			returnArray[2]=true;
+	// this method is in Board and not ComputerPlayer
+	// this is because computers work together anyways.
+	// this method needs to be updated to take in the location of the computer player as well
+	// but more on that when we know exactly how it's going down
+	public Card makeSuggestion(int indexOfComputerPlayer) {
+		Card someCard;
+		Card personCard;
+		Card roomCard;
+		Card weaponCard;
+		Random hazard = new Random();
 		
-		return returnArray;
-	}
-	
-	public _Card getReturnCard(boolean[] matches, _Card personCard, _Card roomCard, _Card weaponCard){
-		Random numGenerator = new Random();
-		int numMatches = 0;
+		ArrayList<Card> haveNotSeen = new ArrayList<Card>();
+		haveNotSeen.addAll(deck);
+		haveNotSeen.removeAll(allPlayers.get(indexOfComputerPlayer).cards);
+		haveNotSeen.removeAll(cardsSeen);
 		
-		for(boolean check: matches){
-			if(check)
-				numMatches++;
+		while (true) {
+			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
+			if (someCard.type == CardType.PERSON) {
+				personCard = someCard;
+				break;
+			}
+		}
+		while (true) {
+			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
+			if (someCard.type == CardType.ROOM){
+				roomCard = someCard;
+				break;
+			}
+		}
+		while (true) {
+			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
+			if (someCard.type == CardType.WEAPON){
+				weaponCard = someCard;
+				break;
+			}
 		}
 		
-		if(numMatches > 1){
-			int returnChoice = numGenerator.nextInt(numMatches);
-			
-			if(returnChoice == 0)
-				return personCard;
-			else if(returnChoice == 1)
-				return roomCard;
-			else if(returnChoice == 2)
-				return weaponCard;
-		} else if (numMatches > 0){
-			if(matches[0])
-				return personCard;
-			else if(matches[1])
-				return roomCard;
-			else if(matches[2])
-				return weaponCard;
-		}
-		
-		return new _Card("null", _Card.CardType.NULL);
-	}*/
+		someCard = disproveSuggestion(indexOfComputerPlayer, personCard.name, roomCard.name, weaponCard.name);
+		cardsSeen.add(someCard);
+		return someCard;
+	}
 	
 //	
 ////////////////////////////////
@@ -554,7 +537,7 @@ public class _Board {
 		System.out.println("Hello world!!\n");
 		
 		@SuppressWarnings("unused")
-		_Board board = new _Board();
+		Board board = new Board();
 		
 //		System.out.println("Starting positions for players (given by index): ");
 //		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));

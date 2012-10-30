@@ -9,24 +9,24 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import clueGame._Board;
-import clueGame._Card;
-import clueGame._Card.CardType;
-import clueGame._Player;
+import clueGame.Board;
+import clueGame.Card;
+import clueGame.Card.CardType;
+import clueGame.Player;
 
-public class PHKC_GameSetupTests {
+public class GameSetupTests {
 
-	private static _Board board;
+	private static Board board;
 	
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception { board = new _Board(); }
+	public static void setUpBeforeClass() throws Exception { board = new Board(); }
 	
 //	test to confirm loading the player files is correct
 	@Test
 	public void testLoadingPeople() {
 //		check all players!
 //		check human player Miss Scarlet
-		_Player somePlayer = board.getPlayer(0);
+		Player somePlayer = board.getPlayer(0);
 		assertTrue(somePlayer.isHuman());
 		assertFalse(somePlayer.isComputer());
 		assertTrue(somePlayer.name.equals("Miss Scarlet"));
@@ -82,7 +82,7 @@ public class PHKC_GameSetupTests {
 		int cardsOfTypeWeapon = 0;
 		int cardsOfTypeRoom = 0;
 		
-		for (_Card someCard : board.deck) {
+		for (Card someCard : board.deck) {
 			if (someCard.type == CardType.PERSON) ++cardsOfTypePerson;
 			else if (someCard.type == CardType.WEAPON) ++cardsOfTypeWeapon;
 			else if (someCard.type == CardType.ROOM) ++cardsOfTypeRoom;
@@ -94,7 +94,7 @@ public class PHKC_GameSetupTests {
 		
 		Boolean testBool = false;
 		// check for one room
-		for (_Card someCard : board.deck) {
+		for (Card someCard : board.deck) {
 			if (someCard.name.equalsIgnoreCase("Conservatory")) {
 				testBool = true; break;
 			}
@@ -103,7 +103,7 @@ public class PHKC_GameSetupTests {
 		
 		testBool = false;
 		// check for one weapon
-		for (_Card someCard : board.deck) {
+		for (Card someCard : board.deck) {
 			if (someCard.name.equalsIgnoreCase("Gossip")) {
 				testBool = true; break;
 			}
@@ -112,7 +112,7 @@ public class PHKC_GameSetupTests {
 		
 		testBool = false;
 		// check for one person
-		for (_Card someCard : board.deck) {
+		for (Card someCard : board.deck) {
 			if (someCard.name.equalsIgnoreCase("Miss Scarlet")) {
 				testBool = true; break;
 			}
@@ -128,7 +128,7 @@ public class PHKC_GameSetupTests {
 		
 		// ensures all players have roughly the same amount of cards
 		// with 23 cards, each player will have 3 cards, except two people will have 4
-		for (_Player somePlayer : board.allPlayers) {
+		for (Player somePlayer : board.allPlayers) {
 			assertTrue(somePlayer.cards.size() >= 3);
 		}
 		
@@ -138,7 +138,7 @@ public class PHKC_GameSetupTests {
 		boolean solutionHasPerson = false;
 		boolean solutionHasRoom = false;
 		boolean solutionHasWeapon = false;
-		for (_Card someCard : board.solution) {
+		for (Card someCard : board.solution) {
 			if (someCard.type == CardType.PERSON) solutionHasPerson = true;
 			else if (someCard.type == CardType.ROOM) solutionHasRoom = true;
 			else if (someCard.type == CardType.WEAPON) solutionHasWeapon = true; 
@@ -152,8 +152,8 @@ public class PHKC_GameSetupTests {
 		// also add all solutions set
 		// duplicates cannot be added to a hashset
 		// so the hashset size should be 23
-		Set<_Card> cardSetTest = new HashSet<_Card>(); 
-		for (_Player somePlayer : board.allPlayers) {
+		Set<Card> cardSetTest = new HashSet<Card>(); 
+		for (Player somePlayer : board.allPlayers) {
 			cardSetTest.addAll(somePlayer.cards);
 		}
 		cardSetTest.addAll(board.solution);

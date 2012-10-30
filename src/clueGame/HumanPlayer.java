@@ -1,8 +1,8 @@
 package clueGame;
 
-public class _HumanPlayer extends _Player {
+public class HumanPlayer extends Player {
 
-	public _HumanPlayer(String name, String color, int startingIndexedLocation) {
+	public HumanPlayer(String name, String color, int startingIndexedLocation) {
 		super(name, color, startingIndexedLocation);
 	}
 	

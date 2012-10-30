@@ -8,16 +8,16 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import clueGame._Board;
+import clueGame.Board;
 import clueGame.BoardCell;
 
-public class PHKC_BoardAdjTargetTests {
+public class BoardAdjTargetTests {
 	
-	private static _Board board;
+	private static Board board;
 	
 	// these tests are specific to my, Peter HK Choi, config files
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception { board = new _Board(); }
+	public static void setUpBeforeClass() throws Exception { board = new Board(); }
 
 	@Test
 	public void orangeAdjWalkwayTests() {

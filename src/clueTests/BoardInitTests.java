@@ -7,13 +7,13 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import clueGame._Board;
+import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.RoomCell;
 
-public class PHKC_BoardInitTests {
+public class BoardInitTests {
 	
-	private static _Board board;
+	private static Board board;
 	// these numbers are specific to my config files
 	public static final int NUM_ROOMS = 11;
 	public static final int NUM_ROWS = 22;
@@ -22,7 +22,7 @@ public class PHKC_BoardInitTests {
 	public static final int NUM_DOORWAYS = 17;
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception { board = new _Board(); }
+	public static void setUpBeforeClass() throws Exception { board = new Board(); }
 
 	// these tests are specific to my config files
 	@Test

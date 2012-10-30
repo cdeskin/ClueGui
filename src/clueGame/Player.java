@@ -4,19 +4,19 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public abstract class _Player {
+public abstract class Player {
 	
 //	instance variables
 	public String name;
 	public Color color;
-	public ArrayList<_Card> cards;
+	public ArrayList<Card> cards;
 	public int indexedLocation;
 	
-	public _Player(String name, String color, int startingIndexedLocation) {
+	public Player(String name, String color, int startingIndexedLocation) {
 		this.name = name;
 		this.color = convertColor(color);
 		indexedLocation = startingIndexedLocation;
-		cards = new ArrayList<_Card>();
+		cards = new ArrayList<Card>();
 	}
 	public Color convertColor(String strColor) {
 		Color color;
@@ -34,22 +34,22 @@ public abstract class _Player {
 	public boolean isComputer() { return false; }
 	
 //	disprove suggestion
-	public _Card disproveSuggestion(String cardName) {
-		for (_Card someCard : cards) {
+	public Card disproveSuggestion(String cardName) {
+		for (Card someCard : cards) {
 			if (someCard.name.equalsIgnoreCase(cardName)) {
 				return someCard;
 			}
 		}
-		return new _Card();
+		return new Card();
 	}
 	
 	// Helpers for test purposes
-	public void giveCard(_Card card){
+	public void giveCard(Card card){
 		//Add card to players card array
 		if(!cards.contains(card))
 			cards.add(card);
 	}
-	public boolean hasCard(_Card card){
+	public boolean hasCard(Card card){
 		if(cards.contains(card))
 			return true;
 		else

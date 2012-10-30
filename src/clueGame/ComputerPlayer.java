@@ -3,20 +3,20 @@ package clueGame;
 import java.util.HashSet;
 import java.util.Random;
 
-public class _ComputerPlayer extends _Player {
+public class ComputerPlayer extends Player {
 	
-	public _ComputerPlayer() {
+	public ComputerPlayer() {
 		super("Captain Cadaver", "black", 0);
 	}
 	
-	public _ComputerPlayer(String name, String color, int startingIndexedLocation) {
+	public ComputerPlayer(String name, String color, int startingIndexedLocation) {
 		super(name, color, startingIndexedLocation);
 	}
 	
 	@Override
 	public boolean isComputer() { return true; }
 
-	public BoardCell lastRoom = new BoardCell();
+	public BoardCell lastRoom;
 
 	public BoardCell pickLocation(HashSet<BoardCell> targets) {
 		Random numGenerator = new Random();
@@ -40,5 +40,6 @@ public class _ComputerPlayer extends _Player {
 		
 		return targetArray[targetChoice];
 	}
-	
+
+
 }

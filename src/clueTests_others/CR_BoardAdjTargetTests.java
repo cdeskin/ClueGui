@@ -9,14 +9,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import clueGame.BadConfigFormatException;
-import clueGame._Board;
+import clueGame.Board;
 import clueGame.BoardCell;
 
 public class CR_BoardAdjTargetTests {
-	private static _Board board;
+	private static Board board;
 	@BeforeClass
 	public static void setUp() throws FileNotFoundException, BadConfigFormatException {
-		board = new _Board();
+		board = new Board();
 	}
 
 	// Ensure that player does not move around within room

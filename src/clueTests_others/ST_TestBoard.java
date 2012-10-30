@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 
 import clueGame.BadConfigFormatException;
-import clueGame._Board;
+import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.RoomCell;
 
@@ -18,14 +18,14 @@ public class ST_TestBoard {
 
 	// I made this static because I only want to set it up one 
 		// time (using @BeforeClass), no need to do setup before each test
-		private static _Board board;
+		private static Board board;
 		public static final int NUM_ROOMS = 11;
 		public static final int NUM_ROWS = 25;
 		public static final int NUM_COLUMNS = 21;
 		
 		@BeforeClass
 		public static void setUp() throws FileNotFoundException, BadConfigFormatException {
-			board = new _Board();
+			board = new Board();
 		}
 		
 		@Test
