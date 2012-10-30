@@ -10,7 +10,7 @@ public class _Card {
 	public CardType type;
 	
 	public _Card() {
-		this.name = "NULL";
+		this.name = "No suggestion.";
 		this.type = CardType.NULL;
 	}
 	

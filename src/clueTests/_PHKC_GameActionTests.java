@@ -3,8 +3,8 @@ package clueTests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Random;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,6 +13,7 @@ import clueGame._Board;
 import clueGame._Card;
 import clueGame._Card.CardType;
 import clueGame._ComputerPlayer;
+import clueGame._Player;
 
 public class _PHKC_GameActionTests {
 
@@ -99,50 +100,86 @@ public class _PHKC_GameActionTests {
 		assertTrue(loc_14_5_Tot > 10);
 	}
 	
-//	test for disproving a suggestion
+//	test for disproving suggestion
 	@Test
 	public void testDisproveSuggestion() {
-		//Make a suggestion on a new board, no players should have any of the cards so should return a null card
-		assertEquals(board.disproveSuggestion(0, "person", "room", "weapon"), _Card.CardType.NULL);
+		// rather than creating new cards
+		// just use load file and creatively test, taking advantage of random nature!
+		// this method --> boss status bro
 		
-		//deal some cards, multiple can be dealt and tested
-		board.giveCard(0, new _Card("person", _Card.CardType.PERSON)); 
+		ArrayList<_Card> cardsHeldByComputers = new ArrayList<_Card>();
+		for (_Player somePlayer : board.allPlayers) { cardsHeldByComputers.addAll(somePlayer.cards); }
+		cardsHeldByComputers.removeAll(board.allPlayers.get(0).cards);
 		
-		//make a sugguestion that includes 1 card that has been dealt, 
-		//make sure the card we want is returned
-		//repeat for room, and weapon
-		assertEquals(board.disproveSuggestion(0, "person", "room", "weapon"), new _Card("person", _Card.CardType.PERSON));
+		Random hazard = new Random();
+		_Card someCard; 
+		_Card personCard;
+		_Card roomCard; 
+		_Card weaponCard;
 		
-		//idea: call disproveSuggestion 25 times with all args being cards held by a player 
-		//      then make sure we were returned, at least once, a room, a person, and a weapon
-		//      and they are the right ones
-		HashSet<_Card> returnedCards = new HashSet<_Card>();
-		board.giveCard(1, new _Card("room", _Card.CardType.ROOM));
-		for(int i = 0; i<25; i++){
-			returnedCards.add(board.disproveSuggestion(0, "person", "room", "weapon"));
+		// all players, one correct match
+		// via person
+		while (true) {
+			someCard = cardsHeldByComputers.get(hazard.nextInt(cardsHeldByComputers.size()));
+			if (someCard.type == CardType.PERSON) {
+				personCard = someCard;
+				break;
+			}
 		}
-		//we should get a person, a room, and a weapon
-		assertTrue(returnedCards.size() == 3);
-		assertTrue(returnedCards.contains(new _Card("person", _Card.CardType.PERSON)));
-		assertTrue(returnedCards.contains(new _Card("room", _Card.CardType.ROOM)));
-		assertTrue(returnedCards.contains(new _Card("weapon", _Card.CardType.WEAPON)));
-		
-		//idea: call disprove suggestion with a room held by one player and weapon held
-		//      by another player, the first match found will be returned so if random
-		//      starting point is working, we should eventually get both cards returned
-		//      (Suggested room should not be held by any players)
-		returnedCards = new HashSet<_Card>();
-		//deal a card to a second player
-		board.giveCard(0, new _Card("person", _Card.CardType.PERSON));
-		for(int i = 0; i<25; i++){
-			returnedCards.add(board.disproveSuggestion(0, "person", "room", "weapon"));
+		someCard = board.disproveSuggestion(0, personCard.name, board.solution.get(1).name, board.solution.get(2).name);
+		assertTrue(someCard.name.equalsIgnoreCase(personCard.name));
+		// via room
+		while (true) {
+			someCard = cardsHeldByComputers.get(hazard.nextInt(cardsHeldByComputers.size()));
+			if (someCard.type == CardType.ROOM){
+				roomCard = someCard;
+				break;
+			}
 		}
-		assertTrue(returnedCards.size() == 2);
-		assertTrue(returnedCards.contains(new _Card("person", _Card.CardType.PERSON)));
-		assertTrue(returnedCards.contains(new _Card("weapon", _Card.CardType.WEAPON)));
+		someCard = board.disproveSuggestion(0, board.solution.get(0).name, roomCard.name, board.solution.get(2).name);
+		assertTrue(someCard.name.equalsIgnoreCase(roomCard.name));
+		// via weapon
+		while (true) {
+			someCard = cardsHeldByComputers.get(hazard.nextInt(cardsHeldByComputers.size()));
+			if (someCard.type == CardType.WEAPON){
+				weaponCard = someCard;
+				break;
+			}
+		}
+		someCard = board.disproveSuggestion(0, board.solution.get(0).name, board.solution.get(1).name, weaponCard.name);
+		assertTrue(someCard.name.equalsIgnoreCase(weaponCard.name));
+		// via NULL (meaning no one could disprove the suggestion)
+		someCard = board.disproveSuggestion(0, board.solution.get(0).name, board.solution.get(1).name, board.solution.get(2).name);
+		assertTrue(someCard.type == CardType.NULL);
+		
+		// all players, multiple matches
+		// make sure that different cards are given each time.
+		int personCardReturned = 0;
+		int roomCardReturned = 0;
+		int weaponCardReturned = 0;
+		for (int i = 0; i < 100; ++i) {
+			someCard = board.disproveSuggestion(0, personCard.name, roomCard.name, weaponCard.name);
+			if (someCard.name.equalsIgnoreCase(personCard.name)) ++personCardReturned;
+			else if (someCard.name.equalsIgnoreCase(roomCard.name)) ++roomCardReturned;
+			else if (someCard.name.equalsIgnoreCase(weaponCard.name)) ++weaponCardReturned;
+		}
+		assertEquals(100, personCardReturned + roomCardReturned + weaponCardReturned);
+		assertTrue(personCardReturned > 10);
+		assertTrue(roomCardReturned > 10);
+		assertTrue(weaponCardReturned > 10);
+		
+		// all players, no matches (repeat of via NULL test, just many iterations)
+		// this ensures that all players are queried
+		int nullCardReturned = 0;
+		for (int i = 0; i < 100; ++i) {
+			someCard = board.disproveSuggestion(0, board.solution.get(0).name, board.solution.get(1).name, board.solution.get(2).name);
+			if (someCard.type == CardType.NULL) ++nullCardReturned; 
+		}
+		assertEquals(100, nullCardReturned);
 	}
 	
 //	test for making a suggestion
+	/*
 	@Test
 	public void testMakeSuggestion() {
 		//add one or more things to seen array
@@ -156,6 +193,6 @@ public class _PHKC_GameActionTests {
 			assertFalse(suggested.contains(new _Card("person", _Card.CardType.PERSON)));
 		}
 	    
-	}
+	}*/
 
 }

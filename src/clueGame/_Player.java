@@ -33,6 +33,16 @@ public abstract class _Player {
 	public boolean isHuman() { return false; }
 	public boolean isComputer() { return false; }
 	
+//	disprove suggestion
+	public _Card disproveSuggestion(String cardName) {
+		for (_Card someCard : cards) {
+			if (someCard.name.equalsIgnoreCase(cardName)) {
+				return someCard;
+			}
+		}
+		return new _Card();
+	}
+	
 	// Helpers for test purposes
 	public void giveCard(_Card card){
 		//Add card to players card array

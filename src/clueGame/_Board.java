@@ -3,6 +3,7 @@ package clueGame;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -463,96 +464,26 @@ public class _Board {
 	}
 	
 	//returns a card from a player or null card if no players have any of suggested cards
-	public _Card disproveSuggestion(int currentPlayer, String person, String room, String weapon){
-		int numPlayers = allPlayers.size();
-		Random numGenerator = new Random();
-		_Card personCard = new _Card(person, _Card.CardType.PERSON);
-		_Card roomCard = new _Card(room, _Card.CardType.ROOM);
-		_Card weaponCard = new _Card(weapon, _Card.CardType.WEAPON);
+	public _Card disproveSuggestion(int currentPlayer, String person, String room, String weapon) {
+		_Card someCard;
+		ArrayList<_Player> playersToCheck = new ArrayList<_Player>();
+		playersToCheck.addAll(allPlayers);
+		playersToCheck.remove(currentPlayer);
+		Collections.shuffle(playersToCheck);
 		
-		//generate a random starting index that is not the index of the current player
-		int startIndex = numGenerator.nextInt(numPlayers);
-		while (startIndex == currentPlayer){
-			startIndex = numGenerator.nextInt(numPlayers);
-		}
-		int currentIndex = startIndex;
-		
-		//there ought to be a better way to do this.
-		//way overcomplicated loop structure to wrap at end and skip current player
-		if(startIndex < currentPlayer)
-		{
-			while(currentIndex < currentPlayer){
-				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				
-				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
-				
-				if(returnCard.type != _Card.CardType.NULL)
-					return returnCard;
-				
-				currentIndex++;
-			}
-			currentIndex++;
-			while(currentIndex < numPlayers){
-				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				
-				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
-				
-				if(returnCard.type != _Card.CardType.NULL)
-					return returnCard;
-				
-				currentIndex++;
-			}
-			currentIndex=0;
-			while(currentIndex < startIndex){
-				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				
-				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
-				
-				if(returnCard.type != _Card.CardType.NULL)
-					return returnCard;
-				
-				currentIndex++;
-			}
-		} 
-		
-		else if(startIndex > currentPlayer){
-			while(currentIndex < numPlayers){
-				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				
-				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
-				
-				if(returnCard.type != _Card.CardType.NULL)
-					return returnCard;
-				
-				currentIndex++;
-			}
-			currentIndex=0;
-			while(currentIndex < currentPlayer){
-				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				
-				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
-				
-				if(returnCard.type != _Card.CardType.NULL)
-					return returnCard;
-				
-				currentIndex++;
-			}
-			currentIndex++;
-			while(currentIndex < startIndex){
-				boolean[] matches = checkCards(currentIndex, personCard, roomCard, weaponCard);
-				
-				_Card returnCard = getReturnCard(matches, personCard, roomCard, weaponCard);
-				
-				if(returnCard.type != _Card.CardType.NULL)
-					return returnCard;
-				
-				currentIndex++;
-			}
+		for (_Player somePlayer : playersToCheck) {
+			someCard = somePlayer.disproveSuggestion(person);
+			if (someCard.type != CardType.NULL) return someCard;
+			someCard = somePlayer.disproveSuggestion(room);
+			if (someCard.type != CardType.NULL) return someCard;
+			someCard = somePlayer.disproveSuggestion(weapon);
+			if (someCard.type != CardType.NULL) return someCard;
 		}
 		
-		return new _Card("null", _Card.CardType.NULL);
+		return new _Card();
 	}
 	
+	/*
 	//give a card to player at [index] in the player array
 	public void giveCard(int index, _Card card){
 		allPlayers.get(index).giveCard(card);
@@ -610,7 +541,7 @@ public class _Board {
 		}
 		
 		return new _Card("null", _Card.CardType.NULL);
-	}
+	}*/
 	
 //	
 ////////////////////////////////
