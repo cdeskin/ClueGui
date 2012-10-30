@@ -451,17 +451,15 @@ public class _Board {
 //	 GameAction section
 //	
 	
-	//Return true if accusation is true, false otherwise
-	public boolean checkAccusation(String person, String room, String weapon){
+	// return true if accusation is true, false otherwise
+	public boolean checkAccusation(_Card person, _Card room, _Card weapon){
 		ArrayList<_Card> accusation = new ArrayList<_Card>();
-		accusation.add(new _Card(person, _Card.CardType.PERSON));
-		accusation.add(new _Card(room, _Card.CardType.ROOM));
-		accusation.add(new _Card(weapon, _Card.CardType.WEAPON));
+		accusation.add(person);
+		accusation.add(room);
+		accusation.add(weapon);
 		
-		if(solution.containsAll(accusation))
-			return true;
-		else
-			return false;
+		if (solution.containsAll(accusation)) return true;
+		else return false;
 	}
 	
 	//returns a card from a player or null card if no players have any of suggested cards

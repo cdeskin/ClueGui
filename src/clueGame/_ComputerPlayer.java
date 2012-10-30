@@ -16,7 +16,7 @@ public class _ComputerPlayer extends _Player {
 	@Override
 	public boolean isComputer() { return true; }
 
-	BoardCell lastRoom = new BoardCell();
+	public BoardCell lastRoom = new BoardCell();
 
 	public BoardCell pickLocation(HashSet<BoardCell> targets) {
 		Random numGenerator = new Random();
@@ -33,8 +33,10 @@ public class _ComputerPlayer extends _Player {
 			}
 		}
 		
+		targets.remove(lastRoom);
+		
 		targetChoice = numGenerator.nextInt(targets.size());
-		targetArray = (BoardCell[]) targets.toArray();
+		targetArray = targets.toArray(new BoardCell[targets.size()]);
 		
 		return targetArray[targetChoice];
 	}

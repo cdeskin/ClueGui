@@ -9,6 +9,11 @@ public class _Card {
 	public String name;
 	public CardType type;
 	
+	public _Card() {
+		this.name = "NULL";
+		this.type = CardType.NULL;
+	}
+	
 	// constructor
 	public _Card(String name, CardType someCardType) {
 		this.name = name;

@@ -2,6 +2,7 @@ package clueTests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import org.junit.BeforeClass;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import clueGame.BoardCell;
 import clueGame._Board;
 import clueGame._Card;
+import clueGame._Card.CardType;
 import clueGame._ComputerPlayer;
 
 public class _PHKC_GameActionTests {
@@ -22,21 +24,33 @@ public class _PHKC_GameActionTests {
 //	test for checking an accusation
 	@Test
 	public void testCheckAccusation() {
-		Boolean check = board.checkAccusation("person", "room", "weapon");
-		assertTrue(check);
+		ArrayList<_Card> solutionSet = board.solution;
+		// test if accusation is correct
+		assertTrue(board.checkAccusation(solutionSet.get(0), solutionSet.get(1), solutionSet.get(2)));
+		// test if accusation is wrong
+		// wrong person
+		assertFalse(board.checkAccusation(new _Card(), solutionSet.get(1), solutionSet.get(2)));
+		// wrong room
+		assertFalse(board.checkAccusation(solutionSet.get(0), new _Card(), solutionSet.get(2)));
+		// wrong weapon
+		assertFalse(board.checkAccusation(solutionSet.get(0), solutionSet.get(1), new _Card()));
+		// all wrong
+		assertFalse(board.checkAccusation(new _Card(), new _Card(), new _Card()));
 	}
 	
 //	test for selecting a targetLocation, for computers
 	@Test
 	public void testSelectLocationComputer() {
-		// taken from assignment write up, subject to change
 		_ComputerPlayer player = new _ComputerPlayer();
+		BoardCell selected;
+		
+		// tests that don't include a room
 		board.calcTargets(board.calcIndex(14, 0), 2);
 		int loc_12_0_Tot = 0;
 		int loc_14_2_Tot = 0;
 		int loc_15_1_Tot = 0;
 		for (int i = 0; i < 100; ++i) {
-			BoardCell selected = player.pickLocation(board.getTargets());
+			selected = player.pickLocation(board.getTargets());
 			if (selected == board.getCellAt(board.calcIndex(12, 0))) ++loc_12_0_Tot;
 			else if (selected == board.getCellAt(board.calcIndex(14, 2))) ++loc_14_2_Tot;
 			else if (selected == board.getCellAt(board.calcIndex(15, 1))) ++loc_15_1_Tot;
@@ -45,6 +59,44 @@ public class _PHKC_GameActionTests {
 		assertTrue(loc_12_0_Tot > 10);
 		assertTrue(loc_14_2_Tot > 10);
 		assertTrue(loc_15_1_Tot > 10);
+		
+		// tests that include a room
+		board.calcTargets(board.calcIndex(14, 4), 1);
+		int loc_13_4_Tot = 0;
+		int loc_15_4_Tot = 0;
+		int loc_14_3_Tot = 0;
+		int loc_14_5_Tot = 0;
+		for (int i = 0; i < 100; ++i) {
+			selected = player.pickLocation(board.getTargets());
+			if (selected == board.getCellAt(board.calcIndex(13, 4))) ++loc_13_4_Tot;
+			else if (selected == board.getCellAt(board.calcIndex(15, 4))) ++loc_15_4_Tot;
+			else if (selected == board.getCellAt(board.calcIndex(14, 3))) ++loc_14_3_Tot;
+			else if (selected == board.getCellAt(board.calcIndex(14, 5))) ++loc_14_5_Tot;
+		}
+		assertEquals(100, loc_13_4_Tot);
+		assertEquals(0, loc_15_4_Tot);
+		assertEquals(0, loc_14_3_Tot);
+		assertEquals(0, loc_14_5_Tot);
+		
+		// tests that include a room
+		// but sets the last room visted;
+		board.calcTargets(board.calcIndex(14, 4), 1);
+		player.lastRoom = board.getCellAt(board.calcIndex(13, 4));
+		loc_13_4_Tot = 0;
+		loc_15_4_Tot = 0;
+		loc_14_3_Tot = 0;
+		loc_14_5_Tot = 0;
+		for (int i = 0; i < 100; ++i) {
+			selected = player.pickLocation(board.getTargets());
+			if (selected == board.getCellAt(board.calcIndex(13, 4))) ++loc_13_4_Tot;
+			else if (selected == board.getCellAt(board.calcIndex(15, 4))) ++loc_15_4_Tot;
+			else if (selected == board.getCellAt(board.calcIndex(14, 3))) ++loc_14_3_Tot;
+			else if (selected == board.getCellAt(board.calcIndex(14, 5))) ++loc_14_5_Tot;
+		}
+		assertEquals(0, loc_13_4_Tot);
+		assertTrue(loc_15_4_Tot > 10);
+		assertTrue(loc_14_3_Tot > 10);
+		assertTrue(loc_14_5_Tot > 10);
 	}
 	
 //	test for disproving a suggestion
