@@ -1,4 +1,5 @@
 git status
 git add src/*.java
 git add git-me
+git commit -am $1
 git status
