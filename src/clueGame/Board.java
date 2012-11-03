@@ -13,9 +13,24 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+//graphics imports
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Label;
+import java.awt.MenuBar;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+//team imports
 import clueGame.Card.CardType;
 
-public class Board {
+public class Board extends JPanel{
 	
 
 ////////////////////////////////
@@ -31,6 +46,8 @@ public class Board {
 //	CluePlayers
 	private static final String boardPlayersFile = "config/CluePlayers.txt";
 	private static final String boardCardsFile = "config/ClueCards.txt";
+// Graphics
+	private java.awt.Color userColor;
 	
 //
 ////////////////////////////////
@@ -62,6 +79,8 @@ public class Board {
 	public Board() throws FileNotFoundException, BadConfigFormatException{
 		loadConfigFiles();
 		calcAdjacencies();
+//panel graphics		
+		
 	}
 
 	public void loadConfigFiles() throws FileNotFoundException, BadConfigFormatException {
@@ -530,27 +549,43 @@ public class Board {
 	
 //	
 ////////////////////////////////
+// Graphics methods
+public void paintComponent() {  //draw main board
+	
+	
+	
+}
+	
+	
+	
+////////////////////////////////
 	
 ////////////////////////////////
 //	main method, for debugging purposes
 //	
-	
-	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
-		System.out.println("Hello world!!\n");
-		
-		@SuppressWarnings("unused")
-		Board board = new Board();
-		
-//		System.out.println("Starting positions for players (given by index): ");
-//		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
-//		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
-//		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
-//		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
-//		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
-//		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
-	
-		System.out.println("\nGoodbye world..");
-	}
+
+// main moved to ClueGame.java
+//	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
+//		System.out.println("Hello world!!\n");
+//		
+//		@SuppressWarnings("unused")
+//		Board board = new Board();
+//		
+//		
+//	
+//		board.setVisible(true);
+//		
+//		
+////		System.out.println("Starting positions for players (given by index): ");
+////		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
+////		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
+////		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
+////		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
+////		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
+////		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
+//	
+//		System.out.println("\nGoodbye world..");
+//	}
 	
 //	
 ////////////////////////////////
