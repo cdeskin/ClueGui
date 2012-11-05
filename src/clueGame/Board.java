@@ -586,13 +586,9 @@ public class Board extends JPanel{
 	}	
 	
 	public void addGridElements() {
-		JPanel gridPanel = new JPanel();
-		gridPanel.setBackground(Color.BLUE);
-		gridPanel.setLocation(0, 0);
-		gridPanel.setSize(330, 330);
-		this.add(gridPanel);
-		this.add(humanPanel).setBounds(350,  0, 100, 300);  // .setLocation(0, 500);
-
+		setLayout(new BorderLayout());
+		add(humanPanel, BorderLayout.EAST);  // .setLocation(0, 500);  setBounds(350,  0, 100, 300);
+		
 		
 	}
 	
@@ -601,10 +597,12 @@ public class Board extends JPanel{
 		private JTextField myPeopleCard, myRoomCard, myWeaponCard; 
 		
 		public HumanPanel() {
-			setLayout(new GridLayout(6,1));  //setLayout(new GridLayout(2,4));
+			//String human = get
 			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
 			//setLocation(400,200);
 			JLabel nameLabel1 = new JLabel("Person Card");
+			
+			//JTextField myPeopleCard = new JTextField("whatever", 10);
 			JTextField myPeopleCard = new JTextField("whatever", 10);
 			JLabel nameLabel2 = new JLabel("Room Card");
 			JTextField myRoomCard = new JTextField("my room", 10);
@@ -620,8 +618,8 @@ public class Board extends JPanel{
 			
 		}
 	    @Override
-	    public Dimension getPreferredSize() {
-	        return new Dimension(150,getNumColumns() * 30); // kill the magic number!
+	    public Dimension getPreferredSize() {  // sets the size the HumanPanel
+	        return new Dimension(150,getNumColumns() * 10); // kill the magic number!
 	    }
 	}
 	
