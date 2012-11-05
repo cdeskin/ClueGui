@@ -18,9 +18,16 @@ import java.util.Scanner;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Checkbox;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.LayoutManager;
 import java.awt.MenuBar;
 import java.awt.Panel;
 import java.awt.TextField;
@@ -37,8 +44,8 @@ public class Board extends JPanel{
 ////////////////////////////////
 //  configuration files
 //
-	
-//	private static final String boardConfigFile = "config/others/ST_ClueBoardConfig.csv";
+
+	//	private static final String boardConfigFile = "config/others/ST_ClueBoardConfig.csv";
 //	private static final String boardLegendFile = "config/others/ST_ClueLegend.txt";
 //	private static final String boardConfigFile = "config/others/CR_ClueLayout.csv";
 //	private static final String boardLegendFile = "config/others/CR_ClueLegend.txt";
@@ -48,7 +55,9 @@ public class Board extends JPanel{
 	private static final String boardPlayersFile = "config/CluePlayers.txt";
 	private static final String boardCardsFile = "config/ClueCards.txt";
 // Graphics
+	private HumanPanel humanPanel = new HumanPanel();
 	private java.awt.Color userColor;
+
 	
 //
 ////////////////////////////////
@@ -80,8 +89,13 @@ public class Board extends JPanel{
 	public Board() throws FileNotFoundException, BadConfigFormatException{
 		loadConfigFiles();
 		calcAdjacencies();
-//panel graphics		
-		
+//panel graphics
+		addGridElements();
+		//board panel graphics are all in draw() and paintComponents method()
+	}
+	
+	public Board (LayoutManager layout) {
+		super(layout);
 	}
 
 	public void loadConfigFiles() throws FileNotFoundException, BadConfigFormatException {
@@ -551,13 +565,65 @@ public class Board extends JPanel{
 //	
 ////////////////////////////////
 // Graphics methods
-public void paintComponent() {  //draw main board
 	
+	public void draw(Graphics g, int boardX, int boardY)
+	{
+		Graphics2D g2 = (Graphics2D) g;
+		int rowScaler = 30;
+		int colScaler = 30;
+		// Draw the board outline
+		g2.setColor(Color.LIGHT_GRAY);
+		g2.fillRect(boardX, boardY, getNumRows() * rowScaler, getNumColumns() * colScaler);
+		
+
+	}
+	// paintComponent is called automatically when the frame needs
+	// to display (e.g., when the program starts)
+	public void paintComponent(Graphics g) {
+		this.draw(g, 0, 0);
+		//mouse.draw(g, 200,200);
+		
+	}	
 	
+	public void addGridElements() {
+		JPanel gridPanel = new JPanel();
+		gridPanel.setBackground(Color.BLUE);
+		gridPanel.setLocation(0, 0);
+		gridPanel.setSize(330, 330);
+		this.add(gridPanel);
+		this.add(humanPanel).setBounds(350,  0, 100, 300);  // .setLocation(0, 500);
+
+		
+	}
 	
-}
-	
-	
+	// human JPanel
+	public class HumanPanel extends JPanel {
+		private JTextField myPeopleCard, myRoomCard, myWeaponCard; 
+		
+		public HumanPanel() {
+			setLayout(new GridLayout(6,1));  //setLayout(new GridLayout(2,4));
+			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
+			//setLocation(400,200);
+			JLabel nameLabel1 = new JLabel("Person Card");
+			JTextField myPeopleCard = new JTextField("whatever", 10);
+			JLabel nameLabel2 = new JLabel("Room Card");
+			JTextField myRoomCard = new JTextField("my room", 10);
+			JLabel nameLabel3 = new JLabel("Weapon Card");
+			JTextField myWeaponCard = new JTextField("my weapon", 10);
+			
+			add(nameLabel1);
+			add(myPeopleCard);
+			add(nameLabel2);
+			add(myRoomCard);
+			add(nameLabel3);
+			add(myWeaponCard);
+			
+		}
+	    @Override
+	    public Dimension getPreferredSize() {
+	        return new Dimension(150,getNumColumns() * 30); // kill the magic number!
+	    }
+	}
 	
 ////////////////////////////////
 	
@@ -566,27 +632,34 @@ public void paintComponent() {  //draw main board
 //	
 
 // main moved to ClueGame.java
-//	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
-//		System.out.println("Hello world!!\n");
-//		
-//		@SuppressWarnings("unused")
-//		Board board = new Board();
-//		
-//		
-//	
-//		board.setVisible(true);
-//		
-//		
-////		System.out.println("Starting positions for players (given by index): ");
-////		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
-////		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
-////		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
-////		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
-////		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
-////		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
-//	
-//		System.out.println("\nGoodbye world..");
-//	}
+	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
+		System.out.println("Hello world!!\n");
+		
+		ClueGame clueGame= new ClueGame(); 
+		clueGame.setContentPane(new Board());
+		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		clueGame.setVisible(true);
+		clueGame.setContentPane(new Board());
+		
+		//@SuppressWarnings("unused")
+		Board board = new Board();
+		
+		
+		
+	
+		//board.setVisible(true);
+		
+		
+//		System.out.println("Starting positions for players (given by index): ");
+		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
+//		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
+//		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
+//		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
+//		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
+//		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
+	
+		System.out.println("\nGoodbye world..");
+	}
 	
 //	
 ////////////////////////////////

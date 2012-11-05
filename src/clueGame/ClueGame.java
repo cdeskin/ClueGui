@@ -17,9 +17,11 @@ import java.util.Scanner;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Checkbox;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Label;
+import java.awt.LayoutManager;
 import java.awt.MenuBar;
 import java.awt.Panel;
 import java.awt.TextField;
@@ -29,51 +31,49 @@ import javax.swing.*;
 
 //team imports
 import clueGame.Card.CardType;
+import clueGame.Board;
 
 public class ClueGame extends JFrame {
 	private java.awt.Color userColor;
-	private JTextField name;
-	// board panel is already defined?
-	//private ourpanelclass localname = new ourPanelClass();
-	//private ourpanelclass localname = new ourPanelClass();
+
+
 	
-	public ClueGame() {  //constructor
-		setTitle("Clue Game");
-		setSize(new Dimension(500,500) );
+	public ClueGame() throws FileNotFoundException, BadConfigFormatException {  //constructor
+		//Board board = new Board();
+		this.setTitle("Clue Game");
+		this.setSize(new Dimension(820,880) );
+		addElements();
 		
+	} // end default constructor
+
+	public void addElements(){
+		JMenuBar menubar=new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenu show = new JMenu("Show Detective Notes");
+		JMenuItem Exit = new JMenuItem("Exit");
+		Exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		
+		show.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Show detective notes");
+			}
+		});
+		
+		fileMenu.add(Exit);
+		fileMenu.add(show);
+		menubar.add(fileMenu);
+		this.setJMenuBar(menubar); 
 		JLabel nameLabel = new JLabel("Name");
-		name = new JTextField(20);
-		add(nameLabel, BorderLayout.NORTH);
-		add(name, BorderLayout.CENTER);
-		
-		JButton nameButton = new JButton("OK");
-		add(nameButton, BorderLayout.SOUTH);
-	}
+		add(nameLabel, BorderLayout.EAST);
 
 	
-	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
-		System.out.println("Hello world!!!\n");
-		
-		@SuppressWarnings("unused")
-		ClueGame clueGame= new ClueGame();
-		Board board = new Board();
-		
-		
-		
-		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		clueGame.setVisible(true);
-		
-		
-//		System.out.println("Starting positions for players (given by index): ");
-//		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
-//		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
-//		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
-//		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
-//		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
-//		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
-	
-		System.out.println("\nGoodbye world..");
+	} 
 
-	}
 
 }
