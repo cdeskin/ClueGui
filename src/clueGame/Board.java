@@ -590,6 +590,27 @@ public class Board extends JPanel{
 		//System.out.println("painted a cell");
 		
 	}
+	
+	public void drawDoorCell(Graphics g, int gridX, int gridY, DoorDirection doorDirection) {
+		g.setColor(Color.BLUE);
+		
+		if(doorDirection == DoorDirection.RIGHT) {    //error
+			g.fillRect(gridX, gridY +25, SCALER, 5); //down correct
+			}
+		if(doorDirection == DoorDirection.LEFT) {  //error
+			g.fillRect(gridX, gridY, SCALER, 5);  // up correct
+			}
+		if(doorDirection == DoorDirection.UP) {    //error
+			g.fillRect(gridX, gridY, 5, SCALER);  // left correct
+			}
+		if(doorDirection == DoorDirection.DOWN) {    //error
+			g.fillRect(gridX +25, gridY, 5, SCALER); // right correct
+			}
+		
+		g.setColor(Color.BLACK);
+		g.drawRect(gridX, gridY, SCALER, SCALER);
+
+	}
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
 	public void paintComponent(Graphics g) {
@@ -605,7 +626,9 @@ public class Board extends JPanel{
 				color = Color.GRAY;
 				// need to get access to the cell's door direction
 				System.out.println(cells.get(i).getDoorDirection());
-				this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
+				//this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
+				this.drawDoorCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, cells.get(i).getDoorDirection());
+				
 			}
 			
 		}
