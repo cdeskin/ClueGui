@@ -618,18 +618,22 @@ public class Board extends JPanel{
 		DoorDirection doorDirection;
 		this.draw(g, 0, 0);
 		for(int i = 0; i < (numRows * numColumns) - 1; i++) {
-			if(cells.get(i).isWalkway()) {
-				color = Color.YELLOW;
-				this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
-			}
-			if(cells.get(i).isDoorway()) {
-				color = Color.GRAY;
-				// need to get access to the cell's door direction
-				System.out.println(cells.get(i).getDoorDirection());
-				//this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
-				this.drawDoorCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, cells.get(i).getDoorDirection());
+			cells.get(i).draw(g); 
 				
-			}
+			
+			
+//			if(cells.get(i).isWalkway()) {
+//				color = Color.YELLOW;
+//				this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
+//			}
+//			if(cells.get(i).isDoorway()) {
+//				color = Color.GRAY;
+//				// need to get access to the cell's door direction
+//				System.out.println(cells.get(i).getDoorDirection());
+//				//this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
+//				this.drawDoorCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, cells.get(i).getDoorDirection());
+//				
+//			}
 			
 		}
 	}	

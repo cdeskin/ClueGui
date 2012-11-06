@@ -49,6 +49,11 @@ public class BoardCell extends JPanel{
 	
 	public DoorDirection getDoorDirection() { return doorDirection; }
 	
+	public void draw(Graphics g) {
+		g.setColor(Color.CYAN);
+		g.fillRect(10, 100, 100, 100);
+	}
+	
 
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
