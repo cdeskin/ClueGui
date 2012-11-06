@@ -37,6 +37,7 @@ import javax.swing.*;
 
 //team imports
 import clueGame.Card.CardType;
+import clueGame.RoomCell.DoorDirection;
 
 public class Board extends JPanel{
 	
@@ -578,38 +579,45 @@ public class Board extends JPanel{
 		g2.fillRect(boardX, boardY, getNumRows() *SCALER, getNumColumns() * SCALER);
 	}
 	
-	public void drawWalkWay(Graphics g, int gridX, int gridY) {
+
+	
+	public void drawCell(Graphics g, int gridX, int gridY, Color color) {
 		// figure out how to move this to BoardCell Class
-		g.setColor(Color.YELLOW);
+		g.setColor(color);
 		g.fillRect(gridX, gridY, SCALER, SCALER);
 		g.setColor(Color.BLACK);
 		g.drawRect(gridX, gridY, SCALER, SCALER);
-		System.out.println("painted a cell");
+		//System.out.println("painted a cell");
+		
 	}
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
 	public void paintComponent(Graphics g) {
+		Color color = Color.BLACK;
+		DoorDirection doorDirection;
 		this.draw(g, 0, 0);
 		for(int i = 0; i < (numRows * numColumns) - 1; i++) {
 			if(cells.get(i).isWalkway()) {
-				this.drawWalkWay(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER);
+				color = Color.YELLOW;
+				this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
 			}
+			if(cells.get(i).isDoorway()) {
+				color = Color.GRAY;
+				// need to get access to the cell's door direction
+				System.out.println(cells.get(i).getDoorDirection());
+				this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
+			}
+			
 		}
-		
-		
-		
 	}	
 	
 	public void addGridElements() {
 		setLayout(new BorderLayout());
 		add(humanPanel, BorderLayout.EAST);  // .setLocation(0, 500);  setBounds(350,  0, 100, 300);
-		
-		
 	}
 	
 	public void updateDrawing() {
 		//now what?
-		
 	}
 	
 	// human JPanel
