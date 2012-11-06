@@ -13,10 +13,10 @@ public class BoardCell extends JPanel{
 	public int column;
 // graphics	
 	DoorDirection doorDirection;
-//	private int gridY;
-//	private int gridX;
-//	private int pixelsPerRow = 660/22;   //magic numbers!
-//	private int pixelsPerCol = 660/23;
+	private static final int SCALER = 30;
+	private int gridY;
+	private int gridX;
+
 	
 	public BoardCell() {
 		
@@ -26,9 +26,9 @@ public class BoardCell extends JPanel{
 	public BoardCell(int row, int col) {
 		this.row = row;
 		this.column = col;
-//		this.gridY = row*pixelsPerRow;  
-//		this.gridX = column*pixelsPerCol;
-//		repaint();
+		this.gridY = row*SCALER;
+		this.gridX = column*SCALER;
+
 	}
 	
 	public boolean isWalkway() {
@@ -50,8 +50,8 @@ public class BoardCell extends JPanel{
 	public DoorDirection getDoorDirection() { return doorDirection; }
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.CYAN);
-		g.fillRect(10, 100, 100, 100);
+		//g.setColor(Color.CYAN);
+		//g.fillRect(10, 100, 100, 100);
 	}
 	
 

@@ -5,24 +5,27 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class WalkwayCell extends BoardCell {
-//	private int gridY;
-//	private int gridX;
-//	private int pixelsPerRow = 660/22;   //magic numbers!
-//	private int pixelsPerCol = 660/23;
+	private static final int SCALER = 30;
+	private int gridY;
+	private int gridX;
 
 	public WalkwayCell(int row, int column) {
 		this.row = row;
 		this.column = column;
-//		this.gridY = row*pixelsPerRow;  
-//		this.gridX = column*pixelsPerCol;
-//		repaint();
-		
+		this.gridY = row*SCALER;  
+		this.gridX = column*SCALER;
 	}
 	
 	public boolean isWalkway() { 
 		return true;
 		}
 
+	public void draw(Graphics g) {
+		g.setColor(Color.YELLOW);
+		g.fillRect(gridX, gridY, SCALER, SCALER);
+		g.setColor(Color.BLACK);
+		g.drawRect(gridX, gridY, SCALER, SCALER);
+	}
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
 //	public void paintComponent(Graphics g) {

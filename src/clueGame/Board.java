@@ -660,7 +660,7 @@ public class Board extends JPanel{
 			JLabel nameLabel1 = new JLabel("Person Card");
 			
 			//JTextField myPeopleCard = new JTextField("whatever", 10);
-			JTextField myPeopleCard = new JTextField("whatever", 10);
+			JTextField myPeopleCard = new JTextField(, 10);
 			myPeopleCard.setText("hey");
 			JLabel nameLabel2 = new JLabel("Room Card");
 			JTextField myRoomCard = new JTextField("my room", 10);
