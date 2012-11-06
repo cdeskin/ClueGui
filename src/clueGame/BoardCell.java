@@ -1,15 +1,31 @@
 package clueGame;
 
-public class BoardCell {
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
+import javax.swing.JPanel;
+
+public class BoardCell extends JPanel{
 	public int row;
 	public int column;
+// graphics	
+	private int gridY;
+	private int gridX;
+	private int pixelsPerRow = 660/22;   //magic numbers!
+	private int pixelsPerCol = 660/23;
 	
-	public BoardCell() { }
+	public BoardCell() {
+		
+		this.repaint();
+	}
 	
 	public BoardCell(int row, int col) {
 		this.row = row;
 		this.column = col;
+		this.gridY = row*pixelsPerRow;  
+		this.gridX = column*pixelsPerCol;
+		repaint();
 	}
 	
 	public boolean isWalkway() {
@@ -27,5 +43,22 @@ public class BoardCell {
 		}
 		return false;
 	}
+	
+
+	// paintComponent is called automatically when the frame needs
+	// to display (e.g., when the program starts)
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.setColor(Color.YELLOW);
+		g.drawRect(gridX, gridY, 20, 20);
+		System.out.println("painted a cell");
+		
+	}
+	
+	public void updateGridMap() {
+		repaint();
+	}
+	
+	
 	
 }

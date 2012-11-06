@@ -56,7 +56,7 @@ public class Board extends JPanel{
 	private static final String boardCardsFile = "config/ClueCards.txt";
 // Graphics
 	private HumanPanel humanPanel = new HumanPanel();
-	private java.awt.Color userColor;
+	private static final int SCALER = 30;
 
 	
 //
@@ -140,6 +140,9 @@ public class Board extends JPanel{
 				for (int i = 0; i < tokens.length; i++) {
 					if (tokens[i].equalsIgnoreCase("W")) {
 						cells.add(new WalkwayCell(numRows, i));
+						
+						
+						
 					} else {
 						cells.add(new RoomCell(numRows, i, tokens[i]));
 					}
@@ -281,6 +284,7 @@ public class Board extends JPanel{
 	public RoomCell getRoomCellAt(int row, int column) {
 		index = calcIndex(row, column);
 		if ((cells.get(index)).isRoom()) {
+			
 			return (RoomCell) cells.get(index);
 		} 
 		
@@ -569,19 +573,30 @@ public class Board extends JPanel{
 	public void draw(Graphics g, int boardX, int boardY)
 	{
 		Graphics2D g2 = (Graphics2D) g;
-		int rowScaler = 30;
-		int colScaler = 30;
 		// Draw the board outline
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.fillRect(boardX, boardY, getNumRows() * rowScaler, getNumColumns() * colScaler);
-		
-
+		g2.fillRect(boardX, boardY, getNumRows() *SCALER, getNumColumns() * SCALER);
+	}
+	
+	public void drawWalkWay(Graphics g, int gridX, int gridY) {
+		// figure out how to move this to BoardCell Class
+		g.setColor(Color.YELLOW);
+		g.fillRect(gridX, gridY, SCALER, SCALER);
+		g.setColor(Color.BLACK);
+		g.drawRect(gridX, gridY, SCALER, SCALER);
+		System.out.println("painted a cell");
 	}
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
 	public void paintComponent(Graphics g) {
 		this.draw(g, 0, 0);
-		//mouse.draw(g, 200,200);
+		for(int i = 0; i < (numRows * numColumns) - 1; i++) {
+			if(cells.get(i).isWalkway()) {
+				this.drawWalkWay(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER);
+			}
+		}
+		
+		
 		
 	}	
 	
@@ -592,18 +607,26 @@ public class Board extends JPanel{
 		
 	}
 	
+	public void updateDrawing() {
+		//now what?
+		
+	}
+	
 	// human JPanel
 	public class HumanPanel extends JPanel {
 		private JTextField myPeopleCard, myRoomCard, myWeaponCard; 
 		
 		public HumanPanel() {
-			//String human = get
+			//Card humanHand = new Card();   //trying to get the player's cards
+			//humanHand = getPlayer(0).cards.get(1);
+			
+			//String human = allPlayers.get(0).cards.get(0).toString();//  allPlayers.get(0).cards.add(someCard);
 			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
-			//setLocation(400,200);
 			JLabel nameLabel1 = new JLabel("Person Card");
 			
 			//JTextField myPeopleCard = new JTextField("whatever", 10);
 			JTextField myPeopleCard = new JTextField("whatever", 10);
+			myPeopleCard.setText("hey");
 			JLabel nameLabel2 = new JLabel("Room Card");
 			JTextField myRoomCard = new JTextField("my room", 10);
 			JLabel nameLabel3 = new JLabel("Weapon Card");
@@ -617,7 +640,8 @@ public class Board extends JPanel{
 			add(myWeaponCard);
 			
 		}
-	    @Override
+
+		@Override
 	    public Dimension getPreferredSize() {  // sets the size the HumanPanel
 	        return new Dimension(150,getNumColumns() * 10); // kill the magic number!
 	    }
@@ -637,16 +661,15 @@ public class Board extends JPanel{
 		clueGame.setContentPane(new Board());
 		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clueGame.setVisible(true);
-		clueGame.setContentPane(new Board());
+		
+		//clueGame.setContentPane(new Board());
 		
 		//@SuppressWarnings("unused")
 		Board board = new Board();
 		
 		
-		
-	
-		//board.setVisible(true);
-		
+		//board.humanPanel.myPeopleCard.setText("A pig");  //this don't work! Can't update
+		//board.humanPanel.validate();
 		
 //		System.out.println("Starting positions for players (given by index): ");
 		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
