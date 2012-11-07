@@ -10,7 +10,7 @@ public class HumanPlayer extends Player {
 	static final int GRID_COLUMNS = Board.GRID_COLUMNS;
 	private int gridY;
 	private int gridX;
-	Color color;
+	Color cColor;
 
 	public HumanPlayer(String name, String color, int startingIndexedLocation) {
 		super(name, color, startingIndexedLocation);
@@ -20,6 +20,7 @@ public class HumanPlayer extends Player {
 		int column = startingIndexedLocation - (GRID_COLUMNS * row);
 		this.gridY = row*SCALER;  
 		this.gridX = column*SCALER;
+		cColor = convertColor(color);
 
 	}
 
@@ -29,7 +30,7 @@ public class HumanPlayer extends Player {
 	//graphics
 	public void draw(Graphics g) {
 		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);
-		g.setColor(Color.RED);
+		g.setColor(cColor);
 		g.fillOval(gridX, gridY, SCALER, SCALER);
 		g.setColor(Color.BLACK);
 		g.drawOval(gridX, gridY, SCALER, SCALER);

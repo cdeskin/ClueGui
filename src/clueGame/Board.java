@@ -617,15 +617,19 @@ public class Board extends JPanel{
 		private JTextField myPeopleCard, myRoomCard, myWeaponCard; 
 		
 		public HumanPanel() {
-			//Card humanHand = new Card();   //trying to get the player's cards
-			//humanHand = getPlayer(0).cards.get(1);
+			ArrayList<Card> humanHand = new ArrayList<Card>();
+			Card card = new Card();
+			//System.out.println(humanHand.get(0).name.toString());
+			//humanHand.add(allPlayers.get(0).cards.get(0));
+			//humanHand.add(allPlayers.get(0).cards.get(1));
+			//humanHand.add(allPlayers.get(0).cards.get(2));
 			
-			//String human = allPlayers.get(0).cards.get(0).toString();//  allPlayers.get(0).cards.add(someCard);
+			
 			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
 			JLabel nameLabel1 = new JLabel("Person Card");
 			
 			//JTextField myPeopleCard = new JTextField("whatever", 10);
-			JTextField myPeopleCard = new JTextField("who?", 10);
+			JTextField myPeopleCard = new JTextField("hey", 10);
 			myPeopleCard.setText("hey");
 			JLabel nameLabel2 = new JLabel("Room Card");
 			JTextField myRoomCard = new JTextField("my room", 10);

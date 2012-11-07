@@ -10,7 +10,7 @@ public class ComputerPlayer extends Player {
 	static final int GRID_COLUMNS = Board.GRID_COLUMNS;
 	private int gridY;
 	private int gridX;
-	Color color;
+	Color cColor;
 	
 	public ComputerPlayer() {
 		super("Captain Cadaver", "black", 0);
@@ -24,6 +24,7 @@ public class ComputerPlayer extends Player {
 		int column = startingIndexedLocation - (GRID_COLUMNS * row);
 		this.gridY = row*SCALER;  
 		this.gridX = column*SCALER;
+		cColor = convertColor(color);
 	}
 	
 	@Override
@@ -57,7 +58,7 @@ public class ComputerPlayer extends Player {
 	//graphics
 	public void draw(Graphics g) {
 		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);
-		g.setColor(Color.BLUE);
+		g.setColor(cColor);
 		g.fillOval(gridX, gridY, SCALER, SCALER);
 		g.setColor(Color.BLACK);
 		g.drawOval(gridX, gridY, SCALER, SCALER);
