@@ -13,7 +13,7 @@ public class BoardCell extends JPanel{
 	public int column;
 // graphics	
 	DoorDirection doorDirection;
-	private static final int SCALER = 30;
+	static final int SCALER = Board.SCALER;
 	private int gridY;
 	private int gridX;
 
@@ -50,25 +50,10 @@ public class BoardCell extends JPanel{
 	public DoorDirection getDoorDirection() { return doorDirection; }
 	
 	public void draw(Graphics g) {
-		//g.setColor(Color.CYAN);
-		//g.fillRect(10, 100, 100, 100);
+
 	}
 	
 
-	// paintComponent is called automatically when the frame needs
-	// to display (e.g., when the program starts)
-//	public void paintComponent(Graphics g) {
-//		super.paintComponent(g);
-//		g.setColor(Color.YELLOW);
-//		g.drawRect(gridX, gridY, 20, 20);
-//		System.out.println("painted a cell");
-//		
-//	}
-//	
-//	public void updateGridMap() {
-//		repaint();
-//	}
-//	
 	
 	
 }

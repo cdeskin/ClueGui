@@ -46,7 +46,7 @@ public class Board extends JPanel{
 //  configuration files
 //
 
-	//	private static final String boardConfigFile = "config/others/ST_ClueBoardConfig.csv";
+//	private static final String boardConfigFile = "config/others/ST_ClueBoardConfig.csv";
 //	private static final String boardLegendFile = "config/others/ST_ClueLegend.txt";
 //	private static final String boardConfigFile = "config/others/CR_ClueLayout.csv";
 //	private static final String boardLegendFile = "config/others/CR_ClueLegend.txt";
@@ -57,7 +57,15 @@ public class Board extends JPanel{
 	private static final String boardCardsFile = "config/ClueCards.txt";
 // Graphics
 	private HumanPanel humanPanel = new HumanPanel();
-	private static final int SCALER = 30;
+	// this copy of SCALER is referenced by all classes
+	public static final int SCALER = 25;
+// Graphics Notes
+	/* Two types of graphics are used - LayoutManager and bitmap. 
+	 *  paintComponent(Graphics g) is in board.java and calls draw() in itself and it extended classes.
+	 *  Cluegame.java handles the main frame, addElements() handles the panels. 
+	 * */
+	 
+	
 
 	
 //
@@ -576,64 +584,16 @@ public class Board extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		// Draw the board outline
 		g2.setColor(Color.LIGHT_GRAY);
-		g2.fillRect(boardX, boardY, getNumRows() *SCALER, getNumColumns() * SCALER);
+		g2.fillRect(boardX, boardY, (getNumRows() *SCALER) + SCALER, (getNumColumns() * SCALER) - SCALER);
 	}
 	
 
-	
-	public void drawCell(Graphics g, int gridX, int gridY, Color color) {
-		// figure out how to move this to BoardCell Class
-		g.setColor(color);
-		g.fillRect(gridX, gridY, SCALER, SCALER);
-		g.setColor(Color.BLACK);
-		g.drawRect(gridX, gridY, SCALER, SCALER);
-		//System.out.println("painted a cell");
-		
-	}
-	
-	public void drawDoorCell(Graphics g, int gridX, int gridY, DoorDirection doorDirection) {
-		g.setColor(Color.BLUE);
-		
-		if(doorDirection == DoorDirection.RIGHT) {    //error
-			g.fillRect(gridX, gridY +25, SCALER, 5); //down correct
-			}
-		if(doorDirection == DoorDirection.LEFT) {  //error
-			g.fillRect(gridX, gridY, SCALER, 5);  // up correct
-			}
-		if(doorDirection == DoorDirection.UP) {    //error
-			g.fillRect(gridX, gridY, 5, SCALER);  // left correct
-			}
-		if(doorDirection == DoorDirection.DOWN) {    //error
-			g.fillRect(gridX +25, gridY, 5, SCALER); // right correct
-			}
-		
-		g.setColor(Color.BLACK);
-		g.drawRect(gridX, gridY, SCALER, SCALER);
-
-	}
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
 	public void paintComponent(Graphics g) {
-		Color color = Color.BLACK;
-		DoorDirection doorDirection;
 		this.draw(g, 0, 0);
 		for(int i = 0; i < (numRows * numColumns) - 1; i++) {
 			cells.get(i).draw(g); 
-				
-			
-			
-//			if(cells.get(i).isWalkway()) {
-//				color = Color.YELLOW;
-//				this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
-//			}
-//			if(cells.get(i).isDoorway()) {
-//				color = Color.GRAY;
-//				// need to get access to the cell's door direction
-//				System.out.println(cells.get(i).getDoorDirection());
-//				//this.drawCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, color);
-//				this.drawDoorCell(g, cells.get(i).row*SCALER, cells.get(i).column*SCALER, cells.get(i).getDoorDirection());
-//				
-//			}
 			
 		}
 	}	
@@ -660,7 +620,7 @@ public class Board extends JPanel{
 			JLabel nameLabel1 = new JLabel("Person Card");
 			
 			//JTextField myPeopleCard = new JTextField("whatever", 10);
-			JTextField myPeopleCard = new JTextField(, 10);
+			JTextField myPeopleCard = new JTextField("who?", 10);
 			myPeopleCard.setText("hey");
 			JLabel nameLabel2 = new JLabel("Room Card");
 			JTextField myRoomCard = new JTextField("my room", 10);

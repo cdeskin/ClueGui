@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class WalkwayCell extends BoardCell {
-	private static final int SCALER = 30;
+	static final int SCALER = Board.SCALER;
 	private int gridY;
 	private int gridX;
 
@@ -26,20 +26,6 @@ public class WalkwayCell extends BoardCell {
 		g.setColor(Color.BLACK);
 		g.drawRect(gridX, gridY, SCALER, SCALER);
 	}
-	// paintComponent is called automatically when the frame needs
-	// to display (e.g., when the program starts)
-//	public void paintComponent(Graphics g) {
-//		super.paintComponent(g);
-//		g.setColor(Color.YELLOW);
-//		g.drawRect(gridX, gridY, 20, 20);
-//		System.out.println("painted a cell");
-//		
-//	}
-//	
-//	@Override
-//	public void updateGridMap() {
-//		repaint();
-//	}
 
 	
 	
