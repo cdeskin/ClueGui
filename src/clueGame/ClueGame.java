@@ -49,7 +49,7 @@ public class ClueGame extends JFrame {
 	public void addElements(){
 		JMenuBar menubar=new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		JMenu show = new JMenu("Show Detective Notes");
+		JMenuItem show = new JMenuItem("Show Detective Notes");
 		JMenuItem Exit = new JMenuItem("Exit");
 		Exit.addActionListener(new ActionListener() {
 			@Override
