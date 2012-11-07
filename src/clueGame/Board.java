@@ -59,6 +59,7 @@ public class Board extends JPanel{
 	private HumanPanel humanPanel = new HumanPanel();
 	// this copy of SCALER is referenced by all classes
 	public static final int SCALER = 25;
+	public static final int GRID_COLUMNS = 23;
 // Graphics Notes
 	/* Two types of graphics are used - LayoutManager and bitmap. 
 	 *  paintComponent(Graphics g) is in board.java and calls draw() in itself and it extended classes.
@@ -592,9 +593,13 @@ public class Board extends JPanel{
 	// to display (e.g., when the program starts)
 	public void paintComponent(Graphics g) {
 		this.draw(g, 0, 0);
+		//draw cells
 		for(int i = 0; i < (numRows * numColumns) - 1; i++) {
 			cells.get(i).draw(g); 
-			
+		}
+		//draw players
+		for(int i = 0; i < allPlayers.size(); i++) { //magic number!
+			allPlayers.get(i).draw(g);
 		}
 	}	
 	

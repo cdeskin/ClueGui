@@ -1,9 +1,16 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Random;
 
 public class ComputerPlayer extends Player {
+	//graphics
+	static final int GRID_COLUMNS = Board.GRID_COLUMNS;
+	private int gridY;
+	private int gridX;
+	Color color;
 	
 	public ComputerPlayer() {
 		super("Captain Cadaver", "black", 0);
@@ -11,6 +18,12 @@ public class ComputerPlayer extends Player {
 	
 	public ComputerPlayer(String name, String color, int startingIndexedLocation) {
 		super(name, color, startingIndexedLocation);
+//graphics
+		// need to convert index to row/column
+		int row =  startingIndexedLocation / GRID_COLUMNS; 
+		int column = startingIndexedLocation - (GRID_COLUMNS * row);
+		this.gridY = row*SCALER;  
+		this.gridX = column*SCALER;
 	}
 	
 	@Override
@@ -39,6 +52,15 @@ public class ComputerPlayer extends Player {
 		targetArray = targets.toArray(new BoardCell[targets.size()]);
 		
 		return targetArray[targetChoice];
+	}
+	
+	//graphics
+	public void draw(Graphics g) {
+		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);
+		g.setColor(Color.BLUE);
+		g.fillOval(gridX, gridY, SCALER, SCALER);
+		g.setColor(Color.BLACK);
+		g.drawOval(gridX, gridY, SCALER, SCALER);
 	}
 
 

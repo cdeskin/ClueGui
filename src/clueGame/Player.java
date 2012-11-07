@@ -1,6 +1,8 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -11,6 +13,9 @@ public abstract class Player {
 	public Color color;
 	public ArrayList<Card> cards;
 	public int indexedLocation;
+//graphics
+	static final int SCALER = Board.SCALER;
+	static final int GRID_COLUMNS = Board.GRID_COLUMNS;
 	
 	public Player(String name, String color, int startingIndexedLocation) {
 		this.name = name;
@@ -56,5 +61,10 @@ public abstract class Player {
 			return false;	
 	}
 	
+//graphics - passed to HumanPlayer and ComputerPlayer
+	public void draw(Graphics g) {
+	}
+
+
 
 }

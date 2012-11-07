@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class WalkwayCell extends BoardCell {
+//graphics	
 	static final int SCALER = Board.SCALER;
 	private int gridY;
 	private int gridX;
