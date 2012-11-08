@@ -12,6 +12,7 @@ public class ComputerPlayer extends Player {
 	private int gridX;
 	Color cColor;
 	
+	
 	public ComputerPlayer() {
 		super("Captain Cadaver", "black", 0);
 	}

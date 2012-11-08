@@ -1,4 +1,4 @@
-// on branch Mike1
+// on branch GridNames
 // *
 package clueGame;
 
@@ -44,12 +44,6 @@ public class Board extends JPanel{
 
 ////////////////////////////////
 //  configuration files
-//
-
-//	private static final String boardConfigFile = "config/others/ST_ClueBoardConfig.csv";
-//	private static final String boardLegendFile = "config/others/ST_ClueLegend.txt";
-//	private static final String boardConfigFile = "config/others/CR_ClueLayout.csv";
-//	private static final String boardLegendFile = "config/others/CR_ClueLegend.txt";
 	private static final String boardConfigFile = "config/ClueLayout.csv";
 	private static final String boardLegendFile = "config/ClueLegend.txt";
 //	CluePlayers
@@ -154,7 +148,7 @@ public class Board extends JPanel{
 						
 						
 					} else {
-						cells.add(new RoomCell(numRows, i, tokens[i]));
+						cells.add(new RoomCell(numRows, i, tokens[i], this.getRoomName(tokens[i])));  // added 4th parameter for graphics
 					}
 				}
 				
@@ -312,6 +306,9 @@ public class Board extends JPanel{
 	public BoardCell getCellAt(int index) { return cells.get(index); }
 
 	public Map<Character, String> getRooms() { return rooms; }
+	
+	//graphics - for printing room name on grid.
+	public String getRoomName(String tokens) { return rooms.get( tokens.charAt(0));	}
 
 	public int getNumRows() { return numRows; }
 

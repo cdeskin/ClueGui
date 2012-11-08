@@ -8,17 +8,23 @@ public class RoomCell extends BoardCell {
 	static final int SCALER = Board.SCALER;
 	private int gridY;
 	private int gridX;
-
+	private boolean nameCell;
 
 	public enum DoorDirection { UP, DOWN, LEFT, RIGHT, NONE }
 	
 	DoorDirection doorDirection;
 	char initial;
+// graphics
+	String roomName;
 	
-	public RoomCell(int row, int column, String token) {
+	public RoomCell(int row, int column, String token, String roomName) {
+		super();
 		this.row = row;
 		this.column = column;
 		this.initial = token.charAt(0);
+		this.roomName = roomName;  //graphics
+		this.nameCell = false;  //for graphics room name display
+		
 		this.doorDirection = findDoorDirection(token);
 		//graphics
 		this.gridY = row*SCALER;
@@ -39,6 +45,10 @@ public class RoomCell extends BoardCell {
 					return DoorDirection.LEFT;
 				case 'R':
 					return DoorDirection.RIGHT;
+				case 'N' :  { // detect a cell with name - for graphics
+					this.nameCell = true;
+					return DoorDirection.NONE;
+				}
 				default :
 					return DoorDirection.NONE;
 			}
@@ -60,7 +70,16 @@ public class RoomCell extends BoardCell {
 	}
 	
 	public void draw(Graphics g) {  //, int gridX, int gridY, DoorDirection doorDirection
+		
+		if(nameCell) {
+			g.setColor(Color.BLACK);
+			String roomText = String.valueOf(this.getInitial());
+			//g.drawString(roomText, gridX, gridY);
+			g.drawString(roomName, gridX, gridY);
+		}
+		
 		g.setColor(Color.BLUE);
+		
 		
 		if(doorDirection == DoorDirection.RIGHT) {   
 			g.fillRect(gridX +(SCALER-5), gridY, 5, SCALER); // right

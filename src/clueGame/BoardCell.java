@@ -24,6 +24,7 @@ public class BoardCell extends JPanel{
 	}
 	
 	public BoardCell(int row, int col) {
+		super();
 		this.row = row;
 		this.column = col;
 		this.gridY = row*SCALER;
