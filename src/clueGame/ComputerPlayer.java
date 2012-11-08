@@ -59,6 +59,7 @@ public class ComputerPlayer extends Player {
 	//graphics
 	public void draw(Graphics g) {
 		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);
+		if(cColor == Color.YELLOW) {cColor = new Color(204,199,41);}
 		g.setColor(cColor);
 		g.fillOval(gridX, gridY, SCALER, SCALER);
 		g.setColor(Color.BLACK);
