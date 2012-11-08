@@ -35,6 +35,7 @@ import clueGame.Board;
 
 public class ClueGame extends JFrame {
 	private java.awt.Color userColor;
+	private DetectiveNotes detectiveNotes;
 
 
 	
@@ -43,6 +44,8 @@ public class ClueGame extends JFrame {
 		this.setTitle("Clue Game");
 		this.setSize(new Dimension(820,880) );
 		addElements();
+		detectiveNotes = new DetectiveNotes();
+		detectiveNotes.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 	} // end default constructor
 
@@ -62,6 +65,7 @@ public class ClueGame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Show detective notes");
+				detectiveNotes.setVisible(true);
 			}
 		});
 		
