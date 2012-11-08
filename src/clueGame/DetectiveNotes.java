@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import javax.swing.*;
 
 
-public class DetectiveNotes extends JFrame {
+public class DetectiveNotes extends JDialog {
 	public DetectiveNotes() {  //constructor
 		this.setTitle("Detective Notes");
 		this.setSize(new Dimension(500,500) );
@@ -15,12 +15,16 @@ public class DetectiveNotes extends JFrame {
 		setLayout(new GridLayout(0,2));
 		PeoplePanel peoplePanel = new PeoplePanel();
 		add(peoplePanel);
-		
+		PeopleGuess peopleGuess = new PeopleGuess();
+		add(peopleGuess);
 		RoomPanel roomPanel = new RoomPanel();
 		add(roomPanel);
-		
+		RoomGuess roomGuess = new RoomGuess();
+		add(roomGuess);
 		WeaponPanel weaponPanel = new WeaponPanel();
 		add(weaponPanel);
+		WeaponGuess weaponGuess = new WeaponGuess();
+		add(weaponGuess);
 	}
 	
 	public class PeoplePanel extends JPanel {
@@ -94,5 +98,65 @@ public class DetectiveNotes extends JFrame {
 			add(wrench);
 		}
 	}
+	
+	public class PeopleGuess extends JPanel {
+		private JComboBox<String> combo;
+		public PeopleGuess(){
+			setLayout(new GridLayout(0,2));
+			setBorder(BorderFactory.createTitledBorder("Person Guess"));
+			
+			combo = new JComboBox<String>();
+			combo.addItem("Miss Scarlet");
+			combo.addItem("Mr. Green");
+			combo.addItem("Miss Peacock");
+			combo.addItem("Colonel Mustard");
+			combo.addItem("Miss White");
+			combo.addItem("Professor Plum");
+
+			add(combo);
+		}
+	}
+	
+	public class RoomGuess extends JPanel {
+		private JComboBox<String> combo;
+		public RoomGuess(){
+			setLayout(new GridLayout(0,2));
+			setBorder(BorderFactory.createTitledBorder("Room Guess"));
+			
+			combo = new JComboBox<String>();
+			combo.addItem("Kitchen");
+			combo.addItem("Lounge");
+			combo.addItem("Conservatory");
+			combo.addItem("Study");
+			combo.addItem("Billiard Room");
+			combo.addItem("Ballroom");
+			combo.addItem("Hall");
+			combo.addItem("Dining Room");
+			combo.addItem("Library");
+
+			add(combo);
+		}
+	}
+	
+	public class WeaponGuess extends JPanel {
+		private JComboBox<String> combo;
+		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench;
+		public WeaponGuess(){
+			setLayout(new GridLayout(0,2));
+			setBorder(BorderFactory.createTitledBorder("Weapon Guess"));
+			
+			combo = new JComboBox<String>();
+			combo.addItem("Candlestick");
+			combo.addItem("Lead Pipe");
+			combo.addItem("Rope");
+			combo.addItem("Knife");
+			combo.addItem("Revolver");
+			combo.addItem("Wrench");
+
+			add(combo);
+		}
+	}
+	
+
 }
 
