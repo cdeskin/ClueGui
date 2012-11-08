@@ -71,11 +71,12 @@ public class RoomCell extends BoardCell {
 	
 	public void draw(Graphics g) {  //, int gridX, int gridY, DoorDirection doorDirection
 		
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(gridX, gridY, SCALER, SCALER);  //draw basic room shape
+		
 		if(nameCell) {
 			g.setColor(Color.BLACK);
-			String roomText = String.valueOf(this.getInitial());
-			//g.drawString(roomText, gridX, gridY);
-			g.drawString(roomName, gridX, gridY);
+			g.drawString(roomName.toUpperCase(), gridX, gridY);
 		}
 		
 		g.setColor(Color.BLUE);
@@ -94,11 +95,10 @@ public class RoomCell extends BoardCell {
 			g.fillRect(gridX, gridY +(SCALER-5), SCALER, 5); //down
 			}
 		// next if() just checks grid alignment, disable for pretty-print
-		if(this.doorDirection != DoorDirection.NONE) {
-			g.setColor(Color.BLACK);
-			g.drawRect(gridX, gridY, SCALER, SCALER);
-
-		}
+//		if(this.doorDirection != DoorDirection.NONE) {
+//			g.setColor(Color.BLACK);
+//			g.drawRect(gridX, gridY, SCALER, SCALER);
+//		}
 
 
 	}

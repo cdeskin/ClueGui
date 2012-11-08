@@ -16,9 +16,6 @@ import java.util.Scanner;
 
 //graphics imports
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Checkbox;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -37,7 +34,6 @@ import javax.swing.*;
 
 //team imports
 import clueGame.Card.CardType;
-import clueGame.RoomCell.DoorDirection;
 
 public class Board extends JPanel{
 	
@@ -59,10 +55,6 @@ public class Board extends JPanel{
 	 *  paintComponent(Graphics g) is in board.java and calls draw() in itself and it extended classes.
 	 *  Cluegame.java handles the main frame, addElements() handles the panels. 
 	 * */
-	 
-	
-
-	
 //
 ////////////////////////////////
 	
@@ -144,8 +136,6 @@ public class Board extends JPanel{
 				for (int i = 0; i < tokens.length; i++) {
 					if (tokens[i].equalsIgnoreCase("W")) {
 						cells.add(new WalkwayCell(numRows, i));
-						
-						
 						
 					} else {
 						cells.add(new RoomCell(numRows, i, tokens[i], this.getRoomName(tokens[i])));  // added 4th parameter for graphics
@@ -577,37 +567,25 @@ public class Board extends JPanel{
 ////////////////////////////////
 // Graphics methods
 	
-	public void draw(Graphics g, int boardX, int boardY)
-	{
-		Graphics2D g2 = (Graphics2D) g;
-		// Draw the board outline
-		g2.setColor(Color.LIGHT_GRAY);
-		g2.fillRect(boardX, boardY, (getNumRows() *SCALER) + SCALER, (getNumColumns() * SCALER) - SCALER);
-	}
-	
 
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
 	public void paintComponent(Graphics g) {
-		this.draw(g, 0, 0);
 		//draw cells
-		for(int i = 0; i < (numRows * numColumns) - 1; i++) {
+		for(int i = 0; i < (numRows * numColumns) ; i++) {
 			cells.get(i).draw(g); 
 		}
 		//draw players
-		for(int i = 0; i < allPlayers.size(); i++) { //magic number!
+		for(int i = 0; i < allPlayers.size(); i++) { 
 			allPlayers.get(i).draw(g);
 		}
 	}	
 	
 	public void addGridElements() {
 		setLayout(new BorderLayout());
-		add(humanPanel, BorderLayout.EAST);  // .setLocation(0, 500);  setBounds(350,  0, 100, 300);
+		add(humanPanel, BorderLayout.EAST);   // not required for this phase
 	}
 	
-	public void updateDrawing() {
-		//now what?
-	}
 	
 	// human JPanel
 	public class HumanPanel extends JPanel {
@@ -616,14 +594,15 @@ public class Board extends JPanel{
 		public HumanPanel() {
 			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
 			JLabel nameLabel1 = new JLabel("Person Card");
+
+			JTextField myPeopleCard = new JTextField("not", 10);
+			myPeopleCard.setText("not");
 			
-			//JTextField myPeopleCard = new JTextField("whatever", 10);
-			JTextField myPeopleCard = new JTextField("hey", 10);
-			myPeopleCard.setText("hey");
 			JLabel nameLabel2 = new JLabel("Room Card");
-			JTextField myRoomCard = new JTextField("my room", 10);
+			JTextField myRoomCard = new JTextField("implemented", 10);
+			
 			JLabel nameLabel3 = new JLabel("Weapon Card");
-			JTextField myWeaponCard = new JTextField("my weapon", 10);
+			JTextField myWeaponCard = new JTextField("yet", 10);
 			
 			add(nameLabel1);
 			add(myPeopleCard);
@@ -655,14 +634,9 @@ public class Board extends JPanel{
 		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clueGame.setVisible(true);
 		
-		//clueGame.setContentPane(new Board());
-		
 		//@SuppressWarnings("unused")
 		Board board = new Board();
 		
-		
-		//board.humanPanel.myPeopleCard.setText("A pig");  //this don't work! Can't update
-		//board.humanPanel.validate();
 		
 //		System.out.println("Starting positions for players (given by index): ");
 		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
