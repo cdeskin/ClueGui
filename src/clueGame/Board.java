@@ -617,14 +617,6 @@ public class Board extends JPanel{
 		private JTextField myPeopleCard, myRoomCard, myWeaponCard; 
 		
 		public HumanPanel() {
-			ArrayList<Card> humanHand = new ArrayList<Card>();
-			Card card = new Card();
-			//System.out.println(humanHand.get(0).name.toString());
-			//humanHand.add(allPlayers.get(0).cards.get(0));
-			//humanHand.add(allPlayers.get(0).cards.get(1));
-			//humanHand.add(allPlayers.get(0).cards.get(2));
-			
-			
 			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
 			JLabel nameLabel1 = new JLabel("Person Card");
 			
