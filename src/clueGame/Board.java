@@ -46,10 +46,13 @@ public class Board extends JPanel{
 	private static final String boardPlayersFile = "config/CluePlayers.txt";
 	private static final String boardCardsFile = "config/ClueCards.txt";
 // Graphics
-	private HumanPanel humanPanel = new HumanPanel();
+	
 	// this copy of SCALER is referenced by all classes
 	public static final int SCALER = 25;
-	public static final int GRID_COLUMNS = 23;
+	// used for graphics in ComputerPlayer and HumanPlayer
+	public static final int GRID_COLUMNS = 23; 
+
+	
 // Graphics Notes
 	/* Two types of graphics are used - LayoutManager and bitmap. 
 	 *  paintComponent(Graphics g) is in board.java and calls draw() in itself and it extended classes.
@@ -73,6 +76,10 @@ public class Board extends JPanel{
 	int index;
 	
 	private boolean[] visited;
+	
+//panels
+//	PlayerDisplay playerDisplay = new PlayerDisplay();
+//	GameControlPanel gameControlPanel = new GameControlPanel();
 	
 //
 ////////////////////////////////
@@ -566,7 +573,9 @@ public class Board extends JPanel{
 //	
 ////////////////////////////////
 // Graphics methods
-	
+	//panels
+		
+		//GameControlPanel gameControlPanel = new GameControlPanel();	
 
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
@@ -579,45 +588,36 @@ public class Board extends JPanel{
 		for(int i = 0; i < allPlayers.size(); i++) { 
 			allPlayers.get(i).draw(g);
 		}
+		// trying to move addGridElements to clueGame
+	
 	}	
 	
-	public void addGridElements() {
+	//this needs to be moved to Cluegame
+		public void addGridElements() {
 		setLayout(new BorderLayout());
-		add(humanPanel, BorderLayout.EAST);   // not required for this phase
-	}
-	
-	
-	// human JPanel
-	public class HumanPanel extends JPanel {
-		private JTextField myPeopleCard, myRoomCard, myWeaponCard; 
 		
-		public HumanPanel() {
-			setBorder(BorderFactory.createTitledBorder("Miss Scarlet"));
-			JLabel nameLabel1 = new JLabel("Person Card");
-
-			JTextField myPeopleCard = new JTextField("not", 10);
-			myPeopleCard.setText("not");
-			
-			JLabel nameLabel2 = new JLabel("Room Card");
-			JTextField myRoomCard = new JTextField("implemented", 10);
-			
-			JLabel nameLabel3 = new JLabel("Weapon Card");
-			JTextField myWeaponCard = new JTextField("yet", 10);
-			
-			add(nameLabel1);
-			add(myPeopleCard);
-			add(nameLabel2);
-			add(myRoomCard);
-			add(nameLabel3);
-			add(myWeaponCard);
-			
+		//Pass info to playerDisplay
+		ArrayList<Card> displayCards = new ArrayList<Card>();
+		displayCards = allPlayers.get(0).getPlayerCards();
+		PlayerDisplay playerDisplay = new PlayerDisplay(displayCards);
+		GameControlPanel gameControlPanel = new GameControlPanel();	
+		
+		//next 5 lines for debugging to console screen - shows what cards a player has
+		int playerNumber = 2;
+		for(int i = 0; i < displayCards.size(); i++) {
+			displayCards = allPlayers.get(playerNumber).getPlayerCards();
+			System.out.println("size: " + displayCards.size());
+			System.out.println("Player: " + allPlayers.get(playerNumber).name.toString()  +","  + displayCards.get(i).type.toString() + ", "  + displayCards.get(i).name.toString());
 		}
 
-		@Override
-	    public Dimension getPreferredSize() {  // sets the size the HumanPanel
-	        return new Dimension(150,getNumColumns() * 10); // kill the magic number!
-	    }
+
+		playerDisplay.setVisible(true);
+		add(playerDisplay, BorderLayout.EAST);
+		gameControlPanel.setVisible(true);
+		add(gameControlPanel, BorderLayout.SOUTH);
 	}
+
+
 	
 ////////////////////////////////
 	
@@ -630,16 +630,16 @@ public class Board extends JPanel{
 		System.out.println("Hello world!!\n");
 		
 		ClueGame clueGame= new ClueGame(); 
-		clueGame.setContentPane(new Board());
+ 		clueGame.setContentPane(new Board());
 		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clueGame.setVisible(true);
 		
 		//@SuppressWarnings("unused")
-		Board board = new Board();
+		//Board board = new Board();  // this might not be needed because it is called in clueGame.setContentPane(new Board());
 		
 		
 //		System.out.println("Starting positions for players (given by index): ");
-		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
+//		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
 //		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
 //		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
 //		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));

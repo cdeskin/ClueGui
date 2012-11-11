@@ -15,7 +15,7 @@ public abstract class Player {
 	public int indexedLocation;
 //graphics
 	static final int SCALER = Board.SCALER;
-	static final int GRID_COLUMNS = Board.GRID_COLUMNS;
+	//static final int GRID_COLUMNS = Board.GRID_COLUMNS;
 	
 	public Player(String name, String color, int startingIndexedLocation) {
 		this.name = name;
@@ -60,6 +60,13 @@ public abstract class Player {
 		else
 			return false;	
 	}
+	
+	//graphics
+	public ArrayList<Card> getPlayerCards() {
+		return cards;
+	}
+	
+
 	
 //graphics - passed to HumanPlayer and ComputerPlayer
 	public void draw(Graphics g) {

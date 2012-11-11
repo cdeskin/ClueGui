@@ -20,6 +20,7 @@ import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.LayoutManager;
 import java.awt.MenuBar;
@@ -38,12 +39,16 @@ public class ClueGame extends JFrame {
 	private DetectiveNotes detectiveNotes;
 
 
+
 	
 	public ClueGame() throws FileNotFoundException, BadConfigFormatException {  //constructor
 		//Board board = new Board();
 		this.setTitle("Clue Game");
-		this.setSize(new Dimension(820,880) );
+		this.setSize(new Dimension(820,780) );
+
+		
 		addElements();
+		//addGridElements();
 		detectiveNotes = new DetectiveNotes();
 		detectiveNotes.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
@@ -73,11 +78,32 @@ public class ClueGame extends JFrame {
 		fileMenu.add(show);
 		menubar.add(fileMenu);
 		this.setJMenuBar(menubar); 
-		JLabel nameLabel = new JLabel("Name");
-		add(nameLabel, BorderLayout.EAST);
 
-	
 	} 
+	
+//	public void addGridElements(ArrayList<Player> allPlayers) { //public void addGridElements(ArrayList<Player> allPlayers)
+//		setLayout(new BorderLayout());
+//		
+//		//Pass info to playerDisplay
+//		ArrayList<Card> displayCards = new ArrayList<Card>();
+//		displayCards = allPlayers.get(0).getPlayerCards();
+//		PlayerDisplay playerDisplay = new PlayerDisplay(displayCards);
+//		GameControlPanel gameControlPanel = new GameControlPanel();	
+//		
+//		//next 5 lines for debugging - shows what cards a player has
+//		int playerNumber = 2;
+//		for(int i = 0; i < displayCards.size(); i++) {
+//			displayCards = allPlayers.get(playerNumber).getPlayerCards();
+//			System.out.println("size: " + displayCards.size());
+//			System.out.println("Player: " + allPlayers.get(playerNumber).name.toString()  +","  + displayCards.get(i).type.toString() + ", "  + displayCards.get(i).name.toString());
+//		}
+//
+//
+//		playerDisplay.setVisible(true);
+//		add(playerDisplay, BorderLayout.EAST);
+//		gameControlPanel.setVisible(true);
+//		add(gameControlPanel, BorderLayout.SOUTH);
+//	}
 
 
 }

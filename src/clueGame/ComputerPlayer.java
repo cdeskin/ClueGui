@@ -15,13 +15,14 @@ public class ComputerPlayer extends Player {
 	
 	public ComputerPlayer() {
 		super("Captain Cadaver", "black", 0);
+		
 	}
 	
 	public ComputerPlayer(String name, String color, int startingIndexedLocation) {
 		super(name, color, startingIndexedLocation);
 //graphics
 		// need to convert index to row/column
-		int row =  startingIndexedLocation / GRID_COLUMNS; 
+		int row =  startingIndexedLocation / GRID_COLUMNS;
 		int column = startingIndexedLocation - (GRID_COLUMNS * row);
 		this.gridY = row*SCALER;  
 		this.gridX = column*SCALER;
