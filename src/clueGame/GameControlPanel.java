@@ -9,10 +9,20 @@ import javax.swing.*;
 
 public class GameControlPanel extends JPanel {
 	private JButton nextButton, accButton;
+	private int dieRoll;
+	public String playerTurn;
+	public String playerGuess;
+	public String playerResult;
+	private boolean nextPushed;
+	private boolean accPushed;
+	
 
 
-	public GameControlPanel() {
+	public GameControlPanel(int dieRoll) {
 		//super();
+		this.nextPushed = false;
+		this.accPushed = false;
+		this.dieRoll = dieRoll;
 		this.setLayout(new GridLayout(2,4));
 		setBorder(BorderFactory.createTitledBorder("Game Control Panel"));
 		addElements();
@@ -20,22 +30,57 @@ public class GameControlPanel extends JPanel {
 
 	public void addElements() {
 		WhoseTurn whoseTurn = new WhoseTurn();
-		GameButtons gameButtons = new GameButtons();
+		//GameButtons gameButtons = new GameButtons();
+		nextButton = new JButton("Next Player");
+		accButton = new JButton("Make an accusation");
+
 		Die die = new Die();
 		Guess guess = new Guess();
 		GuessResult guessResult = new GuessResult();
 		add(whoseTurn);
-		add(gameButtons);
+		//add(gameButtons);
+		add(nextButton);
+		add(accButton);
 		add(die);
 		add(guess);
 		add(guessResult);
+		nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				
+				System.out.println("NextButton pushed - send a control signal, " + nextPushed);
+				// how do we get this info to board?
+				nextPushed = true;
+				
+			}
+		});
+
+		accButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.println("Make an accusation button pushed");
+				accPushed = true;
+			}
+		});		
 	}
 
 	@Override
 	public Dimension getPreferredSize() {  // sets the size the PlayerDisplay
 		return new Dimension(0, 150); // kill the magic numbers!
 	}
+	
 
+	
+	public boolean getNextButton () {
+		if(nextPushed) {
+			nextPushed = false;
+			System.out.println("At getNextButton");
+			return true;
+		}
+		return false;
+	}
+	
+// classes
 	public class WhoseTurn extends JPanel {
 		public WhoseTurn() {
 			setLayout(new GridLayout(1,0));
@@ -50,35 +95,34 @@ public class GameControlPanel extends JPanel {
 		}
 	}
 
-	public class GameButtons extends JPanel {
-		private JButton nextButton, accButton;
-
-		public GameButtons() {
-			setLayout(new GridLayout(1,0));
-			nextButton = new JButton("Next Player");
-			accButton = new JButton("Make an accusation");
-
-			nextButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e)
-				{
-					//setVisible(false);
-					// now what?
-					System.out.println("NextButton pushed");
-				}
-			});
-
-			accButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e)
-				{
-					//setVisible(false);
-					// now what?
-					System.out.println("Make an accusation button pushed");
-				}
-			});		
-			add(nextButton);
-			add(accButton);
-		}
-	}
+//	public class GameButtons extends JPanel {
+//		private JButton nextButton, accButton;
+//
+//		public GameButtons() {
+//			setLayout(new GridLayout(1,0));
+//			nextButton = new JButton("Next Player");
+//			accButton = new JButton("Make an accusation");
+//
+//			nextButton.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e)
+//				{
+//					System.out.println("NextButton pushed - send a control signal");
+//					// how do we get this info to board?
+//					
+//				}
+//			});
+//
+//			accButton.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e)
+//				{
+//					System.out.println("Make an accusation button pushed");
+//					
+//				}
+//			});		
+//			add(nextButton);
+//			add(accButton);
+//		}
+//	}
 	
 	public class Die extends JPanel {
 		public Die() {
@@ -86,8 +130,7 @@ public class GameControlPanel extends JPanel {
 			setBorder(BorderFactory.createTitledBorder("Die"));
 			JLabel roll = new JLabel("Roll");
 			JTextField numRoll = new JTextField();
-			int testNum = 5; // a test value
-			numRoll.setText(Integer.toString(testNum));
+			numRoll.setText(Integer.toString(dieRoll));
 			
 			add(roll);
 			add(numRoll);

@@ -77,9 +77,7 @@ public class Board extends JPanel{
 	
 	private boolean[] visited;
 	
-//panels
-//	PlayerDisplay playerDisplay = new PlayerDisplay();
-//	GameControlPanel gameControlPanel = new GameControlPanel();
+
 	
 //
 ////////////////////////////////
@@ -95,6 +93,8 @@ public class Board extends JPanel{
 //panel graphics
 		addGridElements();
 		//board panel graphics are all in draw() and paintComponents method()
+		//playGame();
+		
 	}
 	
 	public Board (LayoutManager layout) {
@@ -570,15 +570,18 @@ public class Board extends JPanel{
 		return someCard;
 	}
 	
+	
+	
 //	
 ////////////////////////////////
 // Graphics methods
 	//panels
 		
-		//GameControlPanel gameControlPanel = new GameControlPanel();	
+		GameControlPanel gameControlPanel = new GameControlPanel(4);	
 
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
+	
 	public void paintComponent(Graphics g) {
 		//draw cells
 		for(int i = 0; i < (numRows * numColumns) ; i++) {
@@ -593,6 +596,7 @@ public class Board extends JPanel{
 	}	
 	
 	//this needs to be moved to Cluegame
+	
 		public void addGridElements() {
 		setLayout(new BorderLayout());
 		
@@ -600,15 +604,16 @@ public class Board extends JPanel{
 		ArrayList<Card> displayCards = new ArrayList<Card>();
 		displayCards = allPlayers.get(0).getPlayerCards();
 		PlayerDisplay playerDisplay = new PlayerDisplay(displayCards);
-		GameControlPanel gameControlPanel = new GameControlPanel();	
+		//GameControlPanel gameControlPanel = new GameControlPanel(3);
+		
 		
 		//next 5 lines for debugging to console screen - shows what cards a player has
-		int playerNumber = 2;
-		for(int i = 0; i < displayCards.size(); i++) {
-			displayCards = allPlayers.get(playerNumber).getPlayerCards();
-			System.out.println("size: " + displayCards.size());
-			System.out.println("Player: " + allPlayers.get(playerNumber).name.toString()  +","  + displayCards.get(i).type.toString() + ", "  + displayCards.get(i).name.toString());
-		}
+//		int playerNumber = 2;
+//		for(int i = 0; i < displayCards.size(); i++) {
+//			displayCards = allPlayers.get(playerNumber).getPlayerCards();
+//			System.out.println("size: " + displayCards.size());
+//			System.out.println("Player: " + allPlayers.get(playerNumber).name.toString()  +","  + displayCards.get(i).type.toString() + ", "  + displayCards.get(i).name.toString());
+//		}
 
 
 		playerDisplay.setVisible(true);
@@ -616,6 +621,19 @@ public class Board extends JPanel{
 		gameControlPanel.setVisible(true);
 		add(gameControlPanel, BorderLayout.SOUTH);
 	}
+		// precondition: all setups are finished, player is ready to start the game. this 
+		public void playGame() {
+			boolean runFlag = true;
+			System.out.println("in playGame");
+			while(runFlag) {
+				if(gameControlPanel.getNextButton()) {
+					System.out.println("Next button passed to board");
+					runFlag = false;
+					repaint();
+				}
+			}
+
+		}
 
 
 	
@@ -634,8 +652,11 @@ public class Board extends JPanel{
 		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clueGame.setVisible(true);
 		
+		
 		//@SuppressWarnings("unused")
-		//Board board = new Board();  // this might not be needed because it is called in clueGame.setContentPane(new Board());
+		Board board = new Board();  // this might not be needed because it is called in clueGame.setContentPane(new Board());
+		board.playGame();
+		
 		
 		
 //		System.out.println("Starting positions for players (given by index): ");
