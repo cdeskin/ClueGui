@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Checkbox;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ public class AccusationDialog extends JDialog {
 	public AccusationDialog() {  //constructor
 		this.setTitle("Accusation");
 		this.setSize(new Dimension(750,200) );
+		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		addElements();
 	}
 	
