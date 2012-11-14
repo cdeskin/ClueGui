@@ -13,8 +13,8 @@ public class GameControlPanel extends JPanel {
 	public String playerTurn;
 	public String playerGuess;
 	public String playerResult;
-	private boolean nextPushed;
-	private boolean accPushed;
+	public boolean nextPushed;
+	public boolean accPushed;
 	
 
 
@@ -48,7 +48,7 @@ public class GameControlPanel extends JPanel {
 			public void actionPerformed(ActionEvent e)
 			{
 				
-				System.out.println("NextButton pushed - send a control signal, " + nextPushed);
+				//System.out.println("NextButton pushed - send a control signal, " + nextPushed);
 				// how do we get this info to board?
 				nextPushed = true;
 				
@@ -58,7 +58,7 @@ public class GameControlPanel extends JPanel {
 		accButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.println("Make an accusation button pushed");
+				//System.out.println("Make an accusation button pushed");
 				accPushed = true;
 			}
 		});		
@@ -71,10 +71,18 @@ public class GameControlPanel extends JPanel {
 	
 
 	
-	public boolean getNextButton () {
+	public boolean getNextButton() {
 		if(nextPushed) {
 			nextPushed = false;
-			System.out.println("At getNextButton");
+			//System.out.println("At getNextButton");
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean getAccButton() {
+		if(accPushed) {
+			accPushed = false;
 			return true;
 		}
 		return false;

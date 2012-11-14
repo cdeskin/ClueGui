@@ -623,13 +623,16 @@ public class Board extends JPanel{
 	}
 		// precondition: all setups are finished, player is ready to start the game. this 
 		public void playGame() {
-			boolean runFlag = true;
 			System.out.println("in playGame");
-			while(runFlag) {
+			while(true) {
 				if(gameControlPanel.getNextButton()) {
 					System.out.println("Next button passed to board");
-					runFlag = false;
 					repaint();
+				}
+				if(gameControlPanel.getAccButton()) {
+					System.out.println("Accusation button passed to board");
+					repaint();
+
 				}
 			}
 
@@ -643,29 +646,17 @@ public class Board extends JPanel{
 //	main method, for debugging purposes
 //	
 
-// main moved to ClueGame.java
+
 	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
 		System.out.println("Hello world!!\n");
 		
+		Board board = new Board();
 		ClueGame clueGame= new ClueGame(); 
- 		clueGame.setContentPane(new Board());
+ 		clueGame.setContentPane(board); //new Board()
 		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clueGame.setVisible(true);
 		
-		
-		//@SuppressWarnings("unused")
-		Board board = new Board();  // this might not be needed because it is called in clueGame.setContentPane(new Board());
 		board.playGame();
-		
-		
-		
-//		System.out.println("Starting positions for players (given by index): ");
-//		System.out.println("Miss Scarlet: " + board.calcIndex(13, 22));
-//		System.out.println("Mr. Green: " + board.calcIndex(21, 6));
-//		System.out.println("Mrs. Peacock: " + board.calcIndex(0, 4));
-//		System.out.println("Colonel Mustard: " + board.calcIndex(21, 15));
-//		System.out.println("Mrs. White: " + board.calcIndex(13, 0));
-//		System.out.println("Professor Plum: " + board.calcIndex(0, 19));
 	
 		System.out.println("\nGoodbye world..");
 	}
