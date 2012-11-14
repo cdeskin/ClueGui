@@ -3,8 +3,11 @@ package clueGame;
 import java.awt.Checkbox;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -12,7 +15,7 @@ import javax.swing.JPanel;
 public class AccusationDialog extends JDialog {
 	public AccusationDialog() {  //constructor
 		this.setTitle("Accusation");
-		this.setSize(new Dimension(750,100) );
+		this.setSize(new Dimension(750,200) );
 		addElements();
 	}
 	
@@ -24,6 +27,17 @@ public class AccusationDialog extends JDialog {
 		add(roomAccusation);
 		WeaponAccusation weaponAccusation = new WeaponAccusation();
 		add(weaponAccusation);
+		JButton accuseButton = new JButton("Accuse!");
+		add(accuseButton);
+		accuseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				
+				setVisible(false);
+				//send info to makeAccusation in board
+				
+			}
+		});
 	}
 	
 	public class PersonAccusation extends JPanel {
