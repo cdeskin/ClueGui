@@ -13,9 +13,9 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-public class AccusationDialog extends JDialog {
-	public AccusationDialog() {  //constructor
-		this.setTitle("Make an Accusation");
+public class SuggestionDialog extends JDialog {
+	public SuggestionDialog() {  //constructor
+		this.setTitle("Make A Suggestion");
 		this.setSize(new Dimension(750,200) );
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		addElements();
@@ -23,28 +23,28 @@ public class AccusationDialog extends JDialog {
 	
 	public void addElements() {
 		setLayout(new GridLayout(0,3));
-		PersonAccusation peopleAccusation = new PersonAccusation();
-		add(peopleAccusation);
-		RoomAccusation roomAccusation = new RoomAccusation();
-		add(roomAccusation);
-		WeaponAccusation weaponAccusation = new WeaponAccusation();
-		add(weaponAccusation);
-		JButton accuseButton = new JButton("Accuse!");
-		add(accuseButton);
-		accuseButton.addActionListener(new ActionListener() {
+		PersonSuggestion peopleSuggestion = new PersonSuggestion();
+		add(peopleSuggestion);
+		RoomSuggestion roomSuggestion = new RoomSuggestion();
+		add(roomSuggestion);
+		WeaponSuggestion weaponSuggestion = new WeaponSuggestion();
+		add(weaponSuggestion);
+		JButton suggestButton = new JButton("Suggest");
+		add(suggestButton);
+		suggestButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
 				
 				setVisible(false);
-				//send info to makeAccusation in board
+				//send info to board
 				
 			}
 		});
 	}
 	
-	public class PersonAccusation extends JPanel {
+	public class PersonSuggestion extends JPanel {
 		private JComboBox<String> combo;
-		public PersonAccusation(){
+		public PersonSuggestion(){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Person Guess"));
 			
@@ -60,9 +60,9 @@ public class AccusationDialog extends JDialog {
 		}
 	}
 	
-	public class RoomAccusation extends JPanel {
+	public class RoomSuggestion extends JPanel {
 		private JComboBox<String> combo;
-		public RoomAccusation(){
+		public RoomSuggestion(){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Room Guess"));
 			
@@ -81,10 +81,10 @@ public class AccusationDialog extends JDialog {
 		}
 	}
 	
-	public class WeaponAccusation extends JPanel {
+	public class WeaponSuggestion extends JPanel {
 		private JComboBox<String> combo;
 		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench;
-		public WeaponAccusation(){
+		public WeaponSuggestion(){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Weapon Guess"));
 			
