@@ -68,7 +68,7 @@ public class Board extends JPanel{
 	ArrayList<BoardCell> cells = new ArrayList<BoardCell>();
 	Map<Character,String> rooms = new HashMap<Character,String>();	
 	
-	private Map<Integer, LinkedList<Integer>>adjList = new HashMap<Integer, LinkedList<Integer>>();
+	private Map<Integer, LinkedList<Integer>> adjList = new HashMap<Integer, LinkedList<Integer>>();
 	private HashSet<BoardCell> targets;
 	
 	int numRows;
