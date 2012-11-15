@@ -11,92 +11,71 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class SuggestionDialog extends JDialog {
+	public JComboBox<String> personCombo, roomCombo, weaponCombo;
+
 	public SuggestionDialog() {  //constructor
 		this.setTitle("Make a Suggestion");
 		this.setSize(new Dimension(750,200) );
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		addElements();
 	}
-	
+
 	public void addElements() {
 		setLayout(new GridLayout(0,3));
-		PersonSuggestion peopleSuggestion = new PersonSuggestion();
-		add(peopleSuggestion);
-		RoomSuggestion roomSuggestion = new RoomSuggestion();
-		add(roomSuggestion);
-		WeaponSuggestion weaponSuggestion = new WeaponSuggestion();
-		add(weaponSuggestion);
-		JButton suggestButton = new JButton("Suggest");
-		add(suggestButton);
-		suggestButton.addActionListener(new ActionListener() {
+
+		JLabel personLabel = new JLabel("Person Accusation");
+		JLabel roomLabel = new JLabel("Room Accusation");
+		JLabel weaponLabel = new JLabel("Weapon Accusation");
+
+		personCombo = new JComboBox<String>();
+		personCombo.addItem("Miss Scarlet");
+		personCombo.addItem("Mr. Green");
+		personCombo.addItem("Miss Peacock");
+		personCombo.addItem("Colonel Mustard");
+		personCombo.addItem("Miss White");
+		personCombo.addItem("Professor Plum");
+
+		roomCombo = new JComboBox<String>();
+		roomCombo.addItem("Kitchen");
+		roomCombo.addItem("Lounge");
+		roomCombo.addItem("Conservatory");
+		roomCombo.addItem("Study");
+		roomCombo.addItem("Billiard Room");
+		roomCombo.addItem("Ballroom");
+		roomCombo.addItem("Hall");
+		roomCombo.addItem("Dining Room");
+		roomCombo.addItem("Library");
+
+		weaponCombo = new JComboBox<String>();
+		weaponCombo.addItem("Candlestick");
+		weaponCombo.addItem("Lead Pipe");
+		weaponCombo.addItem("Rope");
+		weaponCombo.addItem("Knife");
+		weaponCombo.addItem("Revolver");
+		weaponCombo.addItem("Wrench");
+		weaponCombo.addItem("Gossip");
+		weaponCombo.addItem("Death Stare");
+
+		add(personLabel);
+		add(roomLabel);
+		add(weaponLabel);
+		add(personCombo);
+		add(roomCombo);
+		add(weaponCombo);
+		JButton accuseButton = new JButton("Accuse!");
+		add(accuseButton);
+		accuseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				
+
 				setVisible(false);
-				//send info to makeSuggestion in board
-				
+				//send info to makeAccusation in board
+
 			}
 		});
-	}
-	
-	public class PersonSuggestion extends JPanel {
-		private JComboBox<String> combo;
-		public PersonSuggestion(){
-			setLayout(new GridLayout(0,2));
-			setBorder(BorderFactory.createTitledBorder("Person Guess"));
-			
-			combo = new JComboBox<String>();
-			combo.addItem("Miss Scarlet");
-			combo.addItem("Mr. Green");
-			combo.addItem("Miss Peacock");
-			combo.addItem("Colonel Mustard");
-			combo.addItem("Miss White");
-			combo.addItem("Professor Plum");
-
-			add(combo);
-		}
-	}
-	
-	public class RoomSuggestion extends JPanel {
-		private JComboBox<String> combo;
-		public RoomSuggestion(){
-			setLayout(new GridLayout(0,2));
-			setBorder(BorderFactory.createTitledBorder("Room Guess"));
-			
-			combo = new JComboBox<String>();
-			combo.addItem("Kitchen");
-			combo.addItem("Lounge");
-			combo.addItem("Conservatory");
-			combo.addItem("Study");
-			combo.addItem("Billiard Room");
-			combo.addItem("Ballroom");
-			combo.addItem("Hall");
-			combo.addItem("Dining Room");
-			combo.addItem("Library");
-
-			add(combo);
-		}
-	}
-	
-	public class WeaponSuggestion extends JPanel {
-		private JComboBox<String> combo;
-		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench;
-		public WeaponSuggestion(){
-			setLayout(new GridLayout(0,2));
-			setBorder(BorderFactory.createTitledBorder("Weapon Guess"));
-			
-			combo = new JComboBox<String>();
-			combo.addItem("Candlestick");
-			combo.addItem("Lead Pipe");
-			combo.addItem("Rope");
-			combo.addItem("Knife");
-			combo.addItem("Revolver");
-			combo.addItem("Wrench");
-
-			add(combo);
-		}
 	}
 }
