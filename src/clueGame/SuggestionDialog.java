@@ -29,7 +29,7 @@ public class SuggestionDialog extends JDialog {
 		add(roomSuggestion);
 		WeaponSuggestion weaponSuggestion = new WeaponSuggestion();
 		add(weaponSuggestion);
-		JButton suggestButton = new JButton("Accuse!");
+		JButton suggestButton = new JButton("Suggest");
 		add(suggestButton);
 		suggestButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
