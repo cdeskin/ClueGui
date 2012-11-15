@@ -55,6 +55,8 @@ public class RoomCell extends BoardCell {
 		}
 	}
 	
+	
+	
 	public boolean isRoom() { return true; }
 
 	// for graphics
@@ -79,6 +81,8 @@ public class RoomCell extends BoardCell {
 			g.drawString(roomName.toUpperCase(), gridX, gridY);
 		}
 		
+
+		
 		g.setColor(Color.BLUE);
 		
 		
@@ -101,6 +105,11 @@ public class RoomCell extends BoardCell {
 //		}
 
 
+	}
+	
+	public void drawTargets(Graphics g) {
+		g.setColor(Color.CYAN);
+		g.fillRect(gridX, gridY, SCALER, SCALER);  //draw basic room shape
 	}
 
 	

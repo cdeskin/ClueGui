@@ -18,7 +18,7 @@ public class GameControlPanel extends JPanel {
 	
 
 
-	public GameControlPanel(int dieRoll) {
+	public GameControlPanel() {
 		//super();
 		this.nextPushed = false;
 		this.accPushed = false;

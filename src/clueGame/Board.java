@@ -70,6 +70,7 @@ public class Board extends JPanel{
 	
 	private Map<Integer, LinkedList<Integer>> adjList = new HashMap<Integer, LinkedList<Integer>>();
 	private HashSet<BoardCell> targets;
+	private ArrayList<Integer> targetsIndex = new ArrayList<Integer>();
 	
 	int numRows;
 	int numColumns;
@@ -596,7 +597,7 @@ public class Board extends JPanel{
 // Graphics methods
 	//panels
 		
-		GameControlPanel gameControlPanel = new GameControlPanel(4);
+		GameControlPanel gameControlPanel = new GameControlPanel();
 		static Board board;
 
 	// paintComponent is called automatically when the frame needs
@@ -607,6 +608,13 @@ public class Board extends JPanel{
 		for(int i = 0; i < (numRows * numColumns) ; i++) {
 			cells.get(i).draw(g); 
 		}
+		
+		
+		//draw targets
+		for(int i = 0; i < targetsIndex.size(); i++) {
+			cells.get(targetsIndex.get(i)).drawTargets(g);
+		}
+		
 		//draw players
 		for(int i = 0; i < allPlayers.size(); i++) { 
 			allPlayers.get(i).draw(g);
@@ -650,6 +658,13 @@ public class Board extends JPanel{
 			while(true) {
 				if(gameControlPanel.getNextButton()) {
 					System.out.println("Next button passed to board");
+					calcTargets(321, 2);
+					for(BoardCell temp : targets) {
+						//targetsIndex
+						targetsIndex.add(calcIndex(temp.row, temp.column));
+						System.out.println(calcIndex(temp.row, temp.column));
+					}
+					
 					repaint();
 				}
 				if(gameControlPanel.getAccButton()) {
