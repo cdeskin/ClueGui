@@ -667,6 +667,10 @@ public class Board extends JPanel{
 					System.out.println("Next button passed to board");
 					int dieNumber = rollDie();
 					gameControlPanel.setDieRoll(dieNumber);
+					// who is current player
+					// get player index
+					
+					// human or computer
 					
 					
 					calcTargets(321, dieNumber );
