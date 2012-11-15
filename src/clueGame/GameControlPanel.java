@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -15,6 +16,7 @@ public class GameControlPanel extends JPanel {
 	public String playerResult;
 	public boolean nextPushed;
 	public boolean accPushed;
+	public Die die;
 	
 
 
@@ -22,19 +24,23 @@ public class GameControlPanel extends JPanel {
 		//super();
 		this.nextPushed = false;
 		this.accPushed = false;
-		this.dieRoll = dieRoll;
+		
 		this.setLayout(new GridLayout(2,4));
 		setBorder(BorderFactory.createTitledBorder("Game Control Panel"));
 		addElements();
 	}
+	
+	
 
 	public void addElements() {
 		WhoseTurn whoseTurn = new WhoseTurn();
 		//GameButtons gameButtons = new GameButtons();
 		nextButton = new JButton("Next Player");
 		accButton = new JButton("Make an accusation");
+		
 
-		Die die = new Die();
+		die = new Die(8);
+		
 		Guess guess = new Guess();
 		GuessResult guessResult = new GuessResult();
 		add(whoseTurn);
@@ -87,6 +93,12 @@ public class GameControlPanel extends JPanel {
 		return false;
 	}
 	
+	public void setDieRoll(int dieRoll) {
+		die.setRoll(dieRoll);
+		
+	}
+	
+	
 // classes
 	public class WhoseTurn extends JPanel {
 		public WhoseTurn() {
@@ -102,45 +114,22 @@ public class GameControlPanel extends JPanel {
 		}
 	}
 
-//	public class GameButtons extends JPanel {
-//		private JButton nextButton, accButton;
-//
-//		public GameButtons() {
-//			setLayout(new GridLayout(1,0));
-//			nextButton = new JButton("Next Player");
-//			accButton = new JButton("Make an accusation");
-//
-//			nextButton.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent e)
-//				{
-//					System.out.println("NextButton pushed - send a control signal");
-//					// how do we get this info to board?
-//					
-//				}
-//			});
-//
-//			accButton.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent e)
-//				{
-//					System.out.println("Make an accusation button pushed");
-//					
-//				}
-//			});		
-//			add(nextButton);
-//			add(accButton);
-//		}
-//	}
 	
 	public class Die extends JPanel {
-		public Die() {
+		public JTextField numRoll;
+	
+		public Die(int dieRoll) {
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Die"));
 			JLabel roll = new JLabel("Roll");
-			JTextField numRoll = new JTextField();
+			numRoll = new JTextField();
 			numRoll.setText(Integer.toString(dieRoll));
 			
 			add(roll);
 			add(numRoll);
+		}
+		public void setRoll(int roll) {
+			this.numRoll.setText(Integer.toString(roll));
 		}
 	}
 	

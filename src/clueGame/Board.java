@@ -596,7 +596,6 @@ public class Board extends JPanel{
 		int pick = (rand.nextInt(6) + 1);// generator.nextInt(6) + 1;
 	       System.out.println("Die: " + Math.abs(pick));
 	       return Math.abs(pick);
-
 	}
 	
 	
@@ -666,8 +665,11 @@ public class Board extends JPanel{
 			while(true) {
 				if(gameControlPanel.getNextButton()) {
 					System.out.println("Next button passed to board");
-					rollDie();
-					calcTargets(321, 2);
+					int dieNumber = rollDie();
+					gameControlPanel.setDieRoll(dieNumber);
+					
+					
+					calcTargets(321, dieNumber );
 					for(BoardCell temp : targets) {
 						//targetsIndex
 						targetsIndex.add(calcIndex(temp.row, temp.column));
