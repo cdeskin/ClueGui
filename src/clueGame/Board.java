@@ -650,6 +650,8 @@ public class Board extends JPanel{
 	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
 		System.out.println("Hello world!!\n");
 		
+		JOptionPane.showMessageDialog(null, "You are Miss Scarlet, Press Next Player to begin.");
+		
 		Board board = new Board();
 		ClueGame clueGame= new ClueGame(); 
  		clueGame.setContentPane(board); //new Board()
