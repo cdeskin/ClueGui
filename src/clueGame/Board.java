@@ -590,6 +590,14 @@ public class Board extends JPanel{
 		return someCard;
 	}
 	
+	public int rollDie() {
+		int n = 5;
+		Random rand = new Random();
+		int pick = (rand.nextInt(6) + 1);// generator.nextInt(6) + 1;
+	       System.out.println("Die: " + Math.abs(pick));
+	       return Math.abs(pick);
+
+	}
 	
 	
 //	
@@ -658,6 +666,7 @@ public class Board extends JPanel{
 			while(true) {
 				if(gameControlPanel.getNextButton()) {
 					System.out.println("Next button passed to board");
+					rollDie();
 					calcTargets(321, 2);
 					for(BoardCell temp : targets) {
 						//targetsIndex
