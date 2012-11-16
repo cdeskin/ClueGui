@@ -5,12 +5,16 @@ import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Random;
 
+import javax.swing.JFrame;
+
 public class ComputerPlayer extends Player {
 	//graphics
 	static final int GRID_COLUMNS = Board.GRID_COLUMNS;
 	private int gridY;
 	private int gridX;
 	Color cColor;
+	SuggestionDialog suggestionDialog;
+	String personSuggestion, roomSuggestion, weaponSuggestion;
 	
 	
 	public ComputerPlayer() {
@@ -27,6 +31,8 @@ public class ComputerPlayer extends Player {
 		this.gridY = row*SCALER;  
 		this.gridX = column*SCALER;
 		cColor = convertColor(color);
+		suggestionDialog = new SuggestionDialog();
+		suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
 	@Override
@@ -45,6 +51,8 @@ public class ComputerPlayer extends Player {
 		for (BoardCell target : targets) {
 			if (target.isDoorway()) {
 				if(!target.equals(lastRoom))
+					suggestionDialog.setVisible(true);
+					personSuggestion = (String) suggestionDialog.personCombo.getSelectedItem();
 					return target;				
 			}
 		}

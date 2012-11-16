@@ -27,9 +27,9 @@ public class SuggestionDialog extends JDialog {
 	public void addElements() {
 		setLayout(new GridLayout(0,3));
 
-		JLabel personLabel = new JLabel("Person Accusation");
-		JLabel roomLabel = new JLabel("Room Accusation");
-		JLabel weaponLabel = new JLabel("Weapon Accusation");
+		JLabel personLabel = new JLabel("Person Suggestion");
+		JLabel roomLabel = new JLabel("Room Suggestion");
+		JLabel weaponLabel = new JLabel("Weapon Suggestion");
 
 		personCombo = new JComboBox<String>();
 		personCombo.addItem("Miss Scarlet");
@@ -66,9 +66,9 @@ public class SuggestionDialog extends JDialog {
 		add(personCombo);
 		add(roomCombo);
 		add(weaponCombo);
-		JButton accuseButton = new JButton("Accuse!");
-		add(accuseButton);
-		accuseButton.addActionListener(new ActionListener() {
+		JButton suggestButton = new JButton("Suggest");
+		add(suggestButton);
+		suggestButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
 
