@@ -765,8 +765,25 @@ public class Board extends JPanel implements MouseListener {
 				int mouseIndex = calcIndex(mouseRow, mouseColumn);
 				System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
 
+				 for(BoardCell tempTarget : targets) {
+					 if(mouseIndex == calcIndex(tempTarget.row, tempTarget.column))	{
+							allPlayers.get(playerNumber).setLocation(mouseIndex);
+							repaint();
+							//if(cells.get(mouseIndex).isRoom()){
+								//makeSuggestion(playerNumber, target);
+							//}
+					 }
+					
+				 }
+					 
+
+				//if(targets.contains(mouseIndex)) {
+					//System.out.println("yay, good square");
+				}
+				//System.out.println("targets size: " + targets.size());
+
 			}
-		}
+		
 
 
 	
