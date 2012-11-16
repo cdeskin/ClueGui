@@ -631,7 +631,10 @@ public class Board extends JPanel  implements MouseListener {
 		
 		//draw targets
 		for(int i = 0; i < targetsIndex.size(); i++) {
-			cells.get(targetsIndex.get(i)).drawTargets(g);
+			if(allPlayers.get(playerNumber).isHuman()) {
+				cells.get(targetsIndex.get(i)).drawTargets(g);	
+			}
+			
 		}
 		targetsIndex.clear();  //clear the previous turn
 		
@@ -759,6 +762,8 @@ public class Board extends JPanel  implements MouseListener {
 			int mouseColumn = e.getX() / SCALER;
 			int mouseIndex = calcIndex(mouseRow, mouseColumn);
 			System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
+			
+			
 		}
 
 	
