@@ -16,11 +16,13 @@ import javax.swing.JPanel;
 
 public class SuggestionDialog extends JDialog {
 	public JComboBox<String> personCombo, roomCombo, weaponCombo;
+	private String roomName;
 
-	public SuggestionDialog() {  //constructor
+	public SuggestionDialog(String roomName) {  //constructor
 		this.setTitle("Make a Suggestion");
 		this.setSize(new Dimension(750,200) );
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		this.roomName = roomName;
 		addElements();
 	}
 
@@ -40,15 +42,8 @@ public class SuggestionDialog extends JDialog {
 		personCombo.addItem("Professor Plum");
 
 		roomCombo = new JComboBox<String>();
-		roomCombo.addItem("Kitchen");
-		roomCombo.addItem("Lounge");
-		roomCombo.addItem("Conservatory");
-		roomCombo.addItem("Study");
-		roomCombo.addItem("Billiard Room");
-		roomCombo.addItem("Ballroom");
-		roomCombo.addItem("Hall");
-		roomCombo.addItem("Dining Room");
-		roomCombo.addItem("Library");
+		roomCombo.addItem(roomName);
+		roomCombo.setEnabled(false);
 
 		weaponCombo = new JComboBox<String>();
 		weaponCombo.addItem("Candlestick");

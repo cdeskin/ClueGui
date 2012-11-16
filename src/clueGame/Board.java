@@ -627,7 +627,7 @@ public class Board extends JPanel{
 		
 		//draw targets
 		for(int i = 0; i < targetsIndex.size(); i++) {
-			/*if(allPlayers.get(playerNumber).isHuman()) {*/cells.get(targetsIndex.get(i)).drawTargets(g);//}
+			cells.get(targetsIndex.get(i)).drawTargets(g);
 		}
 		targetsIndex.clear();  //clear the previous turn
 		
@@ -713,6 +713,9 @@ public class Board extends JPanel{
 						int targetIndex = calcIndex(target.row, target.column);
 						System.out.println("GetPlayerMove: " + targetIndex);
 						allPlayers.get(playerNumber).setLocation(targetIndex);
+						if(allPlayers.get(playerNumber).lastWasRoom){
+							//check the suggestion
+						}
 						
 					}
 					repaint();

@@ -54,6 +54,11 @@ public class BoardCell extends JPanel{
 
 	}
 	
+	public String getRoomName(){
+		System.out.println("BoardCell getRoomName");
+		return "";
+	}
+	
 	public void drawTargets(Graphics g) {
 		
 	}

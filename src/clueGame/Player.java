@@ -16,6 +16,7 @@ public abstract class Player {
 	public int indexedLocation;
 //graphics
 	static final int SCALER = Board.SCALER;
+	public boolean lastWasRoom = false;
 	//static final int GRID_COLUMNS = Board.GRID_COLUMNS;
 	
 	public Player(String name, String color, int startingIndexedLocation) {

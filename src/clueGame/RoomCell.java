@@ -107,6 +107,10 @@ public class RoomCell extends BoardCell {
 
 	}
 	
+	public String getRoomName(){
+		return roomName;
+	}
+	
 	public void drawTargets(Graphics g) {
 		g.setColor(Color.CYAN);
 		g.fillRect(gridX, gridY, SCALER, SCALER);  //draw basic room shape

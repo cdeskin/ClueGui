@@ -13,8 +13,9 @@ public class ComputerPlayer extends Player {
 	private int gridY;
 	private int gridX;
 	Color cColor;
-	SuggestionDialog suggestionDialog;
-	String personSuggestion, roomSuggestion, weaponSuggestion;
+	private String personSuggestion, roomSuggestion, weaponSuggestion;
+	public boolean lastWasRoom = false;
+	private SuggestionDialog suggestionDialog;
 	
 	
 	public ComputerPlayer() {
@@ -31,8 +32,6 @@ public class ComputerPlayer extends Player {
 		this.gridY = row*SCALER;  
 		this.gridX = column*SCALER;
 		cColor = convertColor(color);
-		suggestionDialog = new SuggestionDialog();
-		suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 	
 	@Override
@@ -51,13 +50,18 @@ public class ComputerPlayer extends Player {
 		for (BoardCell target : targets) {
 			if (target.isDoorway()) {
 				if(!target.equals(lastRoom))
+					suggestionDialog = new SuggestionDialog(target.getRoomName());
 					suggestionDialog.setVisible(true);
+					suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					personSuggestion = (String) suggestionDialog.personCombo.getSelectedItem();
+					weaponSuggestion = (String) suggestionDialog.weaponCombo.getSelectedItem();
+					lastWasRoom = true;
 					return target;				
 			}
 		}
 		
 		targets.remove(lastRoom);
+		lastWasRoom = false;
 		
 		targetChoice = numGenerator.nextInt(targets.size());
 		targetArray = targets.toArray(new BoardCell[targets.size()]);
@@ -65,6 +69,18 @@ public class ComputerPlayer extends Player {
 		return targetArray[targetChoice];
 	}
 	
+	public String getPersonSuggestion() {
+		return personSuggestion;
+	}
+
+	public String getRoomSuggestion() {
+		return roomSuggestion;
+	}
+
+	public String getWeaponSuggestion() {
+		return weaponSuggestion;
+	}
+
 	//graphics
 	public void draw(Graphics g) {
 		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);
