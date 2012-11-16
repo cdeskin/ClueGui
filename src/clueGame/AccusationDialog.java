@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,11 +17,15 @@ import javax.swing.JPanel;
 
 public class AccusationDialog extends JDialog {
 	public JComboBox<String> personCombo, roomCombo, weaponCombo;
+	public ArrayList<Card> peopleDeck, roomDeck, weaponDeck;
 	
-	public AccusationDialog() {  //constructor
+	public AccusationDialog(ArrayList<Card> peopleDeck, ArrayList<Card> roomDeck, ArrayList<Card> weaponDeck) {  //constructor
 		this.setTitle("Make an Accusation");
 		this.setSize(new Dimension(750,200) );
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		this.peopleDeck = peopleDeck;
+		this.roomDeck = roomDeck;
+		this.weaponDeck = weaponDeck;
 		addElements();
 	}
 	
@@ -32,33 +37,19 @@ public class AccusationDialog extends JDialog {
 		JLabel weaponLabel = new JLabel("Weapon Accusation");
 	
 		personCombo = new JComboBox<String>();
-		personCombo.addItem("Miss Scarlet");
-		personCombo.addItem("Mr. Green");
-		personCombo.addItem("Mrs. Peacock");
-		personCombo.addItem("Colonel Mustard");
-		personCombo.addItem("Mrs. White");
-		personCombo.addItem("Professor Plum");
+		for(Card tempCard : peopleDeck){
+			personCombo.addItem(tempCard.name);
+		}
 		
 		roomCombo = new JComboBox<String>();
-		roomCombo.addItem("Kitchen");
-		roomCombo.addItem("Lounge");
-		roomCombo.addItem("Conservatory");
-		roomCombo.addItem("Study");
-		roomCombo.addItem("Billiard Room");
-		roomCombo.addItem("Ballroom");
-		roomCombo.addItem("Hall");
-		roomCombo.addItem("Dining Room");
-		roomCombo.addItem("Library");
+		for(Card tempCard : roomDeck){
+			roomCombo.addItem(tempCard.name);
+		}
 		
 		weaponCombo = new JComboBox<String>();
-		weaponCombo.addItem("Candlestick");
-		weaponCombo.addItem("Lead Pipe");
-		weaponCombo.addItem("Rope");
-		weaponCombo.addItem("Knife");
-		weaponCombo.addItem("Revolver");
-		weaponCombo.addItem("Wrench");
-		weaponCombo.addItem("Gossip");
-		weaponCombo.addItem("Death Glare");
+		for(Card tempCard : weaponDeck){
+			weaponCombo.addItem(tempCard.name);
+		}
 
 		add(personLabel);
 		add(roomLabel);

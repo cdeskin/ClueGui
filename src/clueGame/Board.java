@@ -39,75 +39,75 @@ import javax.swing.*;
 import clueGame.Card.CardType;
 
 public class Board extends JPanel implements MouseListener {
-	
 
-////////////////////////////////
-//  configuration files
+
+	////////////////////////////////
+	//  configuration files
 	private static final String boardConfigFile = "config/ClueLayout.csv";
 	private static final String boardLegendFile = "config/ClueLegend.txt";
-//	CluePlayers
+	//	CluePlayers
 	private static final String boardPlayersFile = "config/CluePlayers.txt";
 	private static final String boardCardsFile = "config/ClueCards.txt";
-// Graphics
-	
+	// Graphics
+
 	// this copy of SCALER is referenced by all classes
 	public static final int SCALER = 25;
 	// used for graphics in ComputerPlayer and HumanPlayer
 	public static final int GRID_COLUMNS = 23; 
-	
-//Game play globals
+
+	//Game play globals
 	private int playerNumber;
 	private int playerLocation;
 
-	
-// Graphics Notes
+
+	// Graphics Notes
 	/* Two types of graphics are used - LayoutManager and bitmap. 
 	 *  paintComponent(Graphics g) is in board.java and calls draw() in itself and it extended classes.
 	 *  Cluegame.java handles the main frame, addElements() handles the panels. 
 	 * */
-//
-////////////////////////////////
-	
-////////////////////////////////
-//  declaration of variables
-//
-	
+	//
+	////////////////////////////////
+
+	////////////////////////////////
+	//  declaration of variables
+	//
+
 	ArrayList<BoardCell> cells = new ArrayList<BoardCell>();
 	Map<Character,String> rooms = new HashMap<Character,String>();	
-	
+
 	private Map<Integer, LinkedList<Integer>> adjList = new HashMap<Integer, LinkedList<Integer>>();
 	private HashSet<BoardCell> targets;
 	private ArrayList<Integer> targetsIndex = new ArrayList<Integer>();
-	
+
 	int numRows;
 	int numColumns;
 	int index;
-	
-	private boolean[] visited;
-	
 
-	
-//
-////////////////////////////////
-	
-////////////////////////////////
-//  ClueGameBoard part 1
-//  constructor with initial setup shenanigans
-//
-	
+	private boolean[] visited;
+
+
+
+	//
+	////////////////////////////////
+
+	////////////////////////////////
+	//  ClueGameBoard part 1
+	//  constructor with initial setup shenanigans
+	//
+
 	public Board() throws FileNotFoundException, BadConfigFormatException{
 		loadConfigFiles();
 		calcAdjacencies();
-//panel graphics
+		//panel graphics
 		addGridElements();
-		
-		accusationDialog = new AccusationDialog();
+
+		accusationDialog = new AccusationDialog(peopleDeck, roomDeck, weaponDeck);
 		accusationDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		//board panel graphics are all in draw() and paintComponents method()
 		addMouseListener(this);
-		
+
 	}
-	
+
 	public Board (LayoutManager layout) {
 		super(layout);
 	}
@@ -117,7 +117,7 @@ public class Board extends JPanel implements MouseListener {
 		loadConfigBoard();
 		loadCluePlayerConfigFiles();
 	}
-	
+
 	public void loadConfigLegend() {
 		try {
 			FileReader reader = new FileReader(boardLegendFile);
@@ -137,34 +137,34 @@ public class Board extends JPanel implements MouseListener {
 			System.out.println(e);
 		}
 	}
-	
+
 	public void loadConfigBoard() {
 		try {
 			FileReader reader = new FileReader(boardConfigFile);
 			Scanner in = new Scanner(reader);
 			while (in.hasNext()) {
 				String input = in.nextLine();
-				
+
 				String[] tokens = input.split(",");
-				
+
 				if (input.length() < 1) {
 					throw new BadConfigFormatException("Error with board config file.");
 				}
-				
+
 				for (int i = 0; i < tokens.length; i++) {
 					if (tokens[i].equalsIgnoreCase("W")) {
 						cells.add(new WalkwayCell(numRows, i));
-						
+
 					} else {
 						cells.add(new RoomCell(numRows, i, tokens[i], this.getRoomName(tokens[i])));  // added 4th parameter for graphics
 					}
 				}
-				
+
 				numRows++;
 			}
-			
+
 			numColumns = (cells.size() / numRows);
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} catch (BadConfigFormatException e) {
@@ -173,14 +173,14 @@ public class Board extends JPanel implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void calcAdjacencies() {
 		for (int x = 0; x < numRows; x++) {
 			for (int y = 0; y < numColumns; y++) {
 				LinkedList<Integer> list = new LinkedList<Integer>();
-				
+
 				int index = calcIndex(x, y);
-				
+
 				if(getCellAt(index).isWalkway()){
 					if (x > 0) {
 						int attempt = calcIndex(x-1, y);
@@ -207,10 +207,10 @@ public class Board extends JPanel implements MouseListener {
 						}
 					}
 				}
-				
+
 				else if(getCellAt(index).isRoom()){
 					RoomCell r = getRoomCellAt(x, y);
-					
+
 					if(r.isDoorway()){
 						switch (r.doorDirection){
 						case DOWN:
@@ -234,23 +234,23 @@ public class Board extends JPanel implements MouseListener {
 							}
 							break;
 						default:
-							
+
 						}
 					}
 				}
-						
+
 				adjList.put(index, list);
 			}
 		}
 	}
-//	helper method for calcAdjancencies
+	//	helper method for calcAdjancencies
 	public boolean validMove(int current, int attempt){
 		if (getCellAt(attempt).isWalkway()){
 			return true;
 		}
 		else if(getCellAt(attempt).isRoom()){
 			RoomCell r = getRoomCellAt(attempt);
-			
+
 			if(r.isDoorway()){
 				switch (r.doorDirection){
 				case DOWN:
@@ -274,150 +274,153 @@ public class Board extends JPanel implements MouseListener {
 					}
 					break;
 				default:
-					
+
 				}
 			}
 		}
-	
+
 		return false;
 	}
-	
-//
-////////////////////////////////
-	
-////////////////////////////////
-//	ClueGameBoard part i
-//	calcIndex instance method and getters
-//	
-	
-//	instance method calcIndex
+
+	//
+	////////////////////////////////
+
+	////////////////////////////////
+	//	ClueGameBoard part i
+	//	calcIndex instance method and getters
+	//	
+
+	//	instance method calcIndex
 	public int calcIndex(int row, int column) { return ((numColumns)*row) + column; }
-//	get get get your getters
+	//	get get get your getters
 	public RoomCell getRoomCellAt(int row, int column) {
 		index = calcIndex(row, column);
 		if ((cells.get(index)).isRoom()) {
-			
+
 			return (RoomCell) cells.get(index);
 		} 
-		
+
 		return null;
 	}
-	
+
 	public RoomCell getRoomCellAt(int index) {
 		if ((cells.get(index)).isRoom()) {
 			return (RoomCell) cells.get(index);
 		}
-		
+
 		return null;
 	}
 
 	public BoardCell getCellAt(int index) { return cells.get(index); }
 
 	public Map<Character, String> getRooms() { return rooms; }
-	
+
 	//graphics - for printing room name on grid.
 	public String getRoomName(String tokens) { return rooms.get( tokens.charAt(0));	}
 
 	public int getNumRows() { return numRows; }
 
 	public int getNumColumns() { return numColumns; }
-	
-//	
-////////////////////////////////
-	
-////////////////////////////////
-//	ClueGameBoard part ii	
-//	calcTargets and getters
-//	
-	
+
+	//	
+	////////////////////////////////
+
+	////////////////////////////////
+	//	ClueGameBoard part ii	
+	//	calcTargets and getters
+	//	
+
 	public void calcTargets(int index, int steps) {
 		visited = new boolean[getNumColumns()*getNumRows()];
 		targets = new HashSet<BoardCell>();
-		
+
 		LinkedList<Integer> path = new LinkedList<Integer>();
-		
+
 		visited[index] = true;
-		
+
 		visitTargets(adjList.get(index), path, steps);
 	}
-//	helper method for calcTargets, recursive
+	//	helper method for calcTargets, recursive
 	public void visitTargets(LinkedList<Integer> adjacents, LinkedList<Integer> path, int steps) {
-		
+
 		LinkedList<Integer> adjacentsClone = new LinkedList<Integer>();
 		adjacentsClone.addAll(adjacents);
-		
- 		for (Iterator<Integer> itr = adjacentsClone.iterator(); itr.hasNext();) {
-			
+
+		for (Iterator<Integer> itr = adjacentsClone.iterator(); itr.hasNext();) {
+
 			int current = itr.next();
-			
+
 			if (getCellAt(current).isRoom()) {
 				targets.add(getCellAt(current));
 			}
-			
+
 			else {
-			
+
 				path.addLast(current);
 				visited[current] = true;
-				
+
 				if (path.size() == steps) { targets.add(getCellAt(current)); }
 				else {
 					LinkedList<Integer>	list = new LinkedList<Integer>();
 					list.addAll(adjList.get(current));
-					
+
 					for (Iterator<Integer> itr2 = list.iterator(); itr2.hasNext();){
 						int node = itr2.next();
-						
+
 						if(visited[node]) {
 							itr2.remove();
 						}
 					}
-					
+
 					if (list.size() > 0) {
 						visitTargets(list, path, steps);
 					}
 				}
-				
+
 				visited[current] = false;
-				
+
 				path.removeLast();
-				
+
 			}
-			
- 		}
- 		
+
+		}
+
 	}
-//	getters
+	//	getters
 	public HashSet<BoardCell> getTargets() { return targets; }
-	
+
 	public LinkedList<Integer> getAdjList(int cell) { return adjList.get(cell); }
 
-//	
-////////////////////////////////
-	
-////////////////////////////////
-//	CluePlayers
-//	
-	
-//	variables
+	//	
+	////////////////////////////////
+
+	////////////////////////////////
+	//	CluePlayers
+	//	
+
+	//	variables
 	public ArrayList<Player> allPlayers = new ArrayList<Player>();
 	public Player getPlayer(int index) { return allPlayers.get(index); }
-	
+
 	public ArrayList<Card> deck = new ArrayList<Card>();
+	public ArrayList<Card> peopleDeck = new ArrayList<Card>();
+	public ArrayList<Card> roomDeck = new ArrayList<Card>();
+	public ArrayList<Card> weaponDeck = new ArrayList<Card>();
 	public ArrayList<Card> dealDeck = new ArrayList<Card>();
-	
+
 	public ArrayList<Card> cardsSeen = new ArrayList<Card>();
 	public ArrayList<Card> solution = new ArrayList<Card>();
-	
+
 	public AccusationDialog accusationDialog;
-	
-//	variables to hold list of cards, list of computer 
-//	players, one human player, and an indicator of whose turn it is
-	
-//	i say we have one ArrayList of Players, instantiate in order of file
-	
-////////////////////////////////
-//	GameSetup section
-//	
+
+	//	variables to hold list of cards, list of computer 
+	//	players, one human player, and an indicator of whose turn it is
+
+	//	i say we have one ArrayList of Players, instantiate in order of file
+
+	////////////////////////////////
+	//	GameSetup section
+	//	
 
 	public void loadCluePlayerConfigFiles() throws FileNotFoundException, BadConfigFormatException {
 		// create players
@@ -427,7 +430,7 @@ public class Board extends JPanel implements MouseListener {
 		// deal cards
 		dealClueCards();
 	}
-	
+
 	public void loadCluePlayers() throws FileNotFoundException, BadConfigFormatException {
 		FileReader reader = new FileReader(boardPlayersFile);
 		Scanner in = new Scanner(reader);
@@ -435,13 +438,13 @@ public class Board extends JPanel implements MouseListener {
 			String input = in.nextLine();
 			String[] tokens = input.split(",");
 			if (tokens.length != 4) { throw new BadConfigFormatException("Unexpected notation in players file."); }
-			
+
 			if (tokens[0].equalsIgnoreCase("human")) { allPlayers.add(new HumanPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
 			else if (tokens[0].equalsIgnoreCase("computer")) { allPlayers.add(new ComputerPlayer(tokens[1], tokens[2], Integer.parseInt(tokens[3]))); }
 			else { throw new BadConfigFormatException("Unexpected notation in players file."); }
 		}
 	}
-	
+
 	public void loadClueCards() throws FileNotFoundException, BadConfigFormatException {
 		FileReader reader = new FileReader(boardCardsFile);
 		Scanner in = new Scanner(reader);
@@ -449,22 +452,22 @@ public class Board extends JPanel implements MouseListener {
 			String input = in.nextLine();
 			String[] tokens = input.split(",");
 			if (tokens.length != 2) { throw new BadConfigFormatException("Unexpected notation in cards file."); }
-			
-			if (tokens[0].equalsIgnoreCase("person")) { deck.add(new Card(tokens[1], CardType.PERSON)); }
-			else if (tokens[0].equalsIgnoreCase("room")) { deck.add(new Card(tokens[1], CardType.ROOM)); }
-			else if (tokens[0].equalsIgnoreCase("weapon")) { deck.add(new Card(tokens[1], CardType.WEAPON)); }
+
+			if (tokens[0].equalsIgnoreCase("person")) { deck.add(new Card(tokens[1], CardType.PERSON)); peopleDeck.add(new Card(tokens[1], CardType.PERSON)); }
+			else if (tokens[0].equalsIgnoreCase("room")) { deck.add(new Card(tokens[1], CardType.ROOM)); roomDeck.add(new Card(tokens[1], CardType.PERSON)); }
+			else if (tokens[0].equalsIgnoreCase("weapon")) { deck.add(new Card(tokens[1], CardType.WEAPON)); weaponDeck.add(new Card(tokens[1], CardType.PERSON)); }
 			else { throw new BadConfigFormatException("Unexpected notation in cards file."); }
 		}
 	}
-	
+
 	public void dealClueCards() {
-		
+
 		Random hazard = new Random();
 		int playerIndex = 0;
 		Card someCard;
 
 		dealDeck.addAll(deck);
-		
+
 		// create solution set
 		while (true) {
 			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
@@ -490,37 +493,37 @@ public class Board extends JPanel implements MouseListener {
 				break;
 			}
 		}
-		
+
 		// deal out rest of cards
 		while (!dealDeck.isEmpty()) {
 			someCard = dealDeck.get(hazard.nextInt(dealDeck.size()));
 			dealDeck.remove(someCard);
 			allPlayers.get(playerIndex).cards.add(someCard);
-			
+
 			++playerIndex;
 			if (playerIndex == allPlayers.size()) playerIndex = 0;
 		}
-		
+
 		for(Card temp : solution)
 			System.out.println(temp.name);
 	}
 
-//	
-////////////////////////////////
+	//	
+	////////////////////////////////
 
-////////////////////////////////
-//	 GameAction section
-//	
-	
+	////////////////////////////////
+	//	 GameAction section
+	//	
+
 	// return true if accusation is true, false otherwise
 	public boolean checkAccusation(Card person, Card room, Card weapon){
 		ArrayList<Card> accusation = new ArrayList<Card>();
 		boolean personMatch = false, roomMatch = false, weaponMatch = false;
-		
+
 		accusation.add(person);
 		accusation.add(room);
 		accusation.add(weapon);		
-		
+
 		for(Card temp : solution){
 			if(person.name.equalsIgnoreCase(temp.name))
 				personMatch = true;
@@ -529,11 +532,11 @@ public class Board extends JPanel implements MouseListener {
 			else if(weapon.name.equalsIgnoreCase(temp.name))
 				weaponMatch = true;
 		}
-		
+
 		if (personMatch && roomMatch && weaponMatch) return true;
 		else return false;
 	}
-	
+
 	//returns a card from a player or null card if no players have any of suggested cards
 	public Card disproveSuggestion(int currentPlayer, String person, String room, String weapon) {
 		Card someCard;
@@ -541,7 +544,7 @@ public class Board extends JPanel implements MouseListener {
 		playersToCheck.addAll(allPlayers);
 		playersToCheck.remove(currentPlayer);
 		Collections.shuffle(playersToCheck);
-		
+
 		for (Player somePlayer : playersToCheck) {
 			someCard = somePlayer.disproveSuggestion(person);
 			if (someCard.type != CardType.NULL) return someCard;
@@ -550,27 +553,27 @@ public class Board extends JPanel implements MouseListener {
 			someCard = somePlayer.disproveSuggestion(weapon);
 			if (someCard.type != CardType.NULL) return someCard;
 		}
-		
+
 		return new Card();
 	}
-	
+
 	// this method is in Board and not ComputerPlayer
 	// this is because computers work together anyways.
 	// this method needs to be updated to take in the location of the computer player as well
 	// but more on that when we know exactly how it's going down
 	public Card makeSuggestion(int indexOfComputerPlayer, BoardCell room) {
-		System.out.println("Making a suggestion");
+		JOptionPane.showMessageDialog(null, allPlayers.get(playerNumber).name + " is making a suggestion.");
 		Card someCard;
 		Card personCard;
 		Card roomCard;
 		Card weaponCard;
 		Random hazard = new Random();
-		
+
 		ArrayList<Card> haveNotSeen = new ArrayList<Card>();
 		haveNotSeen.addAll(deck);
 		haveNotSeen.removeAll(allPlayers.get(indexOfComputerPlayer).cards);
 		haveNotSeen.removeAll(cardsSeen);
-		
+
 		while (true) {
 			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
 			if (someCard.type == CardType.PERSON) {
@@ -578,9 +581,9 @@ public class Board extends JPanel implements MouseListener {
 				break;
 			}
 		}
-		
+
 		roomCard = new Card(room.getRoomName(), CardType.ROOM);
-				
+
 		while (true) {
 			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
 			if (someCard.type == CardType.WEAPON){
@@ -588,83 +591,102 @@ public class Board extends JPanel implements MouseListener {
 				break;
 			}
 		}
-		
+
 		for(Player player : allPlayers){
 			if(player.name.equalsIgnoreCase(personCard.name))
 				player.setLocation(allPlayers.get(playerNumber).indexedLocation);
 		}
-		
+
 		System.out.println(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		gameControlPanel.setGuessText(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		someCard = disproveSuggestion(indexOfComputerPlayer, personCard.name, roomCard.name, weaponCard.name);
 		System.out.println(someCard.name);
 		gameControlPanel.setGuessResult(someCard.name);
-		cardsSeen.add(someCard);
+		if(someCard.type == CardType.NULL){
+			if(checkAccusation(personCard,roomCard,weaponCard)){
+				JOptionPane.showMessageDialog(null, allPlayers.get(playerNumber).name + " made an accusation of " + personCard.name + ", " + roomCard.name + ", " + weaponCard.name + ", and was Correct! " + allPlayers.get(playerNumber).name + " Wins!");
+				System.exit(0);
+			} else
+				JOptionPane.showMessageDialog(null, allPlayers.get(playerNumber).name + " made an accusation of " + personCard.name + ", " + roomCard.name + ", " + weaponCard.name + ", and was wrong.");
+		} else {
+			cardsSeen.add(someCard);
+		}
 		return someCard;
 	}
-	
+
 	public int rollDie() {
 		Random rand = new Random();
 		int pick = (rand.nextInt(6) + 1);// generator.nextInt(6) + 1;
-	       //System.out.println("Die: " + Math.abs(pick));
-	       return Math.abs(pick);
+		//System.out.println("Die: " + Math.abs(pick));
+		return Math.abs(pick);
 	}
-	
-	public int getCplayerMove() {
+
+	/*public int getCplayerMove() {
 		Random rand = new Random();
 		int pick = (rand.nextInt(targetsIndex.size()));// generator.nextInt(6);
 		return targetsIndex.get(Math.abs(pick));
+	}*/
+
+	public ArrayList<Card> getPeopleDeck(){
+		return this.peopleDeck;
 	}
-	
-	
-//	
-////////////////////////////////
-// Graphics methods
+	public ArrayList<Card> getRoomDeck(){
+		return this.roomDeck;
+	}
+	public ArrayList<Card> getWeaponDeck(){
+		return this.weaponDeck;
+	}
+
+	//	
+	////////////////////////////////
+	// Graphics methods
 	//panels
-		
-		GameControlPanel gameControlPanel = new GameControlPanel();
-		static Board board;
+
+	private boolean playerTurnComplete = true;
+	private SuggestionDialog suggestionDialog;
+	GameControlPanel gameControlPanel = new GameControlPanel();
+	static Board board;
 
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
-	
+
 	public void paintComponent(Graphics g) {
 		//draw cells
 		for(int i = 0; i < (numRows * numColumns) ; i++) {
 			cells.get(i).draw(g); 
 		}
-		
+
 		//draw targets
 		for(int i = 0; i < targetsIndex.size(); i++) {
 			if(allPlayers.get(playerNumber).isHuman()) {cells.get(targetsIndex.get(i)).drawTargets(g);} 
 		}
 		targetsIndex.clear();  //clear the previous turn
-		
+
 		//draw players
 		for(int i = 0; i < allPlayers.size(); i++) { 
 			allPlayers.get(i).draw(g);
 		}
 	}	
-	
-	
-	
-		public void addGridElements() {
+
+
+
+	public void addGridElements() {
 		setLayout(new BorderLayout());
-		
+
 		//Pass info to playerDisplay
 		ArrayList<Card> displayCards = new ArrayList<Card>();
 		displayCards = allPlayers.get(0).getPlayerCards();
 		PlayerDisplay playerDisplay = new PlayerDisplay(displayCards);
 		//GameControlPanel gameControlPanel = new GameControlPanel(3);
-		
-		
+
+
 		//next 5 lines for debugging to console screen - shows what cards a player has
-//		int playerNumber = 2;
-//		for(int i = 0; i < displayCards.size(); i++) {
-//			displayCards = allPlayers.get(playerNumber).getPlayerCards();
-//			System.out.println("size: " + displayCards.size());
-//			System.out.println("Player: " + allPlayers.get(playerNumber).name.toString()  +","  + displayCards.get(i).type.toString() + ", "  + displayCards.get(i).name.toString());
-//		}
+		//		int playerNumber = 2;
+		//		for(int i = 0; i < displayCards.size(); i++) {
+		//			displayCards = allPlayers.get(playerNumber).getPlayerCards();
+		//			System.out.println("size: " + displayCards.size());
+		//			System.out.println("Player: " + allPlayers.get(playerNumber).name.toString()  +","  + displayCards.get(i).type.toString() + ", "  + displayCards.get(i).name.toString());
+		//		}
 
 
 		playerDisplay.setVisible(true);
@@ -672,27 +694,30 @@ public class Board extends JPanel implements MouseListener {
 		gameControlPanel.setVisible(true);
 		add(gameControlPanel, BorderLayout.SOUTH);
 	}
-		
-		
-		
-		/* precondition: all setups are finished, player is ready to start the game. this is a
-		 * with no exit condition. yet.
-		 */
-		public void playGame() {
-			playerNumber = 0;
-			playerLocation = 0;
-			int increment = 1;  // used for skipping a player if they do a suggestion
-			boolean humanPlayer = false;
-			//System.out.println("in playGame");
-			Card roomCard, personCard, weaponCard;
-			while(true) {
-				if(gameControlPanel.getNextButton()) {
+
+
+
+	/* precondition: all setups are finished, player is ready to start the game. this is a
+	 * with no exit condition. yet.
+	 */
+	public void playGame() {
+		playerNumber = 0;
+		playerLocation = 0;
+		int increment = 1;  // used for skipping a player if they do a suggestion
+		boolean humanPlayer = false;
+		//System.out.println("in playGame");
+		Card roomCard, personCard, weaponCard;
+		while(true) {
+			if(gameControlPanel.getNextButton()) {				
+				if(!playerTurnComplete) {
+					JOptionPane.showMessageDialog(null, "Please Select a Square");
+				} else {
 					//System.out.println("Next button passed to board");
 					int dieNumber = rollDie();
 					gameControlPanel.setDieRoll(dieNumber);
 					// who is current player. done
 					// get player index. done
-					
+
 					// human or computer
 					playerNumber =  gameControlPanel.getPlayerNumber();
 					playerLocation = allPlayers.get(playerNumber).getLocation();
@@ -701,40 +726,44 @@ public class Board extends JPanel implements MouseListener {
 					System.out.println("Player type: " +humanPlayer);
 					//System.out.println(", this player location: " + allPlayers.get(playerNumber).getLocation());
 					calcTargets(playerLocation, dieNumber );  //post: targets populated
-					
-					
+
+
 					for(BoardCell temp : targets) { // refactor into calcTargets if time
 						//targetsIndex controls where blue squares are drawn
 						targetsIndex.add(calcIndex(temp.row, temp.column));
 						//System.out.println(calcIndex(temp.row, temp.column));
 					}
-					
+
 					repaint();  // show blue squares
-					
+
 					// Set whose turn display
 					gameControlPanel.setTurn(allPlayers.get(playerNumber).name);
-					
+
 					// blue squares shown; possible targets known
-					if(humanPlayer)  { //true if human
-						
-					}
 					
+					if(humanPlayer)  { //true if human
+						playerTurnComplete = false;
+					}
+
 					if(humanPlayer == false) {  //computer player
+						Card returnCard;
 						//pick a square from targets, make an suggestion or accusation
 						BoardCell target = allPlayers.get(playerNumber).pickLocation(targets);
 						int targetIndex = calcIndex(target.row, target.column);
 						System.out.println("GetPlayerMove: " + targetIndex);
 						allPlayers.get(playerNumber).setLocation(targetIndex);
 						if(cells.get(targetIndex).isRoom()){
-							makeSuggestion(playerNumber, target);
+							returnCard = makeSuggestion(playerNumber, target);
+
 						}
-						
+
+
 					}
 					repaint();
-					
+
 					//set up for next turn
 					gameControlPanel.setPlayerNumber(increment);
-					
+
 				}
 				if(gameControlPanel.getAccButton()) {
 					//System.out.println("Accusation button passed to board");
@@ -750,72 +779,84 @@ public class Board extends JPanel implements MouseListener {
 					repaint();
 				}
 			}
-
 		}
-		public void mouseClicked(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseExited(MouseEvent e) {}
-		public void mouseReleased(MouseEvent e) {}
-		public void mousePressed(MouseEvent e)
-		{
-			if(allPlayers.get(playerNumber).isHuman()) {
-				System.out.println("MouseX: " + e.getX() + ", MouseY: " + e.getY());
-				int mouseRow = e.getY() / SCALER;
-				int mouseColumn = e.getX() / SCALER;
-				int mouseIndex = calcIndex(mouseRow, mouseColumn);
-				System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
 
-				 for(BoardCell tempTarget : targets) {
-					 if(mouseIndex == calcIndex(tempTarget.row, tempTarget.column))	{
-							allPlayers.get(playerNumber).setLocation(mouseIndex);
-							repaint();
-							//if(cells.get(mouseIndex).isRoom()){
-								//makeSuggestion(playerNumber, target);
-							//}
-					 }
-					
-				 }
-					 
+	}
+	public void mouseClicked(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mousePressed(MouseEvent e)
+	{
+		if(allPlayers.get(playerNumber).isHuman()) {
+			playerTurnComplete = true;
+			System.out.println("MouseX: " + e.getX() + ", MouseY: " + e.getY());
+			int mouseRow = e.getY() / SCALER;
+			int mouseColumn = e.getX() / SCALER;
+			int mouseIndex = calcIndex(mouseRow, mouseColumn);
+			Card returnCard;
+			String personSuggestion, weaponSuggestion, roomSuggestion;
+			System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
 
-				//if(targets.contains(mouseIndex)) {
-					//System.out.println("yay, good square");
+			for(BoardCell tempTarget : targets) {
+				if(mouseIndex == calcIndex(tempTarget.row, tempTarget.column))	{
+					allPlayers.get(playerNumber).setLocation(mouseIndex);
+					repaint();
+					if(cells.get(mouseIndex).isRoom()){
+						suggestionDialog = new SuggestionDialog(tempTarget.getRoomName(), peopleDeck, weaponDeck);
+						suggestionDialog.setVisible(true);
+						suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+						personSuggestion = (String) suggestionDialog.personCombo.getSelectedItem();
+						weaponSuggestion = (String) suggestionDialog.weaponCombo.getSelectedItem();
+						roomSuggestion = tempTarget.getRoomName();
+						gameControlPanel.setGuessText(personSuggestion + ", " + roomSuggestion + ", " + weaponSuggestion);
+						returnCard = disproveSuggestion(playerNumber, personSuggestion, weaponSuggestion, roomSuggestion);
+						gameControlPanel.setGuessResult(returnCard.name);
+						cardsSeen.add(returnCard);
+					}
 				}
-				//System.out.println("targets size: " + targets.size());
 
 			}
-		
 
 
-	
-////////////////////////////////
-	
-////////////////////////////////
-//	main method, for debugging purposes
-//	
+			//if(targets.contains(mouseIndex)) {
+			//System.out.println("yay, good square");
+		}
+		//System.out.println("targets size: " + targets.size());
 
+	}
+
+
+
+
+	////////////////////////////////
+
+	////////////////////////////////
+	//	main method, for debugging purposes
+	//	
 
 	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
 		System.out.println("Hello world!!\n");
-		
+
 		JOptionPane.showMessageDialog(null, "You are Miss Scarlet, Press Next Player to begin.");
-		
+
 		//Board board = new Board();
 		Board board = new Board();
-		ClueGame clueGame= new ClueGame(); 
- 		clueGame.setContentPane(board); //new Board()
+		ClueGame clueGame= new ClueGame(board.getPeopleDeck(), board.getRoomDeck(), board.getWeaponDeck()); 
+		clueGame.setContentPane(board); //new Board()
 		clueGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		clueGame.setVisible(true);
-		
+
 		board.playGame();
-		
+
 		System.exit(0);
-	
+
 		System.out.println("\nGoodbye world..");
 	}
-	
-//	
-////////////////////////////////
-//		  END OF FILE		  //	
-////////////////////////////////
-	
+
+	//	
+	////////////////////////////////
+	//		  END OF FILE		  //	
+	////////////////////////////////
+
 }

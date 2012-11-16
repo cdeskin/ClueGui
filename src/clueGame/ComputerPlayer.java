@@ -50,11 +50,6 @@ public class ComputerPlayer extends Player {
 		for (BoardCell target : targets) {
 			if (target.isDoorway()) {
 				if(!target.equals(lastRoom))
-					//suggestionDialog = new SuggestionDialog(target.getRoomName());
-					//suggestionDialog.setVisible(true);
-					//suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					//personSuggestion = (String) suggestionDialog.personCombo.getSelectedItem();
-					//weaponSuggestion = (String) suggestionDialog.weaponCombo.getSelectedItem();
 					lastWasRoom = true;
 					return target;				
 			}

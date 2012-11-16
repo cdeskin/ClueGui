@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -17,12 +18,15 @@ import javax.swing.JPanel;
 public class SuggestionDialog extends JDialog {
 	public JComboBox<String> personCombo, roomCombo, weaponCombo;
 	private String roomName;
+	private ArrayList<Card> peopleDeck, weaponDeck;
 
-	public SuggestionDialog(String roomName) {  //constructor
+	public SuggestionDialog(String roomName, ArrayList<Card> peopleDeck, ArrayList<Card> weaponDeck) {  //constructor
 		this.setTitle("Make a Suggestion");
 		this.setSize(new Dimension(750,200) );
 		this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		this.roomName = roomName;
+		this.peopleDeck = peopleDeck;
+		this.weaponDeck = weaponDeck;
 		addElements();
 	}
 
@@ -33,27 +37,19 @@ public class SuggestionDialog extends JDialog {
 		JLabel roomLabel = new JLabel("Room Suggestion");
 		JLabel weaponLabel = new JLabel("Weapon Suggestion");
 
-		personCombo = new JComboBox<String>();
-		personCombo.addItem("Miss Scarlet");
-		personCombo.addItem("Mr. Green");
-		personCombo.addItem("Miss Peacock");
-		personCombo.addItem("Colonel Mustard");
-		personCombo.addItem("Miss White");
-		personCombo.addItem("Professor Plum");
-
 		roomCombo = new JComboBox<String>();
 		roomCombo.addItem(roomName);
 		roomCombo.setEnabled(false);
 
+		personCombo = new JComboBox<String>();
+		for(Card tempCard : peopleDeck){
+			personCombo.addItem(tempCard.name);
+		}
+		
 		weaponCombo = new JComboBox<String>();
-		weaponCombo.addItem("Candlestick");
-		weaponCombo.addItem("Lead Pipe");
-		weaponCombo.addItem("Rope");
-		weaponCombo.addItem("Knife");
-		weaponCombo.addItem("Revolver");
-		weaponCombo.addItem("Wrench");
-		weaponCombo.addItem("Gossip");
-		weaponCombo.addItem("Death Stare");
+		for(Card tempCard : weaponDeck){
+			weaponCombo.addItem(tempCard.name);
+		}
 
 		add(personLabel);
 		add(roomLabel);

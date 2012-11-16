@@ -41,7 +41,7 @@ public class ClueGame extends JFrame {
 
 
 	
-	public ClueGame() throws FileNotFoundException, BadConfigFormatException {  //constructor
+	public ClueGame(ArrayList<Card> peopleDeck, ArrayList<Card> roomDeck, ArrayList<Card> weaponDeck) throws FileNotFoundException, BadConfigFormatException {  //constructor
 		//Board board = new Board();
 		this.setTitle("Clue Game");
 		this.setSize(new Dimension(820,780) );
@@ -49,7 +49,7 @@ public class ClueGame extends JFrame {
 		
 		addElements();
 		//addGridElements();
-		detectiveNotes = new DetectiveNotes();
+		detectiveNotes = new DetectiveNotes(peopleDeck, roomDeck, weaponDeck);
 		detectiveNotes.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 	} // end default constructor

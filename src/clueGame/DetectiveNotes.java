@@ -2,120 +2,77 @@ package clueGame;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 
 public class DetectiveNotes extends JDialog {
-	public DetectiveNotes() {  //constructor
+	ArrayList<Card> peopleDeck, roomDeck, weaponDeck;
+	public DetectiveNotes(ArrayList<Card> peopleDeck, ArrayList<Card> roomDeck, ArrayList<Card> weaponDeck) {  //constructor
 		this.setTitle("Detective Notes");
 		this.setSize(new Dimension(500,500) );
+		this.peopleDeck = peopleDeck;
+		this.roomDeck = roomDeck;
+		this.weaponDeck = weaponDeck;
 		addElements();
 	}
 	public void addElements() {
 		setLayout(new GridLayout(0,2));
-		PeoplePanel peoplePanel = new PeoplePanel();
+		PeoplePanel peoplePanel = new PeoplePanel(peopleDeck);
 		add(peoplePanel);
-		PeopleGuess peopleGuess = new PeopleGuess();
+		PeopleGuess peopleGuess = new PeopleGuess(peopleDeck);
 		add(peopleGuess);
-		RoomPanel roomPanel = new RoomPanel();
+		RoomPanel roomPanel = new RoomPanel(roomDeck);
 		add(roomPanel);
-		RoomGuess roomGuess = new RoomGuess();
+		RoomGuess roomGuess = new RoomGuess(roomDeck);
 		add(roomGuess);
-		WeaponPanel weaponPanel = new WeaponPanel();
+		WeaponPanel weaponPanel = new WeaponPanel(weaponDeck);
 		add(weaponPanel);
-		WeaponGuess weaponGuess = new WeaponGuess();
+		WeaponGuess weaponGuess = new WeaponGuess(weaponDeck);
 		add(weaponGuess);
 	}
 	
 	public class PeoplePanel extends JPanel {
-		private Checkbox missScarlet, mrGreen, missPeacock, colonelMustard, missWhite, professorPlum;
-		public PeoplePanel(){
+		public PeoplePanel(ArrayList<Card> peopleDeck){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("People"));
 			
-			missScarlet = new Checkbox("Miss Scarlet");
-			mrGreen = new Checkbox("Mr. Green");
-			missPeacock = new Checkbox("Miss Peacock");
-			colonelMustard = new Checkbox("Colonel Mustard");
-			missWhite = new Checkbox("Miss White");
-			professorPlum = new Checkbox("Professor Plum");
-			
-			add(missScarlet);
-			add(mrGreen);
-			add(missPeacock);
-			add(colonelMustard);
-			add(missWhite);
-			add(professorPlum);
+			for(Card tempCard : peopleDeck)
+				add(new Checkbox(tempCard.name));
 		}
 	}
 	
 	public class RoomPanel extends JPanel {
-		private Checkbox kitchen, lounge, consevatory, study, billiardRoom, ballroom, diningRoom, hall, library;
-		public RoomPanel(){
+		public RoomPanel(ArrayList<Card> roomDeck){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Room"));
 			
-			kitchen = new Checkbox("Kitchen");
-			lounge = new Checkbox("Lounge");
-			consevatory = new Checkbox("Conservatory");
-			study = new Checkbox("Study");
-			billiardRoom = new Checkbox("Billiard Room");
-			ballroom = new Checkbox("Ballroom");
-			diningRoom = new Checkbox("Dining Room");
-			hall = new Checkbox("Hall");
-			library = new Checkbox("Library");
-			
-			add(kitchen);
-			add(lounge);
-			add(consevatory);
-			add(study);
-			add(billiardRoom);
-			add(ballroom);
-			add(diningRoom);
-			add(hall);
-			add(library);
+			for(Card tempCard : roomDeck)
+				add(new Checkbox(tempCard.name));
 		}
 	}
 	
 	public class WeaponPanel extends JPanel {
-		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench, gossip, deathStare;
-		public WeaponPanel(){
+		public WeaponPanel(ArrayList<Card> weaponDeck){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Weapons"));
 			
-			candlestick = new Checkbox("Candlestick");
-			leadPipe = new Checkbox("Lead Pipe");
-			rope = new Checkbox("Rope");
-			knife = new Checkbox("Knife");
-			revolver = new Checkbox("Revolver");
-			wrench = new Checkbox("Wrench");
-			gossip = new Checkbox("Gossip");
-			deathStare = new Checkbox("Death Stare");
-			
-			add(candlestick);
-			add(leadPipe);
-			add(rope);
-			add(knife);
-			add(revolver);
-			add(wrench);
-			add(gossip);
-			add(deathStare);
+			for(Card tempCard : weaponDeck)
+				add(new Checkbox(tempCard.name));
 		}
 	}
 	
 	public class PeopleGuess extends JPanel {
 		private JComboBox<String> combo;
-		public PeopleGuess(){
+		public PeopleGuess(ArrayList<Card> peopleDeck){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Person Guess"));
 			
 			combo = new JComboBox<String>();
-			combo.addItem("Miss Scarlet");
-			combo.addItem("Mr. Green");
-			combo.addItem("Miss Peacock");
-			combo.addItem("Colonel Mustard");
-			combo.addItem("Miss White");
-			combo.addItem("Professor Plum");
+			for(Card tempCard : peopleDeck){
+				combo.addItem(tempCard.name);
+			}
 
 			add(combo);
 		}
@@ -123,20 +80,14 @@ public class DetectiveNotes extends JDialog {
 	
 	public class RoomGuess extends JPanel {
 		private JComboBox<String> combo;
-		public RoomGuess(){
+		public RoomGuess(ArrayList<Card> roomDeck){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Room Guess"));
 			
 			combo = new JComboBox<String>();
-			combo.addItem("Kitchen");
-			combo.addItem("Lounge");
-			combo.addItem("Conservatory");
-			combo.addItem("Study");
-			combo.addItem("Billiard Room");
-			combo.addItem("Ballroom");
-			combo.addItem("Hall");
-			combo.addItem("Dining Room");
-			combo.addItem("Library");
+			for(Card tempCard : roomDeck){
+				combo.addItem(tempCard.name);
+			}
 
 			add(combo);
 		}
@@ -145,19 +96,14 @@ public class DetectiveNotes extends JDialog {
 	public class WeaponGuess extends JPanel {
 		private JComboBox<String> combo;
 		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench;
-		public WeaponGuess(){
+		public WeaponGuess(ArrayList<Card> weaponDeck){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Weapon Guess"));
 			
 			combo = new JComboBox<String>();
-			combo.addItem("Candlestick");
-			combo.addItem("Lead Pipe");
-			combo.addItem("Rope");
-			combo.addItem("Knife");
-			combo.addItem("Revolver");
-			combo.addItem("Wrench");
-			combo.addItem("Gossip");
-			combo.addItem("Death Stare");
+			for(Card tempCard : weaponDeck){
+				combo.addItem(tempCard.name);
+			}
 
 			add(combo);
 		}
