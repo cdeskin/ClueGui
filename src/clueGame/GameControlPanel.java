@@ -43,7 +43,7 @@ public class GameControlPanel extends JPanel {
 		nextButton = new JButton("Next Player");
 		accButton = new JButton("Make an accusation");
 
-		die = new Die(8);  //8 is a test value
+		die = new Die(0);  //8 is a test value
 		
 		guess = new Guess();
 		guessResult = new GuessResult();
