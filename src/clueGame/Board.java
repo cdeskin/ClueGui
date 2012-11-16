@@ -603,7 +603,7 @@ public class Board extends JPanel{
 	
 	public int getCplayerMove() {
 		Random rand = new Random();
-		int pick = (rand.nextInt(targets.size()) + 1);// generator.nextInt(6) + 1;
+		int pick = (rand.nextInt(targetsIndex.size()));// generator.nextInt(6);
 		return targetsIndex.get(Math.abs(pick));
 	}
 	
