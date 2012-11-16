@@ -20,6 +20,7 @@ public class GameControlPanel extends JPanel {
 	public Die die;
 	public Guess guess;
 	public GuessResult guessResult;
+	public WhoseTurn whoseTurn;
 	
 
 
@@ -37,7 +38,7 @@ public class GameControlPanel extends JPanel {
 	
 
 	public void addElements() {
-		WhoseTurn whoseTurn = new WhoseTurn();
+		whoseTurn = new WhoseTurn();
 		//GameButtons gameButtons = new GameButtons();
 		nextButton = new JButton("Next Player");
 		accButton = new JButton("Make an accusation");
@@ -111,6 +112,11 @@ public class GameControlPanel extends JPanel {
 		
 	}
 	
+	public void setTurn(String theName) {
+		whoseTurn.setTurn(theName);
+		
+	}
+	
 	public void setPlayerNumber(int increment) {
 		this.playerNumber = playerNumber + increment;
 		if(this.playerNumber == 6) { this.playerNumber = 0; }  // Miss Scarlet not skipped
@@ -124,16 +130,20 @@ public class GameControlPanel extends JPanel {
 	
 // classes
 	public class WhoseTurn extends JPanel {
+		public JTextField whoName;
 		public WhoseTurn() {
 			setLayout(new GridLayout(1,0));
 			// no border
 			JLabel whoLabel = new JLabel("Whose Turn?");
-			JTextField whoName = new JTextField(" ", 10);
-			whoName.setText("A Player");
+			whoName = new JTextField(" ", 10);
+			whoName.setText("Press Next to Start");
 
 			add(whoLabel);
 			add(whoName);
 
+		}
+		public void setTurn(String name) {
+			this.whoName.setText(name);
 		}
 	}
 

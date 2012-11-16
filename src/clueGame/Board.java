@@ -703,6 +703,9 @@ public class Board extends JPanel{
 					
 					repaint();  // show blue squares
 					
+					// Set whose turn display
+					gameControlPanel.setTurn(allPlayers.get(playerNumber).name);
+					
 					// blue squares shown; possible targets known
 					if(humanPlayer)  { //true if human
 						
