@@ -504,8 +504,8 @@ public class Board extends JPanel implements MouseListener {
 			if (playerIndex == allPlayers.size()) playerIndex = 0;
 		}
 
-		for(Card temp : solution)
-			System.out.println(temp.name);
+//		for(Card temp : solution)      // print solution for testing
+//			System.out.println(temp.name);
 	}
 
 	//	
@@ -597,10 +597,10 @@ public class Board extends JPanel implements MouseListener {
 				player.setLocation(allPlayers.get(playerNumber).indexedLocation);
 		}
 
-		System.out.println(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
+		//System.out.println(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		gameControlPanel.setGuessText(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		someCard = disproveSuggestion(indexOfComputerPlayer, personCard.name, roomCard.name, weaponCard.name);
-		System.out.println(someCard.name);
+		//System.out.println(someCard.name);
 		gameControlPanel.setGuessResult(someCard.name);
 		if(someCard.type == CardType.NULL){
 			if(checkAccusation(personCard,roomCard,weaponCard)){
@@ -660,7 +660,7 @@ public class Board extends JPanel implements MouseListener {
 		for(int i = 0; i < targetsIndex.size(); i++) {
 			if(allPlayers.get(playerNumber).isHuman()) {cells.get(targetsIndex.get(i)).drawTargets(g);} 
 		}
-		targetsIndex.clear();  //clear the previous turn
+		//targetsIndex.clear();  //clear the previous turn
 
 		//draw players
 		for(int i = 0; i < allPlayers.size(); i++) { 
@@ -701,6 +701,7 @@ public class Board extends JPanel implements MouseListener {
 	 * with no exit condition. yet.
 	 */
 	public void playGame() {
+		
 		playerNumber = 0;
 		playerLocation = 0;
 		int increment = 1;  // used for skipping a player if they do a suggestion
@@ -708,6 +709,7 @@ public class Board extends JPanel implements MouseListener {
 		//System.out.println("in playGame");
 		Card roomCard, personCard, weaponCard;
 		while(true) {
+			
 			if(gameControlPanel.getNextButton()) {				
 				if(!playerTurnComplete) {
 					JOptionPane.showMessageDialog(null, "Please Select a Square");
@@ -715,15 +717,11 @@ public class Board extends JPanel implements MouseListener {
 					//System.out.println("Next button passed to board");
 					int dieNumber = rollDie();
 					gameControlPanel.setDieRoll(dieNumber);
-					// who is current player. done
-					// get player index. done
-
-					// human or computer
 					playerNumber =  gameControlPanel.getPlayerNumber();
 					playerLocation = allPlayers.get(playerNumber).getLocation();
 					humanPlayer = allPlayers.get(playerNumber).isHuman();
-					System.out.println("This player # " + playerNumber + ", this player location: " + playerLocation);
-					System.out.println("Player type: " +humanPlayer);
+					//System.out.println("This player # " + playerNumber + ", this player location: " + playerLocation);
+					//System.out.println("Player type: " +humanPlayer);
 					//System.out.println(", this player location: " + allPlayers.get(playerNumber).getLocation());
 					calcTargets(playerLocation, dieNumber );  //post: targets populated
 
@@ -746,11 +744,12 @@ public class Board extends JPanel implements MouseListener {
 					}
 
 					if(humanPlayer == false) {  //computer player
+						targetsIndex.clear();  //clear the previous turn
 						Card returnCard;
 						//pick a square from targets, make an suggestion or accusation
 						BoardCell target = allPlayers.get(playerNumber).pickLocation(targets);
 						int targetIndex = calcIndex(target.row, target.column);
-						System.out.println("GetPlayerMove: " + targetIndex);
+						//System.out.println("GetPlayerMove: " + targetIndex);
 						allPlayers.get(playerNumber).setLocation(targetIndex);
 						if(cells.get(targetIndex).isRoom()){
 							returnCard = makeSuggestion(playerNumber, target);
@@ -782,26 +781,27 @@ public class Board extends JPanel implements MouseListener {
 		}
 
 	}
-	public void mouseClicked(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {} //mouseClicked
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mousePressed(MouseEvent e)
+	public void mouseReleased(MouseEvent e) {} //mouseReleased
+	public void mouseClicked(MouseEvent e) //mousePressed
 	{
 		if(allPlayers.get(playerNumber).isHuman()) {
 			playerTurnComplete = true;
-			System.out.println("MouseX: " + e.getX() + ", MouseY: " + e.getY());
+			//System.out.println("MouseX: " + e.getX() + ", MouseY: " + e.getY());
 			int mouseRow = e.getY() / SCALER;
 			int mouseColumn = e.getX() / SCALER;
 			int mouseIndex = calcIndex(mouseRow, mouseColumn);
 			Card returnCard;
 			String personSuggestion, weaponSuggestion, roomSuggestion;
-			System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
+			//System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
 
 			for(BoardCell tempTarget : targets) {
 				if(mouseIndex == calcIndex(tempTarget.row, tempTarget.column))	{
 					allPlayers.get(playerNumber).setLocation(mouseIndex);
 					repaint();
+					
 					if(cells.get(mouseIndex).isRoom()){
 						suggestionDialog = new SuggestionDialog(tempTarget.getRoomName(), peopleDeck, weaponDeck);
 						suggestionDialog.setVisible(true);
@@ -823,6 +823,7 @@ public class Board extends JPanel implements MouseListener {
 			//System.out.println("yay, good square");
 		}
 		//System.out.println("targets size: " + targets.size());
+		
 
 	}
 
