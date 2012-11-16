@@ -61,6 +61,15 @@ public abstract class Player {
 			return false;	
 	}
 	
+	// location of player
+	public void setLocation( int indexedLocation) {
+		this.indexedLocation = indexedLocation;
+	}
+	
+	public int getLocation () {
+		return indexedLocation;
+	}
+	
 	//graphics
 	public ArrayList<Card> getPlayerCards() {
 		return cards;

@@ -51,6 +51,10 @@ public class Board extends JPanel{
 	public static final int SCALER = 25;
 	// used for graphics in ComputerPlayer and HumanPlayer
 	public static final int GRID_COLUMNS = 23; 
+	
+//Game play globals
+	private int playerNumber;
+	private int playerLocation;
 
 	
 // Graphics Notes
@@ -591,11 +595,16 @@ public class Board extends JPanel{
 	}
 	
 	public int rollDie() {
-		int n = 5;
 		Random rand = new Random();
 		int pick = (rand.nextInt(6) + 1);// generator.nextInt(6) + 1;
-	       System.out.println("Die: " + Math.abs(pick));
+	       //System.out.println("Die: " + Math.abs(pick));
 	       return Math.abs(pick);
+	}
+	
+	public int getCplayerMove() {
+		Random rand = new Random();
+		int pick = (rand.nextInt(targets.size()) + 1);// generator.nextInt(6) + 1;
+		return targetsIndex.get(Math.abs(pick));
 	}
 	
 	
@@ -616,21 +625,19 @@ public class Board extends JPanel{
 			cells.get(i).draw(g); 
 		}
 		
-		
 		//draw targets
 		for(int i = 0; i < targetsIndex.size(); i++) {
-			cells.get(targetsIndex.get(i)).drawTargets(g);
+			if(allPlayers.get(playerNumber).isHuman()) {cells.get(targetsIndex.get(i)).drawTargets(g);}
 		}
+		targetsIndex.clear();  //clear the previous turn
 		
 		//draw players
 		for(int i = 0; i < allPlayers.size(); i++) { 
 			allPlayers.get(i).draw(g);
 		}
-		// trying to move addGridElements to clueGame
-	
 	}	
 	
-	//this needs to be moved to Cluegame
+	
 	
 		public void addGridElements() {
 		setLayout(new BorderLayout());
@@ -658,32 +665,64 @@ public class Board extends JPanel{
 	}
 		
 		
-		// precondition: all setups are finished, player is ready to start the game. this 
+		
+		/* precondition: all setups are finished, player is ready to start the game. this is a
+		 * with no exit condition. yet.
+		 */
 		public void playGame() {
-			System.out.println("in playGame");
+			playerNumber = 0;
+			playerLocation = 0;
+			int increment = 1;  // used for skipping a player if they do a suggestion
+			boolean humanPlayer = false;
+			//System.out.println("in playGame");
 			Card roomCard, personCard, weaponCard;
 			while(true) {
 				if(gameControlPanel.getNextButton()) {
-					System.out.println("Next button passed to board");
+					//System.out.println("Next button passed to board");
 					int dieNumber = rollDie();
 					gameControlPanel.setDieRoll(dieNumber);
-					// who is current player
-					// get player index
+					// who is current player. done
+					// get player index. done
 					
 					// human or computer
+					playerNumber =  gameControlPanel.getPlayerNumber();
+					playerLocation = allPlayers.get(playerNumber).getLocation();
+					humanPlayer = allPlayers.get(playerNumber).isHuman();
+					System.out.println("This player # " + playerNumber + ", this player location: " + playerLocation);
+					System.out.println("Player type: " +humanPlayer);
+					//System.out.println(", this player location: " + allPlayers.get(playerNumber).getLocation());
+					calcTargets(playerLocation, dieNumber );  //post: targets populated
 					
 					
-					calcTargets(321, dieNumber );
-					for(BoardCell temp : targets) {
-						//targetsIndex
+					for(BoardCell temp : targets) { // refactor into calcTargets if time
+						//targetsIndex controls where blue squares are drawn
 						targetsIndex.add(calcIndex(temp.row, temp.column));
-						System.out.println(calcIndex(temp.row, temp.column));
+						//System.out.println(calcIndex(temp.row, temp.column));
 					}
 					
+					repaint();  // show blue squares
+					
+					// blue squares shown; possible targets known
+					if(humanPlayer)  { //true if human
+						
+					}
+					
+					if(humanPlayer == false) {  //computer player
+						//pick a square from targets, make an suggestion or accusation
+						int nextLocation = getCplayerMove();
+						System.out.println("GetPlayerMove: " + nextLocation);
+						
+						allPlayers.get(playerNumber).setLocation(nextLocation);
+						
+					}
 					repaint();
+					
+					//set up for next turn
+					gameControlPanel.setPlayerNumber(increment);
+					
 				}
 				if(gameControlPanel.getAccButton()) {
-					System.out.println("Accusation button passed to board");
+					//System.out.println("Accusation button passed to board");
 					accusationDialog.setVisible(true);
 					roomCard = new Card(accusationDialog.roomCombo.getSelectedItem().toString(), Card.CardType.ROOM);
 					personCard = new Card(accusationDialog.personCombo.getSelectedItem().toString(), Card.CardType.PERSON);

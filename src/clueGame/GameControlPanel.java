@@ -10,8 +10,9 @@ import javax.swing.*;
 
 public class GameControlPanel extends JPanel {
 	private JButton nextButton, accButton;
-	private int dieRoll;
+//	private int dieRoll;
 	public String playerTurn;
+	public int playerNumber;
 	public String playerGuess;
 	public String playerResult;
 	public boolean nextPushed;
@@ -24,6 +25,7 @@ public class GameControlPanel extends JPanel {
 		//super();
 		this.nextPushed = false;
 		this.accPushed = false;
+		this.playerNumber = 0;  //start with Miss. Scarlet
 		
 		this.setLayout(new GridLayout(2,4));
 		setBorder(BorderFactory.createTitledBorder("Game Control Panel"));
@@ -37,9 +39,8 @@ public class GameControlPanel extends JPanel {
 		//GameButtons gameButtons = new GameButtons();
 		nextButton = new JButton("Next Player");
 		accButton = new JButton("Make an accusation");
-		
 
-		die = new Die(8);
+		die = new Die(8);  //8 is a test value
 		
 		Guess guess = new Guess();
 		GuessResult guessResult = new GuessResult();
@@ -96,6 +97,16 @@ public class GameControlPanel extends JPanel {
 	public void setDieRoll(int dieRoll) {
 		die.setRoll(dieRoll);
 		
+	}
+	
+	public void setPlayerNumber(int increment) {
+		this.playerNumber = playerNumber + increment;
+		if(this.playerNumber == 6) { this.playerNumber = 0; }  // Miss Scarlet not skipped
+		if(this.playerNumber == 7) { this.playerNumber = 1; }  // Miss Scarlet skipped
+	}
+	
+	public int getPlayerNumber() {
+		return playerNumber;
 	}
 	
 	
