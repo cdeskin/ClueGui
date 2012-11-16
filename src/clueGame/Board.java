@@ -555,7 +555,8 @@ public class Board extends JPanel{
 	// this is because computers work together anyways.
 	// this method needs to be updated to take in the location of the computer player as well
 	// but more on that when we know exactly how it's going down
-	public Card makeSuggestion(int indexOfComputerPlayer) {
+	public Card makeSuggestion(int indexOfComputerPlayer, BoardCell room) {
+		System.out.println("Making a suggestion");
 		Card someCard;
 		Card personCard;
 		Card roomCard;
@@ -574,13 +575,9 @@ public class Board extends JPanel{
 				break;
 			}
 		}
-		while (true) {
-			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
-			if (someCard.type == CardType.ROOM){
-				roomCard = someCard;
-				break;
-			}
-		}
+		
+		roomCard = new Card(room.getRoomName(), CardType.ROOM);
+				
 		while (true) {
 			someCard = haveNotSeen.get(hazard.nextInt(haveNotSeen.size()));
 			if (someCard.type == CardType.WEAPON){
@@ -589,7 +586,11 @@ public class Board extends JPanel{
 			}
 		}
 		
+		System.out.println(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
+		gameControlPanel.setGuessText(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		someCard = disproveSuggestion(indexOfComputerPlayer, personCard.name, roomCard.name, weaponCard.name);
+		System.out.println(someCard.name);
+		gameControlPanel.setGuessResult(someCard.name);
 		cardsSeen.add(someCard);
 		return someCard;
 	}
@@ -713,8 +714,8 @@ public class Board extends JPanel{
 						int targetIndex = calcIndex(target.row, target.column);
 						System.out.println("GetPlayerMove: " + targetIndex);
 						allPlayers.get(playerNumber).setLocation(targetIndex);
-						if(allPlayers.get(playerNumber).lastWasRoom){
-							//check the suggestion
+						if(cells.get(targetIndex).isRoom()){
+							makeSuggestion(playerNumber, target);
 						}
 						
 					}

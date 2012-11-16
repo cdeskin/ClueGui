@@ -18,6 +18,8 @@ public class GameControlPanel extends JPanel {
 	public boolean nextPushed;
 	public boolean accPushed;
 	public Die die;
+	public Guess guess;
+	public GuessResult guessResult;
 	
 
 
@@ -42,8 +44,8 @@ public class GameControlPanel extends JPanel {
 
 		die = new Die(8);  //8 is a test value
 		
-		Guess guess = new Guess();
-		GuessResult guessResult = new GuessResult();
+		guess = new Guess();
+		guessResult = new GuessResult();
 		add(whoseTurn);
 		//add(gameButtons);
 		add(nextButton);
@@ -99,6 +101,16 @@ public class GameControlPanel extends JPanel {
 		
 	}
 	
+	public void setGuessText(String guessText) {
+		guess.setGuessText(guessText);
+		
+	}
+	
+	public void setGuessResult(String guessResultText) {
+		guessResult.setGuessResult(guessResultText);
+		
+	}
+	
 	public void setPlayerNumber(int increment) {
 		this.playerNumber = playerNumber + increment;
 		if(this.playerNumber == 6) { this.playerNumber = 0; }  // Miss Scarlet not skipped
@@ -145,26 +157,34 @@ public class GameControlPanel extends JPanel {
 	}
 	
 	public class Guess extends JPanel {
+		public JTextField guessText;
 		public Guess() {
 			setLayout(new GridLayout(2,0));
 			setBorder(BorderFactory.createTitledBorder("Guess"));
 			JLabel guessLabel = new JLabel("Guess");
-			JTextField guessText = new JTextField(" ", 30);
+			guessText = new JTextField(" ", 30);
 			
 			add(guessLabel);
 			add(guessText);
 		}
+		public void setGuessText(String guess) {
+			this.guessText.setText(guess);
+		}
 	}
 	
 	public class GuessResult extends JPanel {
+		public JTextField guessResultText;
 		public GuessResult() {
 			setLayout(new GridLayout(2,0));
 			setBorder(BorderFactory.createTitledBorder("Guess Result"));
 			JLabel guessResultLabel = new JLabel("Guess");
-			JTextField guessResultText = new JTextField(" ", 30);
+			guessResultText = new JTextField(" ", 30);
 			
 			add(guessResultLabel);
 			add(guessResultText);
+		}
+		public void setGuessResult(String guessResult) {
+			this.guessResultText.setText(guessResult);
 		}
 	}
 	

@@ -27,6 +27,16 @@ public class HumanPlayer extends Player {
 	@Override
 	public boolean isHuman() { return true; }
 
+	// location of player
+    public void setLocation( int indexedLocation) {
+         this.indexedLocation = indexedLocation;
+        int row = indexedLocation / GRID_COLUMNS;
+        int column = indexedLocation - (GRID_COLUMNS * row);
+        this.gridY = row*SCALER;  
+        this.gridX = column*SCALER;
+        
+    }
+	
 	//graphics
 	public void draw(Graphics g) {
 		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);

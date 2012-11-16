@@ -199,7 +199,7 @@ public class GameActionTests {
 		// the one the computer hasn't seen
 		// the three cards not in the seenList should be the solution set
 		for (int i = 0; i < 30; ++i) {
-			board.makeSuggestion(5);
+			board.makeSuggestion(5, new BoardCell());
 		}
 		
 		ArrayList<Card> cardsLeft = new ArrayList<Card>();

@@ -50,11 +50,11 @@ public class ComputerPlayer extends Player {
 		for (BoardCell target : targets) {
 			if (target.isDoorway()) {
 				if(!target.equals(lastRoom))
-					suggestionDialog = new SuggestionDialog(target.getRoomName());
-					suggestionDialog.setVisible(true);
-					suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-					personSuggestion = (String) suggestionDialog.personCombo.getSelectedItem();
-					weaponSuggestion = (String) suggestionDialog.weaponCombo.getSelectedItem();
+					//suggestionDialog = new SuggestionDialog(target.getRoomName());
+					//suggestionDialog.setVisible(true);
+					//suggestionDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+					//personSuggestion = (String) suggestionDialog.personCombo.getSelectedItem();
+					//weaponSuggestion = (String) suggestionDialog.weaponCombo.getSelectedItem();
 					lastWasRoom = true;
 					return target;				
 			}
@@ -81,6 +81,15 @@ public class ComputerPlayer extends Player {
 		return weaponSuggestion;
 	}
 
+	// location of player
+    public void setLocation( int indexedLocation) {
+         this.indexedLocation = indexedLocation;
+        int row = indexedLocation / GRID_COLUMNS;
+        int column = indexedLocation - (GRID_COLUMNS * row);
+        this.gridY = row*SCALER;  
+        this.gridX = column*SCALER;
+        
+    }
 	//graphics
 	public void draw(Graphics g) {
 		//System.out.println("GridX: " + gridX + ", GridY: "+ gridY);
