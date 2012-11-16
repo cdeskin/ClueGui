@@ -78,7 +78,7 @@ public class DetectiveNotes extends JDialog {
 	}
 	
 	public class WeaponPanel extends JPanel {
-		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench;
+		private Checkbox candlestick, leadPipe, rope, knife, revolver, wrench, gossip, deathStare;
 		public WeaponPanel(){
 			setLayout(new GridLayout(0,2));
 			setBorder(BorderFactory.createTitledBorder("Weapons"));
@@ -89,6 +89,8 @@ public class DetectiveNotes extends JDialog {
 			knife = new Checkbox("Knife");
 			revolver = new Checkbox("Revolver");
 			wrench = new Checkbox("Wrench");
+			gossip = new Checkbox("Gossip");
+			deathStare = new Checkbox("Death Stare");
 			
 			add(candlestick);
 			add(leadPipe);
@@ -96,6 +98,8 @@ public class DetectiveNotes extends JDialog {
 			add(knife);
 			add(revolver);
 			add(wrench);
+			add(gossip);
+			add(deathStare);
 		}
 	}
 	
@@ -152,6 +156,8 @@ public class DetectiveNotes extends JDialog {
 			combo.addItem("Knife");
 			combo.addItem("Revolver");
 			combo.addItem("Wrench");
+			combo.addItem("Gossip");
+			combo.addItem("Death Stare");
 
 			add(combo);
 		}

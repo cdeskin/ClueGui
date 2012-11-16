@@ -15,11 +15,10 @@ public class GameControlPanel extends JPanel {
 	public String playerResult;
 	public boolean nextPushed;
 	public boolean accPushed;
-	private AccusationDialog accusationDialog;
 	
 
 
-	public GameControlPanel(int dieRoll) {
+	public GameControlPanel() {
 		//super();
 		this.nextPushed = false;
 		this.accPushed = false;
@@ -27,9 +26,6 @@ public class GameControlPanel extends JPanel {
 		this.setLayout(new GridLayout(2,4));
 		setBorder(BorderFactory.createTitledBorder("Game Control Panel"));
 		addElements();
-		
-		accusationDialog = new AccusationDialog();
-		accusationDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 	}
 
 	public void addElements() {
@@ -62,7 +58,6 @@ public class GameControlPanel extends JPanel {
 		accButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				accusationDialog.setVisible(true);
 				accPushed = true;
 			}
 		});		

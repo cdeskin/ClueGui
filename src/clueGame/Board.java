@@ -68,8 +68,9 @@ public class Board extends JPanel{
 	ArrayList<BoardCell> cells = new ArrayList<BoardCell>();
 	Map<Character,String> rooms = new HashMap<Character,String>();	
 	
-	private Map<Integer, LinkedList<Integer>>adjList = new HashMap<Integer, LinkedList<Integer>>();
+	private Map<Integer, LinkedList<Integer>> adjList = new HashMap<Integer, LinkedList<Integer>>();
 	private HashSet<BoardCell> targets;
+	private ArrayList<Integer> targetsIndex = new ArrayList<Integer>();
 	
 	int numRows;
 	int numColumns;
@@ -92,6 +93,9 @@ public class Board extends JPanel{
 		calcAdjacencies();
 //panel graphics
 		addGridElements();
+		
+		accusationDialog = new AccusationDialog();
+		accusationDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		//board panel graphics are all in draw() and paintComponents method()
 		//playGame();
 		
@@ -397,6 +401,8 @@ public class Board extends JPanel{
 	public ArrayList<Card> cardsSeen = new ArrayList<Card>();
 	public ArrayList<Card> solution = new ArrayList<Card>();
 	
+	public AccusationDialog accusationDialog;
+	
 //	variables to hold list of cards, list of computer 
 //	players, one human player, and an indicator of whose turn it is
 	
@@ -487,6 +493,9 @@ public class Board extends JPanel{
 			++playerIndex;
 			if (playerIndex == allPlayers.size()) playerIndex = 0;
 		}
+		
+		for(Card temp : solution)
+			System.out.println(temp.name);
 	}
 
 //	
@@ -499,11 +508,22 @@ public class Board extends JPanel{
 	// return true if accusation is true, false otherwise
 	public boolean checkAccusation(Card person, Card room, Card weapon){
 		ArrayList<Card> accusation = new ArrayList<Card>();
+		boolean personMatch = false, roomMatch = false, weaponMatch = false;
+		
 		accusation.add(person);
 		accusation.add(room);
-		accusation.add(weapon);
+		accusation.add(weapon);		
 		
-		if (solution.containsAll(accusation)) return true;
+		for(Card temp : solution){
+			if(person.name.equalsIgnoreCase(temp.name))
+				personMatch = true;
+			else if(room.name.equalsIgnoreCase(temp.name))
+				roomMatch = true;
+			else if(weapon.name.equalsIgnoreCase(temp.name))
+				weaponMatch = true;
+		}
+		
+		if (personMatch && roomMatch && weaponMatch) return true;
 		else return false;
 	}
 	
@@ -577,7 +597,8 @@ public class Board extends JPanel{
 // Graphics methods
 	//panels
 		
-		GameControlPanel gameControlPanel = new GameControlPanel(4);	
+		GameControlPanel gameControlPanel = new GameControlPanel();
+		static Board board;
 
 	// paintComponent is called automatically when the frame needs
 	// to display (e.g., when the program starts)
@@ -587,6 +608,13 @@ public class Board extends JPanel{
 		for(int i = 0; i < (numRows * numColumns) ; i++) {
 			cells.get(i).draw(g); 
 		}
+		
+		
+		//draw targets
+		for(int i = 0; i < targetsIndex.size(); i++) {
+			cells.get(targetsIndex.get(i)).drawTargets(g);
+		}
+		
 		//draw players
 		for(int i = 0; i < allPlayers.size(); i++) { 
 			allPlayers.get(i).draw(g);
@@ -621,18 +649,36 @@ public class Board extends JPanel{
 		gameControlPanel.setVisible(true);
 		add(gameControlPanel, BorderLayout.SOUTH);
 	}
+		
+		
 		// precondition: all setups are finished, player is ready to start the game. this 
 		public void playGame() {
 			System.out.println("in playGame");
+			Card roomCard, personCard, weaponCard;
 			while(true) {
 				if(gameControlPanel.getNextButton()) {
 					System.out.println("Next button passed to board");
+					calcTargets(321, 2);
+					for(BoardCell temp : targets) {
+						//targetsIndex
+						targetsIndex.add(calcIndex(temp.row, temp.column));
+						System.out.println(calcIndex(temp.row, temp.column));
+					}
+					
 					repaint();
 				}
 				if(gameControlPanel.getAccButton()) {
 					System.out.println("Accusation button passed to board");
+					accusationDialog.setVisible(true);
+					roomCard = new Card(accusationDialog.roomCombo.getSelectedItem().toString(), Card.CardType.ROOM);
+					personCard = new Card(accusationDialog.personCombo.getSelectedItem().toString(), Card.CardType.PERSON);
+					weaponCard = new Card(accusationDialog.weaponCombo.getSelectedItem().toString(), Card.CardType.WEAPON);
+					if(checkAccusation(personCard,roomCard,weaponCard)){
+						JOptionPane.showMessageDialog(null, "You are Correct! Congratulations!");
+						break;
+					} else
+						JOptionPane.showMessageDialog(null, "Wrong Answer, Try again.");
 					repaint();
-
 				}
 			}
 
@@ -650,6 +696,9 @@ public class Board extends JPanel{
 	public static void main(String[] args) throws FileNotFoundException, BadConfigFormatException {
 		System.out.println("Hello world!!\n");
 		
+		JOptionPane.showMessageDialog(null, "You are Miss Scarlet, Press Next Player to begin.");
+		
+		//Board board = new Board();
 		Board board = new Board();
 		ClueGame clueGame= new ClueGame(); 
  		clueGame.setContentPane(board); //new Board()
@@ -657,6 +706,8 @@ public class Board extends JPanel{
 		clueGame.setVisible(true);
 		
 		board.playGame();
+		
+		System.exit(0);
 	
 		System.out.println("\nGoodbye world..");
 	}

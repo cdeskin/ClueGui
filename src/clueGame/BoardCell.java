@@ -54,6 +54,10 @@ public class BoardCell extends JPanel{
 
 	}
 	
+	public void drawTargets(Graphics g) {
+		
+	}
+	
 
 	
 	
