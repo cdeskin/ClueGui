@@ -30,15 +30,12 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.*;
 
 //team imports
 import clueGame.Card.CardType;
 
-public class Board extends JPanel  implements MouseListener {
+public class Board extends JPanel{
 	
 
 ////////////////////////////////
@@ -104,7 +101,7 @@ public class Board extends JPanel  implements MouseListener {
 		accusationDialog = new AccusationDialog();
 		accusationDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		//board panel graphics are all in draw() and paintComponents method()
-		addMouseListener(this);
+		//playGame();
 		
 	}
 	
@@ -589,6 +586,11 @@ public class Board extends JPanel  implements MouseListener {
 			}
 		}
 		
+		for(Player player : allPlayers){
+			if(player.name.equalsIgnoreCase(personCard.name))
+				player.setLocation(allPlayers.get(playerNumber).indexedLocation);
+		}
+		
 		System.out.println(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		gameControlPanel.setGuessText(personCard.name + ", " + roomCard.name + ", " + weaponCard.name);
 		someCard = disproveSuggestion(indexOfComputerPlayer, personCard.name, roomCard.name, weaponCard.name);
@@ -631,10 +633,7 @@ public class Board extends JPanel  implements MouseListener {
 		
 		//draw targets
 		for(int i = 0; i < targetsIndex.size(); i++) {
-			if(allPlayers.get(playerNumber).isHuman()) {
-				cells.get(targetsIndex.get(i)).drawTargets(g);	
-			}
-			
+			cells.get(targetsIndex.get(i)).drawTargets(g);
 		}
 		targetsIndex.clear();  //clear the previous turn
 		
@@ -751,20 +750,6 @@ public class Board extends JPanel  implements MouseListener {
 
 		}
 
-		public void mouseClicked(MouseEvent e) {}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseExited(MouseEvent e) {}
-		public void mouseReleased(MouseEvent e) {}
-		public void mousePressed(MouseEvent e)
-		{
-			System.out.println("MouseX: " + e.getX() + ", MouseY: " + e.getY());
-			int mouseRow = e.getY() / SCALER;
-			int mouseColumn = e.getX() / SCALER;
-			int mouseIndex = calcIndex(mouseRow, mouseColumn);
-			System.out.println("row: " + mouseRow + ", col: " + mouseColumn + ", Mouse Index: " + mouseIndex);
-			
-			
-		}
 
 	
 ////////////////////////////////
