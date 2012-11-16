@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class Player {
 	
@@ -37,6 +38,7 @@ public abstract class Player {
 	
 	public boolean isHuman() { return false; }
 	public boolean isComputer() { return false; }
+	public BoardCell pickLocation(HashSet<BoardCell> targets) {return new BoardCell();}
 	
 //	disprove suggestion
 	public Card disproveSuggestion(String cardName) {

@@ -627,7 +627,7 @@ public class Board extends JPanel{
 		
 		//draw targets
 		for(int i = 0; i < targetsIndex.size(); i++) {
-			if(allPlayers.get(playerNumber).isHuman()) {cells.get(targetsIndex.get(i)).drawTargets(g);}
+			/*if(allPlayers.get(playerNumber).isHuman()) {*/cells.get(targetsIndex.get(i)).drawTargets(g);//}
 		}
 		targetsIndex.clear();  //clear the previous turn
 		
@@ -709,10 +709,10 @@ public class Board extends JPanel{
 					
 					if(humanPlayer == false) {  //computer player
 						//pick a square from targets, make an suggestion or accusation
-						int nextLocation = getCplayerMove();
-						System.out.println("GetPlayerMove: " + nextLocation);
-						
-						allPlayers.get(playerNumber).setLocation(nextLocation);
+						BoardCell target = allPlayers.get(playerNumber).pickLocation(targets);
+						int targetIndex = calcIndex(target.row, target.column);
+						System.out.println("GetPlayerMove: " + targetIndex);
+						allPlayers.get(playerNumber).setLocation(targetIndex);
 						
 					}
 					repaint();
